@@ -36,7 +36,7 @@ export default function Header() {
 
       {/* Mobile Nav Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-[#111] border-b border-[#222] py-4 px-6 flex flex-col gap-4 text-[15px] font-medium text-zinc-200 shadow-2xl">
+        <div className="md:hidden absolute top-full left-0 w-full bg-[#050505]/70 backdrop-blur-xl border-b border-white/10 py-6 px-6 flex flex-col gap-4 text-[15px] font-medium text-zinc-200 shadow-2xl">
           <Link href="/blog" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Blog</Link>
           <Link href="/projects" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Projects</Link>
           <Link href="/events" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Events</Link>

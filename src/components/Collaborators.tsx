@@ -9,7 +9,13 @@ export default function Collaborators() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12 place-items-center">
         {partners.map((num) => (
           <div key={num} className="relative w-[180px] h-[90px] sm:w-[260px] sm:h-[130px] hover:scale-105 transition-transform duration-300">
-            <Image src={`/partners/l${num}.png`} alt={`Partner ${num}`} fill className="object-contain" />
+            <Image 
+              src={`/partners/l${num}.png`} 
+              alt={`Partner ${num}`} 
+              fill 
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-contain" 
+            />
           </div>
         ))}
       </div>
