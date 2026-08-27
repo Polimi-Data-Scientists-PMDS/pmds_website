@@ -11,6 +11,7 @@ const inter = Inter({
 });
 
 import Header from "@/components/Header";
+// import AnnouncementBar from "@/components/AnnouncementBar";
 
 export const metadata: Metadata = {
   title: {
@@ -30,22 +31,28 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased text-white`}
       >
+        {/* 
+          AnnouncementBar: Used for time-sensitive notifications (e.g. "Recruiting is OPEN").
+          Uncomment the line below to enable it. It will appear at the very top of the page.
+          Edit the text and link directly in src/components/AnnouncementBar.tsx.
+        */}
+        {/* <AnnouncementBar /> */}
         <Header />
         {children}
-        
+
         <footer className="w-full border-t border-white/10 bg-[#050505] pt-20 pb-10 mt-24">
           <div className="w-full max-w-[1100px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
             <div className="flex flex-col gap-6 md:w-1/3">
               <Link href="/" className="relative block w-[200px] h-[55px]">
-                 <Image src="/assets/logo.svg" alt="PMDS Logo" fill className="object-contain object-left" />
+                <Image src="/assets/logo.svg" alt="PMDS Logo" fill className="object-contain object-left" />
               </Link>
               <p className="text-zinc-400 text-[14px] leading-relaxed">
                 Student-led association at Politecnico di Milano dedicated to exploring the latest in Data Science.
               </p>
               <div className="flex gap-5 mt-2">
-                 <a href="https://www.instagram.com/polimidatascientists/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors text-[22px]"><FaInstagram /></a>
-                 <a href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors text-[22px]"><FaTelegramPlane /></a>
-                 <a href="https://www.linkedin.com/company/polimi-data-scientists/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors text-[22px]"><FaLinkedinIn /></a>
+                <a href="https://www.instagram.com/polimidatascientists/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors text-[22px]"><FaInstagram /></a>
+                <a href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors text-[22px]"><FaTelegramPlane /></a>
+                <a href="https://www.linkedin.com/company/polimi-data-scientists/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors text-[22px]"><FaLinkedinIn /></a>
               </div>
             </div>
 
@@ -57,13 +64,13 @@ export default function RootLayout({
               <Link href="/product/membership" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Become a Member</Link>
               <Link href="/members" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Members</Link>
             </div>
-            
+
             <div className="flex flex-col gap-4 md:w-1/3">
               <h4 className="text-white text-[15px] font-semibold mb-2 tracking-wide">Contact</h4>
               <a href="mailto:info@polimidatascientists.it" className="text-zinc-400 hover:text-white text-[14px] transition-colors">info@polimidatascientists.it</a>
             </div>
           </div>
-          
+
           <div className="w-full max-w-[1100px] mx-auto px-6 mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-zinc-500 text-[13px] gap-4">
             <p>&copy; 2026 Polimi Data Scientists. All rights reserved.</p>
             <p>Politecnico di Milano</p>
