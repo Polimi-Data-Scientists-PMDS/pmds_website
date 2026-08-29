@@ -60,7 +60,7 @@ export default function MembershipPage() {
             </ul>
           </div>
 
-          <button className="w-full py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-colors mt-auto">
+          <button className="cursor-pointer w-full py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-colors mt-auto">
             Get Standard
           </button>
         </div>
@@ -107,7 +107,7 @@ export default function MembershipPage() {
             </ul>
           </div>
 
-          <button className="w-full py-4 rounded-xl bg-[#4b6ffe] text-white font-semibold hover:bg-[#3f5fdf] transition-colors mt-auto shadow-[0_0_20px_rgba(75,111,254,0.3)] hover:shadow-[0_0_30px_rgba(75,111,254,0.5)]">
+          <button className="cursor-pointer w-full py-4 rounded-xl bg-[#4b6ffe] text-white font-semibold hover:bg-[#3f5fdf] transition-colors mt-auto shadow-[0_0_20px_rgba(75,111,254,0.3)] hover:shadow-[0_0_30px_rgba(75,111,254,0.5)]">
             Go Premium
           </button>
         </div>

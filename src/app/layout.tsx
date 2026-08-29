@@ -61,13 +61,14 @@ export default function RootLayout({
               <Link href="/blog" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Blog</Link>
               <Link href="/projects" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Projects</Link>
               <Link href="/events" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Events</Link>
-              <Link href="/product/membership" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Become a Member</Link>
+              <Link href="/membership" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Become a Member</Link>
               <Link href="/members" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Members</Link>
             </div>
 
             <div className="flex flex-col gap-4 md:w-1/3">
-              <h4 className="text-white text-[15px] font-semibold mb-2 tracking-wide">Contact</h4>
+              <h4 className="text-white text-[15px] font-semibold mb-2 tracking-wide">Contact & Legal</h4>
               <a href="mailto:info@polimidatascientists.it" className="text-zinc-400 hover:text-white text-[14px] transition-colors">info@polimidatascientists.it</a>
+              <Link href="/legal" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Legal & Privacy Policy</Link>
             </div>
           </div>
 

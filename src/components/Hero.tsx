@@ -56,7 +56,7 @@ export default function Hero() {
         </p>
 
         <div className="flex flex-wrap gap-4 mt-10">
-          <Link href="/product/membership" className="w-fit bg-[#4b6ffe] hover:bg-[#3f5fdf] text-white text-[15px] font-bold py-3.5 px-8 rounded-full transition-all text-center shadow-[0_0_20px_rgba(75,111,254,0.3)] hover:shadow-[0_0_30px_rgba(75,111,254,0.5)]">
+          <Link href="/membership" className="w-fit bg-[#4b6ffe] hover:bg-[#3f5fdf] text-white text-[15px] font-bold py-3.5 px-8 rounded-full transition-all text-center shadow-[0_0_20px_rgba(75,111,254,0.3)] hover:shadow-[0_0_30px_rgba(75,111,254,0.5)]">
             Join the Club
           </Link>
           <Link href="/events" className="w-fit bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 text-white text-[15px] font-semibold py-3.5 px-8 rounded-full transition-all text-center">
