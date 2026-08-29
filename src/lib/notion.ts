@@ -181,8 +181,8 @@ export async function getTeams(): Promise<Team[]> {
 
     return {
       id: page.id,
-      name: name || baseMember?.name || "Unknown",
-      role: displayedRole || baseMember?.role || "Member",
+      name: name || "Unknown",
+      role: displayedRole || undefined,
       team: section,
       imageUrl: baseMember?.imageUrl,
       linkedinUrl: baseMember?.linkedinUrl,

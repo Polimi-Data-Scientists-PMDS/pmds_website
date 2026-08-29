@@ -1,7 +1,7 @@
 export interface Member {
   id: string;
   name: string;
-  role: string;
+  role?: string;
   team?: string;
   imageUrl?: string;
   linkedinUrl?: string;

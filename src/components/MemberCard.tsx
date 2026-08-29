@@ -24,7 +24,9 @@ export default function MemberCard({ member }: { member: Member }) {
       
       <div className="p-3 sm:p-5 relative flex flex-col flex-1">
         <h3 className="text-white text-[13px] sm:text-[16px] font-bold leading-tight line-clamp-2">{member.name}</h3>
-        <p className="text-[#4b6ffe] text-[11px] sm:text-[13px] font-medium mt-1 mb-2 line-clamp-2">{member.role}</p>
+        {member.role && (
+          <p className="text-[#4b6ffe] text-[11px] sm:text-[13px] font-medium mt-1 mb-2 line-clamp-2">{member.role}</p>
+        )}
         
         <div className="flex gap-2 mt-auto pt-3">
           {member.linkedinUrl && (
