@@ -19,13 +19,13 @@ export default function Header() {
           <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
           <Link href="/projects" className="hover:text-white transition-colors">Projects</Link>
           <Link href="/events" className="hover:text-white transition-colors">Events</Link>
-          <Link href="/product/membership" className="hover:text-white transition-colors">Become a Member</Link>
+          <Link href="/membership" className="hover:text-white transition-colors">Become a Member</Link>
           <Link href="/members" className="hover:text-white transition-colors">Members</Link>
         </nav>
 
         {/* Mobile Nav Toggle */}
         <button 
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5"
+          className="cursor-pointer md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5"
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
@@ -40,7 +40,7 @@ export default function Header() {
           <Link href="/blog" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Blog</Link>
           <Link href="/projects" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Projects</Link>
           <Link href="/events" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Events</Link>
-          <Link href="/product/membership" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Become a Member</Link>
+          <Link href="/membership" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Become a Member</Link>
           <Link href="/members" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Members</Link>
         </div>
       )}

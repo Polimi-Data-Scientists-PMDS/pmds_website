@@ -37,7 +37,7 @@ export default function AnnouncementBar() {
       </div>
       <button 
         onClick={dismiss}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-1 transition-colors"
+        className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-1 transition-colors"
         aria-label="Dismiss announcement"
       >
         <FaTimes size={14} />

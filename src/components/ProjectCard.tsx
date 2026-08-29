@@ -112,7 +112,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                 
                 <button 
                   onClick={() => setIsTeamExpanded(!isTeamExpanded)}
-                  className="text-zinc-400 hover:text-white text-[12px] font-medium flex items-center gap-1.5 transition-colors bg-white/5 px-3 py-1.5 rounded-full"
+                  className="cursor-pointer text-zinc-400 hover:text-white text-[12px] font-medium flex items-center gap-1.5 transition-colors bg-white/5 px-3 py-1.5 rounded-full"
                 >
                   {isTeamExpanded ? "Hide" : "View"} <FaChevronDown className={`transition-transform duration-300 ${isTeamExpanded ? 'rotate-180' : ''}`} size={10} />
                 </button>
