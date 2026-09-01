@@ -62,6 +62,7 @@ export default function RootLayout({
               <Link href="/projects" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Projects</Link>
               <Link href="/events" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Events</Link>
               <Link href="/membership" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Become a Member</Link>
+              <a href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00" target="_blank" rel="noopener noreferrer" className="text-[#4b6ffe] hover:text-[#3f5fdf] font-medium text-[14px] transition-colors">Support Us (Donate)</a>
               <Link href="/members" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Members</Link>
             </div>
 

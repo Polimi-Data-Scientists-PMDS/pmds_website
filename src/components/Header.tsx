@@ -15,12 +15,15 @@ export default function Header() {
         </Link>
         
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-12 text-[15px] font-normal text-zinc-200">
+        <nav className="hidden md:flex gap-12 text-[15px] font-normal text-zinc-200 items-center">
           <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
           <Link href="/projects" className="hover:text-white transition-colors">Projects</Link>
           <Link href="/events" className="hover:text-white transition-colors">Events</Link>
           <Link href="/membership" className="hover:text-white transition-colors">Become a Member</Link>
           <Link href="/members" className="hover:text-white transition-colors">Members</Link>
+          <a href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00" target="_blank" rel="noopener noreferrer" className="bg-white/5 border border-white/10 hover:bg-white/10 px-4 py-2 rounded-full transition-colors text-white font-medium text-sm ml-[-1rem]">
+            Donate
+          </a>
         </nav>
 
         {/* Mobile Nav Toggle */}
@@ -42,6 +45,7 @@ export default function Header() {
           <Link href="/events" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Events</Link>
           <Link href="/membership" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Become a Member</Link>
           <Link href="/members" className="py-2 hover:text-white" onClick={() => setIsOpen(false)}>Members</Link>
+          <a href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00" target="_blank" rel="noopener noreferrer" className="py-2 hover:text-white text-[#4b6ffe] font-semibold" onClick={() => setIsOpen(false)}>Support Us (Donate)</a>
         </div>
       )}
     </header>

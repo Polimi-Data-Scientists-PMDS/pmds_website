@@ -28,7 +28,7 @@ export default function Confetti() {
         requestAnimationFrame(frame);
       }
     };
-    
+
     // Slight delay so it fires after the page fully renders
     setTimeout(() => {
       frame();
