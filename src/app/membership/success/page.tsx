@@ -77,30 +77,39 @@ function SuccessState() {
           <ul className="text-zinc-400 text-[14px] space-y-3">
             <li className="flex gap-2">
               <span className="text-[#4b6ffe]">1.</span> 
-              <span>Check your university email for the Stripe receipt.</span>
+              <span>Check your university email for the Stripe payment receipt.</span>
             </li>
             <li className="flex gap-2">
               <span className="text-[#4b6ffe]">2.</span> 
-              <span>Join our members-only WhatsApp group using the link below!</span>
+              <span>Wait for our official approval email. If you applied for the Active Member tier, this email will confirm the outcome of the Board's review.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-[#4b6ffe]">3.</span> 
+              <span>Join our members-only WhatsApp group using the button below!</span>
             </li>
           </ul>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 w-full">
-          <a 
-            href={whatsappLink} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-3.5 px-6 rounded-full transition-colors shadow-[0_0_20px_rgba(37,211,102,0.2)]"
-          >
-            <FaWhatsapp size={20} /> Join WhatsApp
-          </a>
-          <Link 
-            href="/"
-            className="flex-1 flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold py-3.5 px-6 rounded-full transition-colors"
-          >
-            Back to Home
-          </Link>
+        <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
+            <a 
+              href={whatsappLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-3.5 px-6 rounded-full transition-colors shadow-[0_0_20px_rgba(37,211,102,0.2)]"
+            >
+              <FaWhatsapp size={20} /> Join WhatsApp
+            </a>
+            <Link 
+              href="/"
+              className="flex-1 flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold py-3.5 px-6 rounded-full transition-colors"
+            >
+              Back to Home
+            </Link>
+          </div>
+          <p className="text-zinc-500 text-[12px] italic mt-2">
+            Note: For security reasons, your request to join the group will be manually approved by our admins.
+          </p>
         </div>
       </div>
     </div>
