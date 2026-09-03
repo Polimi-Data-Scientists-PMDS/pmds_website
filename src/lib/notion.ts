@@ -259,7 +259,7 @@ export async function getPosts(): Promise<BlogPost[]> {
     const dateProp = props["Date (mandatory)"]?.date?.start;
     const formattedDate = dateProp ? new Date(dateProp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "Unknown date";
 
-    const externalUrl = formatUrlString(getText(props["External url (ONLY FOR LEGACY POSTS)"]));
+    const externalUrl = getUrl(props["External url (ONLY FOR LEGACY POSTS)"]);
     const title = getText(props["Title (mandatory)"]) || "Untitled Post";
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
