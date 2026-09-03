@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FaExternalLinkAlt, FaArrowRight } from "react-icons/fa";
 import { BlogPost } from "@/types";
 
-export default function BlogCard({ post }: { post: BlogPost }) {
+export default function BlogCard({ post, priority = false }: { post: BlogPost; priority?: boolean }) {
   const CardWrapper = post.externalUrl ? 'a' : Link;
   const wrapperProps = post.externalUrl 
     ? { href: post.externalUrl, target: "_blank", rel: "noopener noreferrer" }
@@ -22,6 +22,7 @@ export default function BlogCard({ post }: { post: BlogPost }) {
             alt={post.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700"
+            priority={priority}
             unoptimized
           />
           {/* Legacy Substack Badge */}
