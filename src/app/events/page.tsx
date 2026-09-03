@@ -24,8 +24,8 @@ export default async function EventsPage() {
       {upcomingEvents.length > 0 && (
         <div className="mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {upcomingEvents.map(event => (
-              <EventCard key={event.id} event={event} />
+            {upcomingEvents.map((event, index) => (
+              <EventCard key={event.id} event={event} priority={index < 2} />
             ))}
           </div>
         </div>
@@ -35,8 +35,8 @@ export default async function EventsPage() {
         <div>
           <h2 className="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-4">Past Events</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {pastEvents.map(event => (
-              <EventCard key={event.id} event={event} />
+            {pastEvents.map((event, index) => (
+              <EventCard key={event.id} event={event} priority={upcomingEvents.length === 0 && index < 2} />
             ))}
           </div>
         </div>

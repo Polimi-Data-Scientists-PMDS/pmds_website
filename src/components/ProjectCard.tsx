@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Project } from "@/types";
 import { FaGithub, FaFilePdf, FaExternalLinkAlt, FaUsers, FaLinkedinIn, FaHandshake, FaChevronDown } from "react-icons/fa";
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({ project, priority = false }: { project: Project; priority?: boolean }) {
   const [isTeamExpanded, setIsTeamExpanded] = useState(false);
 
   return (
@@ -19,6 +19,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             alt={project.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700"
+            priority={priority}
             unoptimized
           />
         ) : (

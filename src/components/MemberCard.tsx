@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FaLinkedinIn, FaEnvelope } from "react-icons/fa";
 import { Member } from "@/types";
 
-export default function MemberCard({ member }: { member: Member }) {
+export default function MemberCard({ member, priority = false }: { member: Member; priority?: boolean }) {
   return (
     <div className="flex flex-col bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-3xl overflow-hidden transition-all duration-300 group">
       <div className="aspect-square w-full bg-[#151a2d] relative shrink-0">
@@ -13,6 +13,7 @@ export default function MemberCard({ member }: { member: Member }) {
             fill 
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
             className="object-cover group-hover:scale-105 transition-transform duration-700"
+            priority={priority}
             unoptimized
           />
         ) : (

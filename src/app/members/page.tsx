@@ -25,7 +25,7 @@ export default async function MembersPage() {
 
       {/* Teams Container */}
       <div className="flex flex-col gap-16">
-        {teams.map((team) => (
+        {teams.map((team, teamIndex) => (
           <div key={team.id} className="flex flex-col">
             <div className="mb-8 border-b border-white/10 pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4">
               <h2 className="text-[32px] font-bold text-white">{team.name}</h2>
@@ -38,7 +38,7 @@ export default async function MembersPage() {
 
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-6">
               {team.members.map((member, index) => (
-                <MemberCard key={`${team.id}-${member.id}-${index}`} member={member} />
+                <MemberCard key={`${team.id}-${member.id}-${index}`} member={member} priority={teamIndex === 0 && index < 6} />
               ))}
             </div>
           </div>

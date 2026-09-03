@@ -24,9 +24,9 @@ export default async function ProjectsPage() {
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+        {projects.map((project, index) => (
+          <ProjectCard key={project.id} project={project} priority={index < 2} />
         ))}
       </div>
     </div>

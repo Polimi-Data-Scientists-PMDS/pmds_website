@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { Event } from "@/types";
 
-export default function EventCard({ event }: { event: Event }) {
+export default function EventCard({ event, priority = false }: { event: Event; priority?: boolean }) {
   return (
     <div className="flex flex-col bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-[32px] overflow-hidden transition-all duration-300 group h-full">
       {/* Image Section */}
@@ -13,6 +13,7 @@ export default function EventCard({ event }: { event: Event }) {
             alt={event.title}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
+            priority={priority}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-80" />
           
