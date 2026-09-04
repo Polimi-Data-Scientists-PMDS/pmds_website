@@ -23,7 +23,7 @@ export default function BlogCard({ post, priority = false }: { post: BlogPost; p
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700"
             priority={priority}
-            unoptimized
+            
           />
           {/* Legacy Substack Badge */}
           {post.externalUrl && (
@@ -52,7 +52,7 @@ export default function BlogCard({ post, priority = false }: { post: BlogPost; p
               {post.authors.map((author, i) => (
                 <div key={i} className="w-7 h-7 rounded-full border border-[#0a0a0a] bg-zinc-800 relative overflow-hidden flex items-center justify-center text-zinc-400 text-xs shrink-0" title={author.name}>
                   {author.avatar ? (
-                    <Image src={author.avatar} alt={author.name} fill className="object-cover" unoptimized />
+                    <Image src={author.avatar} alt={author.name} fill className="object-cover"  />
                   ) : (
                     author.name.charAt(0)
                   )}

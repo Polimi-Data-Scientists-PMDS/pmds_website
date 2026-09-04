@@ -68,7 +68,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               {post.authors.map((author, i) => (
                 <div key={i} className="w-12 h-12 rounded-full border-2 border-black bg-zinc-800 relative overflow-hidden flex items-center justify-center text-zinc-400 text-sm shrink-0">
                   {author.avatar ? (
-                    <Image src={author.avatar} alt={author.name} fill className="object-cover" unoptimized />
+                    <Image src={author.avatar} alt={author.name} fill className="object-cover"  />
                   ) : (
                     author.name.charAt(0)
                   )}
@@ -113,7 +113,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               fill
               className="object-cover"
               priority
-              unoptimized
+              
             />
           </div>
         </div>

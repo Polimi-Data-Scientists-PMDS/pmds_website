@@ -14,7 +14,7 @@ export default function MemberCard({ member, priority = false }: { member: Membe
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
             className="object-cover group-hover:scale-105 transition-transform duration-700"
             priority={priority}
-            unoptimized
+            
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-zinc-600 font-bold text-4xl uppercase">

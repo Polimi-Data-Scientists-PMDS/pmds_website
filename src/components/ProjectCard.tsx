@@ -20,7 +20,7 @@ export default function ProjectCard({ project, priority = false }: { project: Pr
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700"
             priority={priority}
-            unoptimized
+            
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#151a2d] to-[#0a0a0a] flex items-center justify-center">
@@ -102,7 +102,7 @@ export default function ProjectCard({ project, priority = false }: { project: Pr
                     {project.team.map((member, i) => (
                       <div key={i} className="w-8 h-8 rounded-full border border-[#0a0a0a] bg-zinc-800 relative overflow-hidden flex items-center justify-center text-zinc-400 text-xs" title={member.name}>
                         {member.avatar ? (
-                          <Image src={member.avatar} alt={member.name} fill className="object-cover" unoptimized />
+                          <Image src={member.avatar} alt={member.name} fill className="object-cover"  />
                         ) : (
                           member.name.charAt(0)
                         )}
@@ -129,7 +129,7 @@ export default function ProjectCard({ project, priority = false }: { project: Pr
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-zinc-800 relative overflow-hidden flex items-center justify-center text-zinc-400 text-xs shrink-0">
                           {member.avatar ? (
-                            <Image src={member.avatar} alt={member.name} fill className="object-cover" unoptimized />
+                            <Image src={member.avatar} alt={member.name} fill className="object-cover"  />
                           ) : (
                             member.name.charAt(0)
                           )}
