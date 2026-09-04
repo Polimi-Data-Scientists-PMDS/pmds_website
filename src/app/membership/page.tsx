@@ -63,13 +63,22 @@ export default function MembershipPage() {
       </div>
 
       {/* Active Tranche Indicator */}
-      <div className="flex justify-center mb-16 relative z-10">
-        <div className="inline-flex items-center gap-3 bg-[#4b6ffe]/10 border border-[#4b6ffe]/30 text-[#4b6ffe] px-5 py-2.5 rounded-full text-sm font-semibold shadow-[0_0_20px_rgba(75,111,254,0.15)]">
+      <div className="flex flex-col items-center mb-16 relative z-10">
+        <div className="inline-flex items-center gap-3 bg-[#4b6ffe]/10 border border-[#4b6ffe]/30 text-[#4b6ffe] px-5 py-2.5 rounded-full text-sm font-semibold shadow-[0_0_20px_rgba(75,111,254,0.15)] mb-3">
           <FaCalendarAlt size={16} />
           {ACTIVE_TRANCHE === 'fall'
             ? `Now Enrolling: Fall Tranche (${ACADEMIC_YEAR})`
             : `Now Enrolling: Winter Tranche (${ACADEMIC_YEAR})`
           }
+        </div>
+        <div className="text-zinc-500 text-[13px] flex items-center gap-1.5 bg-black/20 px-3 py-1 rounded-full border border-white/5">
+          <FaInfoCircle />
+          <span>
+            {ACTIVE_TRANCHE === 'fall'
+              ? "Fall memberships are valid until September 1st."
+              : "Winter memberships are valid until January 1st."
+            }
+          </span>
         </div>
       </div>
 
