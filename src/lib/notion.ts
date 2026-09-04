@@ -148,7 +148,7 @@ export async function getProjects(): Promise<Project[]> {
     "Completed": 3
   };
 
-  return projects.sort((a, b) => {
+  return projects.sort((a: Project, b: Project) => {
     const orderA = statusOrder[a.status] || 99;
     const orderB = statusOrder[b.status] || 99;
     return orderA - orderB;
