@@ -100,16 +100,10 @@ export async function getProjects(): Promise<Project[]> {
       checkbox: {
         equals: true
       }
-    },
-    sorts: [
-      {
-        property: "Status (mandatory)",
-        direction: "descending"
-      }
-    ]
+    }
   });
 
-  return response.results.map((page: any) => {
+  const projects = response.results.map((page: any) => {
     const props = page.properties;
 
     // Resolve Partner
@@ -146,6 +140,18 @@ export async function getProjects(): Promise<Project[]> {
       paperUrl: getUrl(props["Paper url (optional)"]),
       reportUrl: getUrl(props["Report url (optional)"]),
     };
+  });
+
+  const statusOrder: Record<string, number> = {
+    "Recruiting": 1,
+    "Ongoing": 2,
+    "Completed": 3
+  };
+
+  return projects.sort((a, b) => {
+    const orderA = statusOrder[a.status] || 99;
+    const orderB = statusOrder[b.status] || 99;
+    return orderA - orderB;
   });
 }
 
