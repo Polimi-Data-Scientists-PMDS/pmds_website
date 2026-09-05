@@ -157,7 +157,7 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function getTeams(): Promise<Team[]> {
   if (!WEBSITE_MEMBERS_DB) return [];
-  
+
   // 1. Fetch all members from "Our People" as a dictionary to extract avatars/linkedin
   const allMembers = await getMembers();
   const membersMap = new Map(allMembers.map(m => [m.id, m]));
@@ -175,7 +175,7 @@ export async function getTeams(): Promise<Team[]> {
   // 3. Map the data
   const websiteMembers = response.results.map((page: any) => {
     const props = page.properties;
-    
+
     // The link to the "Our People" database
     const relationIds = props["Our People link (mandatory)"]?.relation?.map((r: any) => r.id) || [];
     const baseMember = relationIds.length > 0 ? membersMap.get(relationIds[0]) : null;
@@ -208,13 +208,15 @@ export async function getTeams(): Promise<Team[]> {
 
   // Hardcoded Team Emails
   const TEAM_EMAILS: Record<string, string> = {
-    "Board": "board@polimidatascience.it",
-    "Finance": "finance@polimidatascience.it",
-    "Projects": "projects@polimidatascience.it",
-    "HR": "hr@polimidatascience.it",
-    "Events": "events@polimidatascience.it",
-    "Social & Brand": "social@polimidatascience.it",
-    "Tech": "tech@polimidatascience.it",
+    "Board": "board@polimidatascientists.it",
+    "Finance": "finance@polimidatascientists.it",
+    "Projects": "projects@polimidatascientists.it",
+    "HR": "hr@polimidatascientists.it",
+    "Events": "events@polimidatascientists.it",
+    "Social & Brand": "social@polimidatascientists.it",
+    "Tech": "tech@polimidatascientists.it",
+    "Polimi Quantum Computing": "pmqc@polimidatascientists.it",
+    "Startup Relations": "startup-relations@polimidatascientists.it",
   };
 
   // 5. Convert to Team[] array
@@ -254,8 +256,8 @@ export async function getPosts(): Promise<BlogPost[]> {
     const relationIds = props["Authors (optional)"]?.relation?.map((r: any) => r.id) || [];
     const authors = relationIds.map((id: string) => {
       const member = membersMap.get(id);
-      return member ? { 
-        name: member.name, 
+      return member ? {
+        name: member.name,
         avatar: member.imageUrl,
         linkedinUrl: member.linkedinUrl,
         email: member.email
