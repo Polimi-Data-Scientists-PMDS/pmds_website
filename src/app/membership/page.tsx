@@ -135,7 +135,7 @@ export default function MembershipPage() {
             <p className="text-zinc-400 text-[14px] mt-1">For true data science enthusiasts</p>
           </div>
           <div className="flex items-baseline gap-1 mb-6">
-            <span className="text-white text-[32px] font-bold">€10</span>
+            <span className="text-white text-[32px] font-bold">€11</span>
             <span className="text-zinc-500 text-[14px]">/year</span>
           </div>
 
@@ -172,7 +172,7 @@ export default function MembershipPage() {
             <p className="text-zinc-500 text-[14px] mt-1">For those who want to shape PMDS</p>
           </div>
           <div className="flex items-baseline gap-1 mb-6">
-            <span className="text-white text-[32px] font-bold">€10</span>
+            <span className="text-white text-[32px] font-bold">€11</span>
             <span className="text-zinc-500 text-[14px]">/year</span>
           </div>
 
@@ -216,7 +216,7 @@ export default function MembershipPage() {
           <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-white font-medium text-[16px] mb-2">What is the difference between Premium and Active?</h4>
             <p className="text-zinc-400 text-[14px] leading-relaxed">
-              Both have a €10 membership fee and come with a complimentary PMDS gadget as a welcome gift. However, <strong>Premium</strong> is a Supporter tier (no voting rights), while <strong>Active</strong> grants full voting rights in the Assembly and allows you to run for the Board. Active membership requires formal Board approval and participation in meetings.
+              Both have a €11 membership fee and come with a complimentary PMDS gadget as a welcome gift. However, <strong>Premium</strong> is a Supporter tier (no voting rights), while <strong>Active</strong> grants full voting rights in the Assembly and allows you to run for the Board. Active membership requires formal Board approval and participation in meetings.
             </p>
           </div>
 

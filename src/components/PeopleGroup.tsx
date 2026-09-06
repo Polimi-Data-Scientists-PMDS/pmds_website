@@ -62,8 +62,9 @@ export default function PeopleGroup({
         ))}
 
         <div
-          className={`absolute z-10 invisible top-full ${mobile ? (opened ? 'opacity-100' : 'opacity-0') : 'group-hover/people:visible group-hover/people:opacity-100 opacity-0'} transition-all items-center bg-[#0a0a0a] border border-white/10 p-3 rounded-2xl shadow-xl mt-2 flex flex-col gap-2`}
+          className={`absolute z-10 top-full pt-2 ${mobile ? (opened ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none') : 'opacity-0 pointer-events-none group-hover/people:opacity-100 group-hover/people:pointer-events-auto'} transition-all`}
         >
+          <div className="flex flex-col gap-2 items-center bg-[#0a0a0a] border border-white/10 p-3 rounded-2xl shadow-xl">
           {people.map((person, i) => (
             <div
               key={i}
@@ -105,6 +106,7 @@ export default function PeopleGroup({
               </div>
             </div>
           ))}
+          </div>
         </div>
       </div>
       {mobile && (
