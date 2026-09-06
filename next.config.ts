@@ -18,6 +18,7 @@ process.emitWarning = function (
 const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
+    minimumCacheTTL: 604800, // Cache optimized images for 7 days
     remotePatterns: [
       {
         protocol: 'https',
