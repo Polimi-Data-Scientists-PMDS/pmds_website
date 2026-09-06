@@ -10,7 +10,7 @@ export default function PeopleGroup({
   size = 'md',
 }: {
   people: Person[];
-  size: 'sm' | 'md';
+  size?: 'sm' | 'md';
 }) {
   const [mobile, setMobile] = useState(
     typeof window !== 'undefined' && window.innerWidth <= 768,
