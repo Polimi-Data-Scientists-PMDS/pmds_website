@@ -84,11 +84,8 @@ export async function getMembers(): Promise<Member[]> {
     const roles = getMultiSelect(props["Role "]);
     const roleString = roles.length > 0 ? roles[0] : "Member";
 
-    // Try to get photo from Files, fallback to Person avatar if they are linked
+    // Get photo strictly from Files. Do not fallback to Notion account avatar.
     let avatar = getFileUrl(props["Photo (if necessary)"]);
-    if (!avatar && props["Person"]?.people?.length > 0) {
-      avatar = props["Person"].people[0].avatar_url || null;
-    }
 
     return {
       id: page.id,
