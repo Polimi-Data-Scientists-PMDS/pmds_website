@@ -53,6 +53,7 @@ export default function PeopleGroup({
                 src={person.avatar}
                 alt={person.name}
                 fill
+                sizes="48px"
                 className="object-cover"
               />
             ) : (
@@ -73,7 +74,7 @@ export default function PeopleGroup({
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full border border-white/10 bg-zinc-800 relative overflow-hidden shrink-0">
                   {person.avatar ? (
-                    <Image src={person.avatar} alt={person.name} fill className="object-cover" />
+                    <Image src={person.avatar} alt={person.name} fill sizes="48px" className="object-cover" />
                   ) : (
                     <span className="w-full h-full flex items-center justify-center text-zinc-400 text-xs">{person.name.charAt(0)}</span>
                   )}

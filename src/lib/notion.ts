@@ -24,7 +24,6 @@ const fetchNotion = async (url: string, body: any) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(body),
-    cache: 'no-store' // Always fetch fresh data; page-level revalidate controls caching
   });
   if (!res.ok) {
     throw new Error(`Notion API Error: ${await res.text()}`);
