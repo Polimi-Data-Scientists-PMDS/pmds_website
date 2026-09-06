@@ -17,9 +17,9 @@ export default function BlogCard({
     : { href: `/blog/${post.slug}` };
 
   return (
-    <div className="group flex flex-col bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-3xl transition-all duration-300">
+    <div className="group flex flex-col bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-3xl transition-all duration-300 relative">
       {post.imageUrl && post.imageUrl !== '/placeholder.jpg' && (
-        <div className="w-full h-[200px] relative overflow-hidden">
+        <LinkWrapper {...wrapperProps} className="w-full h-[200px] relative overflow-hidden rounded-t-3xl block">
           <Image
             src={post.imageUrl}
             alt={post.title}
@@ -32,7 +32,7 @@ export default function BlogCard({
               <FaExternalLinkAlt size={10} /> External
             </div>
           )}
-        </div>
+        </LinkWrapper>
       )}
 
       <div className="p-6 flex flex-col flex-1">
@@ -42,23 +42,23 @@ export default function BlogCard({
           </span>
         </div>
 
-        <h3 className="text-white text-[20px] font-bold mb-3 leading-snug group-hover:text-[#4b6ffe] transition-colors">
+        <LinkWrapper {...wrapperProps} className="inline-block"><h3 className="text-white text-[20px] font-bold mb-3 leading-snug group-hover:text-[#4b6ffe] transition-colors">
           {post.title}
-        </h3>
+        </h3></LinkWrapper>
         <p className="text-zinc-400 text-[14px] leading-relaxed mb-6 line-clamp-3">
           {post.excerpt}
         </p>
 
         <div className="flex items-center justify-between mt-auto pt-5 border-t border-white/5">
           {post.authors && post.authors.length !== 0 ? (
-            <PeopleGroup size="sm" people={post.authors} />
+            <div className="relative z-10"><PeopleGroup size="sm" people={post.authors} /></div>
           ) : (
             <div></div>
           )}
 
           <LinkWrapper
             {...wrapperProps}
-            className="text-zinc-500 group-hover:text-[#4b6ffe] text-[13px] font-bold flex items-center gap-1.5 transition-colors"
+            className="text-zinc-500 hover:text-[#4b6ffe] group-hover:text-[#4b6ffe] text-[13px] font-bold flex items-center gap-1.5 transition-colors"
           >
             {post.externalUrl ? (
               <>

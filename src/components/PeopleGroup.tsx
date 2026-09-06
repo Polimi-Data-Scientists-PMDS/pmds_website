@@ -12,15 +12,16 @@ export default function PeopleGroup({
   people: Person[];
   size?: 'sm' | 'md';
 }) {
-  const [mobile, setMobile] = useState(
-    typeof window !== 'undefined' && window.innerWidth <= 768,
-  );
-
-  const handleWindowSizeChange = () => {
-    setMobile(window.innerWidth <= 768);
-  };
+  const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
+    const handleWindowSizeChange = () => {
+      setMobile(window.innerWidth <= 768);
+    };
+    
+    // Set initial value on client side only (after hydration)
+    handleWindowSizeChange();
+    
     window.addEventListener('resize', handleWindowSizeChange);
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange);
@@ -31,17 +32,12 @@ export default function PeopleGroup({
 
   const SPACING = {
     sm: '-space-x-2',
-    md: '-space-x-3',
+    md: '-space-x-2 md:-space-x-3',
   };
 
   const SIZING = {
-    sm: 'size-7',
-    md: 'size-12',
-  };
-
-  const PX_SIZING = {
-    sm: 28,
-    md: 48,
+    sm: 'w-7 h-7',
+    md: 'w-10 h-10 md:w-12 md:h-12',
   };
 
   return (
@@ -56,9 +52,7 @@ export default function PeopleGroup({
               <Image
                 src={person.avatar}
                 alt={person.name}
-                height={PX_SIZING[size]}
-                width={PX_SIZING[size]}
-                quality={70}
+                fill
                 className="object-cover"
               />
             ) : (
@@ -68,16 +62,25 @@ export default function PeopleGroup({
         ))}
 
         <div
-          className={`absolute z-10 top-full ${mobile ? (opened ? 'opacity-100' : 'opacity-0') : 'group-hover/people:opacity-100 opacity-0'} transition-all items-center bg-zinc-800 p-2 rounded-3xl flex flex-col gap-2`}
+          className={`absolute z-10 top-full ${mobile ? (opened ? 'opacity-100' : 'opacity-0') : 'group-hover/people:opacity-100 opacity-0'} transition-all items-center bg-[#0a0a0a] border border-white/10 p-3 rounded-2xl shadow-xl mt-2 flex flex-col gap-2`}
         >
           {people.map((person, i) => (
             <div
               key={i}
-              className="flex flex-row justify-between w-full gap-4 items-center"
+              className="flex flex-row justify-between w-full gap-6 items-center"
             >
-              <p className="text-white font-medium text-sm text-nowrap">
-                {person.name}
-              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full border border-white/10 bg-zinc-800 relative overflow-hidden shrink-0">
+                  {person.avatar ? (
+                    <Image src={person.avatar} alt={person.name} fill className="object-cover" />
+                  ) : (
+                    <span className="w-full h-full flex items-center justify-center text-zinc-400 text-xs">{person.name.charAt(0)}</span>
+                  )}
+                </div>
+                <p className="text-white font-medium text-[14px] whitespace-nowrap">
+                  {person.name}
+                </p>
+              </div>
               <div className="flex flex-row gap-2">
                 {person.email && (
                   <a
