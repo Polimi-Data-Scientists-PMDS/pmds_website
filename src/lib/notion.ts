@@ -12,8 +12,8 @@ function warmImageCache(url: any) {
     : "https://www.polimidatascientists.it";
   
   // Fire and forget (w=828 for cards, w=1920 for full screen)
-  fetch(`${domain}/_next/image?url=${url.replace("&", "%26").replace("?", "%3F")}&w=828&q=75`).catch(() => {});
-  fetch(`${domain}/_next/image?url=${url.replace("&", "%26").replace("?", "%3F")}&w=1920&q=75`).catch(() => {});
+  fetch(`${domain}/_next/image?url=${encodeURIComponent(url)}&w=828&q=75`).catch(() => {});
+  fetch(`${domain}/_next/image?url=${encodeURIComponent(url)}&w=1920&q=75`).catch(() => {});
 }
 
 import { NotionToMarkdown } from "notion-to-md";
@@ -85,7 +85,7 @@ export async function getMembers(): Promise<Member[]> {
     const roleString = roles.length > 0 ? roles[0] : "Member";
 
     // Get photo strictly from Files. Do not fallback to Notion account avatar.
-    let avatar = getFileUrl(props["Photo (if necessary)"]);
+    let avatar = getFileUrl(props["Photo (if necessary)"]); warmImageCache(avatar);
 
     return {
       id: page.id,
