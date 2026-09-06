@@ -106,8 +106,20 @@ export default async function BlogPostPage({
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkMath]}
             rehypePlugins={[rehypeKatex, rehypeRaw]}
+            components={{
+              img: (props: any) => {
+                const isNotion = props.src?.includes("amazonaws");
+                return (
+                  <span className="block relative w-full aspect-video my-8">
+                    <Image src={props.src || ""} alt={props.alt || ""} fill className="object-cover rounded-xl" unoptimized={!isNotion} />
+                  </span>
+                );
+              }
+            }}
           >
+
             {post.content}
+          
           </ReactMarkdown>
         ) : (
           <p>No content available.</p>

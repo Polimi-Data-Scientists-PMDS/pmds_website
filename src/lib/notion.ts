@@ -2,6 +2,20 @@
 
 import { Project, Member, Team, BlogPost } from "@/types";
 import { Client } from "@notionhq/client";
+
+// Pre-warms the Next.js image cache during SSG revalidation to prevent expiring Notion S3 URLs 
+
+function warmImageCache(url: any) {
+  if (!url || url.startsWith("/")) return;
+  const domain = process.env.VERCEL_PROJECT_PRODUCTION_URL 
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` 
+    : "https://www.polimidatascientists.it";
+  
+  // Fire and forget (w=828 for cards, w=1920 for full screen)
+  fetch(`${domain}/_next/image?url=${url.replace("&", "%26").replace("?", "%3F")}&w=828&q=75`).catch(() => {});
+  fetch(`${domain}/_next/image?url=${url.replace("&", "%26").replace("?", "%3F")}&w=1920&q=75`).catch(() => {});
+}
+
 import { NotionToMarkdown } from "notion-to-md";
 
 const notionClient = new Client({ auth: process.env.NOTION_API_KEY });
@@ -131,7 +145,7 @@ export async function getProjects(): Promise<Project[]> {
       id: page.id,
       title: displayedTitle || fallbackTitle || "Untitled Project",
       description: getText(props["Description (mandatory)"]),
-      imageUrl: getFileUrl(props["Image (optional)"]) || undefined,
+      imageUrl: (() => { const url = getFileUrl(props["Image (optional)"]); warmImageCache(url); return url || undefined; })(),
       tags: getMultiSelect(props["Tags (mandatory)"]),
       status: (getSelect(props["Status (mandatory)"]) as "Recruiting" | "Ongoing" | "Completed") || "Ongoing",
       date: getText(props["Date (mandatory)"]),
@@ -280,7 +294,7 @@ export async function getPosts(): Promise<BlogPost[]> {
       excerpt: getText(props["Excerpt (mandatory)"]),
       date: formattedDate,
       tags: [getSelect(props["Tag (mandatory)"]) || "General"],
-      imageUrl: getFileUrl(props["Cover image (optional)"]) || "/placeholder.jpg",
+      imageUrl: (() => { const url = getFileUrl(props["Cover image (optional)"]); warmImageCache(url); return url || "/placeholder.jpg"; })(),
       externalUrl: externalUrl || undefined,
       authors: authors,
       content: "" // We don't fetch content for the list
@@ -348,7 +362,7 @@ export async function getEvents(): Promise<import("@/types").Event[]> {
       location: getText(props["Location (mandatory)"]) || getSelect(props["Location (mandatory)"]) || "TBA",
       type: getSelect(props["Type (mandatory)"]) || "Event",
       description: getText(props["Description (mandatory)"]),
-      imageUrl: getFileUrl(props["Image (optional)"]) || undefined,
+      imageUrl: (() => { const url = getFileUrl(props["Image (optional)"]); warmImageCache(url); return url || undefined; })(),
       registrationUrl: getUrl(props["Registration URL (optional)"]),
       resourcesUrl: getUrl(props["Resources URL (optional)"]),
       upcoming
