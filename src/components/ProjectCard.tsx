@@ -43,7 +43,7 @@ export default function ProjectCard({
           </div>
         )}
         {/* Status Badge */}
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-wider backdrop-blur-md bg-black/40 border border-white/10 text-white z-10">
+        <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-wider backdrop-blur-md bg-black/40 border border-white/10 text-white">
           {project.status === 'Recruiting' && (
             <span className="flex items-center gap-2 text-amber-400">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>

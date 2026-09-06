@@ -36,8 +36,8 @@ export default function PeopleGroup({
   };
 
   const SIZING = {
-    sm: 'w-7 h-7',
-    md: 'w-10 h-10 md:w-12 md:h-12',
+    sm: 'size-7',
+    md: 'size-10 md:size-12',
   };
 
   return (
@@ -62,7 +62,7 @@ export default function PeopleGroup({
         ))}
 
         <div
-          className={`absolute z-10 top-full ${mobile ? (opened ? 'opacity-100' : 'opacity-0') : 'group-hover/people:opacity-100 opacity-0'} transition-all items-center bg-[#0a0a0a] border border-white/10 p-3 rounded-2xl shadow-xl mt-2 flex flex-col gap-2`}
+          className={`absolute z-10 invisible top-full ${mobile ? (opened ? 'opacity-100' : 'opacity-0') : 'group-hover/people:visible group-hover/people:opacity-100 opacity-0'} transition-all items-center bg-[#0a0a0a] border border-white/10 p-3 rounded-2xl shadow-xl mt-2 flex flex-col gap-2`}
         >
           {people.map((person, i) => (
             <div

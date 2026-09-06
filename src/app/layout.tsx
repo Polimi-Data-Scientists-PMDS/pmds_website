@@ -16,7 +16,7 @@ import Header from "@/components/Header";
 export const metadata: Metadata = {
   title: {
     template: "%s | PMDS",
-    default: "PMDS – Polimi Data Scientists",
+    default: "PMDS - Polimi Data Scientists",
   },
   description: "Student-led association at Politecnico di Milano dedicated to Data Science",
 };
