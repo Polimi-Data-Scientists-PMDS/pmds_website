@@ -343,13 +343,24 @@ export async function getEvents(): Promise<import("@/types").Event[]> {
   return response.results.map((page: any) => {
     const props = page.properties;
 
-    const dateProp = props["Date & Time (mandatory)"]?.date?.start;
-    const eventDate = dateProp ? new Date(dateProp) : new Date(0);
+    const dateStart = props["Date & Time (mandatory)"]?.date?.start;
+    const dateEnd = props["Date & Time (mandatory)"]?.date?.end;
+    const eventDate = dateStart ? new Date(dateStart) : new Date(0);
     const upcoming = eventDate >= now;
 
-    // Format date and time
-    const formattedDate = dateProp ? eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : "Unknown date";
-    const formattedTime = dateProp && dateProp.includes('T') ? eventDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : undefined;
+    // Format date and time using Rome timezone to fix Vercel UTC offset
+    const formattedDate = dateStart ? eventDate.toLocaleDateString('en-US', { timeZone: 'Europe/Rome', month: 'long', day: 'numeric', year: 'numeric' }) : "Unknown date";
+    
+    let formattedTime = undefined;
+    if (dateStart && dateStart.includes('T')) {
+      const startTime = eventDate.toLocaleTimeString('en-US', { timeZone: 'Europe/Rome', hour: 'numeric', minute: '2-digit' });
+      if (dateEnd && dateEnd.includes('T')) {
+        const endTime = new Date(dateEnd).toLocaleTimeString('en-US', { timeZone: 'Europe/Rome', hour: 'numeric', minute: '2-digit' });
+        formattedTime = `${startTime} - ${endTime}`;
+      } else {
+        formattedTime = startTime;
+      }
+    }
 
     return {
       id: page.id,
