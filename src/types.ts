@@ -15,15 +15,22 @@ export interface Team {
   members: Member[];
 }
 
+export interface Person {
+  name: string;
+  avatar?: string;
+  linkedinUrl?: string;
+  email?: string;
+}
+
 export interface Project {
   id: string;
   title: string;
   description: string;
   imageUrl?: string;
   tags: string[];
-  status: "Recruiting" | "Ongoing" | "Completed";
+  status: 'Recruiting' | 'Ongoing' | 'Completed';
   date: string;
-  team?: { name: string; avatar?: string; linkedinUrl?: string }[];
+  team?: Person[];
   partner?: { name: string; url?: string };
   applyUrl?: string;
   githubUrl?: string;
@@ -40,7 +47,7 @@ export interface BlogPost {
   externalUrl?: string;
   imageUrl: string;
   date: string;
-  authors: { name: string; avatar?: string; linkedinUrl?: string; email?: string }[];
+  authors: Person[];
   tags: string[];
   linkedinUrl?: string;
 }

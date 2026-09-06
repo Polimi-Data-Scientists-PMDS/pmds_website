@@ -1,3 +1,5 @@
+'use server';
+
 import { Project, Member, Team, BlogPost } from "@/types";
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";

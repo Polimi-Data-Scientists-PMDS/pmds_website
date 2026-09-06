@@ -1,10 +1,15 @@
-import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
+import type { NextConfig } from 'next';
 
 // Suppress the annoying url.parse() deprecation warning from Next.js internal dependencies
 const originalEmit = process.emitWarning;
 // @ts-ignore
-process.emitWarning = function(warning: any, type?: any, code?: any, ...args: any[]) {
+process.emitWarning = function (
+  warning: any,
+  type?: any,
+  code?: any,
+  ...args: any[]
+) {
   if (code === 'DEP0169') return;
   // @ts-ignore
   return originalEmit.call(process, warning, type, code, ...args);
@@ -25,13 +30,17 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com', // Google avatars
-      }
-    ]
-  }
+      },
+      {
+        protocol: 'https',
+        hostname: 's3-us-west-2.amazonaws.com',
+      },
+    ],
+  },
 };
 
 const withMDX = createMDX({
   // Add markdown plugins here, as desired
-})
+});
 
 export default withMDX(nextConfig);
