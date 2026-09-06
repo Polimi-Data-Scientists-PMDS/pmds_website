@@ -3,18 +3,6 @@
 import { Project, Member, Team, BlogPost } from "@/types";
 import { Client } from "@notionhq/client";
 
-// Pre-warms the Next.js image cache during SSG revalidation to prevent expiring Notion S3 URLs 
-
-function warmImageCache(url: any) {
-  if (!url || url.startsWith("/")) return;
-  const domain = process.env.VERCEL_PROJECT_PRODUCTION_URL 
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` 
-    : "https://www.polimidatascientists.it";
-  
-  // Fire and forget (w=828 for cards, w=1920 for full screen)
-  fetch(`${domain}/_next/image?url=${encodeURIComponent(url)}&w=828&q=75`).catch(() => {});
-  fetch(`${domain}/_next/image?url=${encodeURIComponent(url)}&w=1920&q=75`).catch(() => {});
-}
 
 import { NotionToMarkdown } from "notion-to-md";
 
@@ -36,7 +24,7 @@ const fetchNotion = async (url: string, body: any) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(body),
-    next: { revalidate: 3600 } // Cache data for 1 hour
+    cache: 'no-store' // Always fetch fresh data; page-level revalidate controls caching
   });
   if (!res.ok) {
     throw new Error(`Notion API Error: ${await res.text()}`);
@@ -84,8 +72,7 @@ export async function getMembers(): Promise<Member[]> {
     const roles = getMultiSelect(props["Role "]);
     const roleString = roles.length > 0 ? roles[0] : "Member";
 
-    // Get photo strictly from Files. Do not fallback to Notion account avatar.
-    let avatar = getFileUrl(props["Photo (if necessary)"]); warmImageCache(avatar);
+    let avatar = getFileUrl(props["Photo (if necessary)"]);
 
     return {
       id: page.id,
@@ -142,7 +129,7 @@ export async function getProjects(): Promise<Project[]> {
       id: page.id,
       title: displayedTitle || fallbackTitle || "Untitled Project",
       description: getText(props["Description (mandatory)"]),
-      imageUrl: (() => { const url = getFileUrl(props["Image (optional)"]); warmImageCache(url); return url || undefined; })(),
+      imageUrl: getFileUrl(props["Image (optional)"]) || undefined,
       tags: getMultiSelect(props["Tags (mandatory)"]),
       status: (getSelect(props["Status (mandatory)"]) as "Recruiting" | "Ongoing" | "Completed") || "Ongoing",
       date: getText(props["Date (mandatory)"]),
@@ -291,7 +278,7 @@ export async function getPosts(): Promise<BlogPost[]> {
       excerpt: getText(props["Excerpt (mandatory)"]),
       date: formattedDate,
       tags: [getSelect(props["Tag (mandatory)"]) || "General"],
-      imageUrl: (() => { const url = getFileUrl(props["Cover image (optional)"]); warmImageCache(url); return url || "/placeholder.jpg"; })(),
+      imageUrl: getFileUrl(props["Cover image (optional)"]) || "/placeholder.jpg",
       externalUrl: externalUrl || undefined,
       authors: authors,
       content: "" // We don't fetch content for the list
@@ -370,7 +357,7 @@ export async function getEvents(): Promise<import("@/types").Event[]> {
       location: getText(props["Location (mandatory)"]) || getSelect(props["Location (mandatory)"]) || "TBA",
       type: getSelect(props["Type (mandatory)"]) || "Event",
       description: getText(props["Description (mandatory)"]),
-      imageUrl: (() => { const url = getFileUrl(props["Image (optional)"]); warmImageCache(url); return url || undefined; })(),
+      imageUrl: getFileUrl(props["Image (optional)"]) || undefined,
       registrationUrl: getUrl(props["Registration URL (optional)"]),
       resourcesUrl: getUrl(props["Resources URL (optional)"]),
       upcoming
