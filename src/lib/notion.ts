@@ -1,6 +1,6 @@
 'use server';
 
-import { Project, Member, Team, BlogPost } from "@/types";
+import { Project, Member, Team, BlogPost, Event } from "@/types";
 import { Client } from "@notionhq/client";
 
 
@@ -72,7 +72,7 @@ export async function getMembers(): Promise<Member[]> {
     const roles = getMultiSelect(props["Role "]);
     const roleString = roles.length > 0 ? roles[0] : "Member";
 
-    let avatar = getFileUrl(props["Photo (if necessary)"]);
+    const avatar = getFileUrl(props["Photo (if necessary)"]);
 
     return {
       id: page.id,
@@ -307,7 +307,7 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
 
 const EVENTS_DB = process.env.NOTION_EVENTS_DB_ID;
 
-export async function getEvents(): Promise<import("@/types").Event[]> {
+export async function getEvents(): Promise<Event[]> {
   if (!EVENTS_DB) return [];
 
   const response = await fetchNotion(`/databases/${EVENTS_DB}/query`, {
@@ -320,20 +320,31 @@ export async function getEvents(): Promise<import("@/types").Event[]> {
     sorts: [
       {
         property: "Date & Time (mandatory)",
-        direction: "ascending" // Upcoming first!
+        direction: "descending"
       }
     ]
   });
 
   const now = new Date();
+  const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome' }).format(now);
 
-  return response.results.map((page: any) => {
+  const items: { event: Event; timestamp: number }[] = response.results.map((page: any) => {
     const props = page.properties;
 
     const dateStart = props["Date & Time (mandatory)"]?.date?.start;
     const dateEnd = props["Date & Time (mandatory)"]?.date?.end;
     const eventDate = dateStart ? new Date(dateStart) : new Date(0);
-    const upcoming = eventDate >= now;
+
+    let upcoming = false;
+    if (dateEnd && dateEnd.includes('T')) {
+      upcoming = new Date(dateEnd) >= now;
+    } else if (dateEnd) {
+      upcoming = dateEnd >= todayStr;
+    } else if (dateStart && dateStart.includes('T')) {
+      upcoming = new Date(dateStart) >= now;
+    } else if (dateStart) {
+      upcoming = dateStart >= todayStr;
+    }
 
     // Format date and time using Rome timezone to fix Vercel UTC offset
     const formattedDate = dateStart ? eventDate.toLocaleDateString('en-US', { timeZone: 'Europe/Rome', month: 'long', day: 'numeric', year: 'numeric' }) : "Unknown date";
@@ -349,7 +360,7 @@ export async function getEvents(): Promise<import("@/types").Event[]> {
       }
     }
 
-    return {
+    const event: Event = {
       id: page.id,
       title: getText(props["Name (mandatory)"]) || "Untitled Event",
       date: formattedDate,
@@ -358,9 +369,26 @@ export async function getEvents(): Promise<import("@/types").Event[]> {
       type: getSelect(props["Type (mandatory)"]) || "Event",
       description: getText(props["Description (mandatory)"]),
       imageUrl: getFileUrl(props["Image (optional)"]) || undefined,
-      registrationUrl: getUrl(props["Registration URL (optional)"]),
-      resourcesUrl: getUrl(props["Resources URL (optional)"]),
+      registrationUrl: getUrl(props["Registration URL (optional)"]) || undefined,
+      resourcesUrl: getUrl(props["Resources URL (optional)"]) || undefined,
       upcoming
     };
+
+    return {
+      event,
+      timestamp: eventDate.getTime()
+    };
   });
+
+  const upcomingEvents = items
+    .filter((item) => item.event.upcoming)
+    .sort((a, b) => a.timestamp - b.timestamp)
+    .map((item) => item.event);
+
+  const pastEvents = items
+    .filter((item) => !item.event.upcoming)
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .map((item) => item.event);
+
+  return [...upcomingEvents, ...pastEvents];
 }
