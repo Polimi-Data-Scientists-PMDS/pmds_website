@@ -29,11 +29,23 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 's3-us-west-2.amazonaws.com', // Legacy Notion public images
+      },
+      {
+        protocol: 'https',
+        hostname: 's3.us-west-2.amazonaws.com', // AWS S3 standard format
+      },
+      {
+        protocol: 'https',
         hostname: 'lh3.googleusercontent.com', // Google avatars
       },
       {
         protocol: 'https',
         hostname: 's3-us-west-2.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'polimidatascientists.it', // Legacy WP images
       },
     ],
   },

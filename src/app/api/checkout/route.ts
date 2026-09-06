@@ -59,6 +59,9 @@ export async function POST(req: Request) {
           optional: false,
         }
       ],
+      phone_number_collection: {
+        enabled: true,
+      },
       line_items: [
         {
           price: priceId,

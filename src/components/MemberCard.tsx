@@ -45,10 +45,10 @@ export default function MemberCard({ member, priority = false }: { member: Membe
           {member.email && (
             <a 
               href={`mailto:${member.email}`}
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/5 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-all"
+              className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-all"
               title="Send Email"
             >
-              <FaEnvelope size={12} className="sm:w-[14px] sm:h-[14px]" />
+              <FaEnvelope size={14} />
             </a>
           )}
         </div>

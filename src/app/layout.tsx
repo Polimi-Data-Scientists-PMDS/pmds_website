@@ -69,6 +69,7 @@ export default function RootLayout({
             <div className="flex flex-col gap-4 md:w-1/3">
               <h4 className="text-white text-[15px] font-semibold mb-2 tracking-wide">Contact & Legal</h4>
               <a href="mailto:info@polimidatascientists.it" className="text-zinc-400 hover:text-white text-[14px] transition-colors">info@polimidatascientists.it</a>
+              <a href="mailto:startup-relations@polimidatascientists.it" className="text-zinc-400 hover:text-white text-[14px] transition-colors">startup-relations@polimidatascientists.it</a>
               <Link href="/legal" className="text-zinc-400 hover:text-white text-[14px] transition-colors">Legal & Privacy Policy</Link>
             </div>
           </div>
