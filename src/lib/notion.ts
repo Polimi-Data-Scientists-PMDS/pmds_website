@@ -55,6 +55,33 @@ const getFileUrl = (prop: any) => {
   return file.type === "external" ? file.external.url : file.file.url;
 };
 
+/**
+ * Generates an immutable proxy URL for Notion S3 hosted files.
+ * Encodes the Notion page ID, property name, and unique upload path into a base64url token.
+ * This prevents AWS S3 temporary presigned signatures from busting Edge CDN caches.
+ */
+const getStableImageUrl = (pageId: string, propName: string, prop: any) => {
+  if (!prop || !prop.files || prop.files.length === 0) return null;
+  const file = prop.files[0];
+  if (file.type === "external") {
+    return file.external.url;
+  }
+  
+  let version = file.name || "image";
+  if (file.file?.url) {
+    try {
+      const pathname = new URL(file.file.url).pathname;
+      const parts = pathname.split('/');
+      if (parts.length >= 3) {
+        version = parts.slice(2).join('_');
+      }
+    } catch (_) {}
+  }
+  
+  const token = Buffer.from(JSON.stringify({ id: pageId, prop: propName, v: version })).toString("base64url");
+  return `/api/image/${token}`;
+};
+
 const getSelect = (prop: any) => prop?.select?.name || null;
 const getMultiSelect = (prop: any) => prop?.multi_select?.map((s: any) => s.name) || [];
 const getCheckbox = (prop: any) => prop?.checkbox || false;
@@ -71,7 +98,7 @@ export async function getMembers(): Promise<Member[]> {
     const roles = getMultiSelect(props["Role "]);
     const roleString = roles.length > 0 ? roles[0] : "Member";
 
-    const avatar = getFileUrl(props["Photo (if necessary)"]);
+    const avatar = getStableImageUrl(page.id, "Photo (if necessary)", props["Photo (if necessary)"]);
 
     return {
       id: page.id,
@@ -128,7 +155,7 @@ export async function getProjects(): Promise<Project[]> {
       id: page.id,
       title: displayedTitle || fallbackTitle || "Untitled Project",
       description: getText(props["Description (mandatory)"]),
-      imageUrl: getFileUrl(props["Image (optional)"]) || undefined,
+      imageUrl: getStableImageUrl(page.id, "Image (optional)", props["Image (optional)"]) || undefined,
       tags: getMultiSelect(props["Tags (mandatory)"]),
       status: (getSelect(props["Status (mandatory)"]) as "Recruiting" | "Ongoing" | "Completed") || "Ongoing",
       date: getText(props["Date (mandatory)"]),
@@ -277,7 +304,7 @@ export async function getPosts(): Promise<BlogPost[]> {
       excerpt: getText(props["Excerpt (mandatory)"]),
       date: formattedDate,
       tags: [getSelect(props["Tag (mandatory)"]) || "General"],
-      imageUrl: getFileUrl(props["Cover image (optional)"]) || "/placeholder.jpg",
+      imageUrl: getStableImageUrl(page.id, "Cover image (optional)", props["Cover image (optional)"]) || "/placeholder.jpg",
       externalUrl: externalUrl || undefined,
       authors: authors,
       content: "" // We don't fetch content for the list
@@ -367,7 +394,7 @@ export async function getEvents(): Promise<Event[]> {
       location: getText(props["Location (mandatory)"]) || getSelect(props["Location (mandatory)"]) || "TBA",
       type: getSelect(props["Type (mandatory)"]) || "Event",
       description: getText(props["Description (mandatory)"]),
-      imageUrl: getFileUrl(props["Image (optional)"]) || undefined,
+      imageUrl: getStableImageUrl(page.id, "Image (optional)", props["Image (optional)"]) || undefined,
       registrationUrl: getUrl(props["Registration URL (optional)"]) || undefined,
       resourcesUrl: getUrl(props["Resources URL (optional)"]) || undefined,
       upcoming
