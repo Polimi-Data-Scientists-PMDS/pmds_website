@@ -41,6 +41,9 @@ export async function POST(req: Request) {
     
     const session = await stripe.checkout.sessions.create({
       customer_email: email, // This locks the email field in Stripe
+      payment_intent_data: {
+        receipt_email: email,
+      },
       metadata: {
         tranche: tranche || 'unknown',
         tier: tier,

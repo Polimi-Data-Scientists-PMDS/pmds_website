@@ -210,6 +210,7 @@ export async function getTeams(): Promise<Team[]> {
     const section = getSelect(props["Section (mandatory)"]) || "Other";
     const displayedRole = getText(props["Displayed role (optional)"]);
     const overrideEmail = props["Email (if different from personal)"]?.email;
+    const rawOrder = props["Order (optional)"]?.number;
 
     return {
       id: page.id,
@@ -219,6 +220,7 @@ export async function getTeams(): Promise<Team[]> {
       imageUrl: baseMember?.imageUrl,
       linkedinUrl: baseMember?.linkedinUrl,
       email: overrideEmail || baseMember?.email || null,
+      order: typeof rawOrder === "number" && !isNaN(rawOrder) ? rawOrder : undefined,
     };
   });
 
@@ -231,6 +233,19 @@ export async function getTeams(): Promise<Team[]> {
     acc[teamName].push(member);
     return acc;
   }, {} as Record<string, Member[]>);
+
+  // Predefined Team Display Order
+  const TEAM_ORDER = [
+    "Board",
+    "Events",
+    "Tech",
+    "Social & Brand",
+    "Projects",
+    "HR",
+    "Finance",
+    "Startup Relations",
+    "Polimi Quantum Computing",
+  ];
 
   // Hardcoded Team Emails
   const TEAM_EMAILS: Record<string, string> = {
@@ -245,13 +260,33 @@ export async function getTeams(): Promise<Team[]> {
     "Startup Relations": "startup-relations@polimidatascientists.it",
   };
 
-  // 5. Convert to Team[] array
-  return Object.entries(grouped).map(([teamName, teamMembers]) => ({
-    id: teamName.toLowerCase().replace(/\s+/g, '-'),
-    name: teamName,
-    email: TEAM_EMAILS[teamName] || undefined,
-    members: teamMembers as Member[]
-  }));
+  // 5. Convert to Team[] array with fixed team ordering and intra-team member sorting
+  return (Object.entries(grouped) as [string, Member[]][])
+    .sort(([teamA], [teamB]) => {
+      const indexA = TEAM_ORDER.indexOf(teamA);
+      const indexB = TEAM_ORDER.indexOf(teamB);
+      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      return teamA.localeCompare(teamB, 'it');
+    })
+    .map(([teamName, teamMembers]) => {
+      teamMembers.sort((a, b) => {
+        const orderA = typeof a.order === 'number' ? a.order : Infinity;
+        const orderB = typeof b.order === 'number' ? b.order : Infinity;
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+        return a.name.localeCompare(b.name, 'it', { sensitivity: 'base' });
+      });
+
+      return {
+        id: teamName.toLowerCase().replace(/\s+/g, '-'),
+        name: teamName,
+        email: TEAM_EMAILS[teamName] || undefined,
+        members: teamMembers,
+      };
+    });
 }
 
 export async function getPosts(): Promise<BlogPost[]> {

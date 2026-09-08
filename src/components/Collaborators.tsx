@@ -21,6 +21,7 @@ export default function Collaborators() {
               fill 
               sizes="(max-width: 768px) 50vw, 25vw"
               className="object-contain" 
+              unoptimized
             />
           </div>
         ))}

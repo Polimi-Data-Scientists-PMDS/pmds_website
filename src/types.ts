@@ -6,6 +6,7 @@ export interface Member {
   imageUrl?: string;
   linkedinUrl?: string;
   email?: string;
+  order?: number;
 }
 
 export interface Team {
