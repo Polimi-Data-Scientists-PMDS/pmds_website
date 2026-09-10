@@ -93,6 +93,7 @@ export default async function BlogPostPage({
               src={post.imageUrl}
               alt={post.title}
               fill
+              sizes="(max-width: 900px) 100vw, 900px"
               className="object-cover"
               priority
             />

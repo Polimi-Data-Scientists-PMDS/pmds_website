@@ -24,6 +24,7 @@ export default function BlogCard({
             src={post.imageUrl}
             alt={post.title}
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover group-hover:scale-105 transition-transform duration-700"
             priority={priority}
           />

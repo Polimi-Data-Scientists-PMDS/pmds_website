@@ -1,20 +1,8 @@
 'use server';
 
-import { Project, Member, Team, BlogPost } from "@/types";
+import { Project, Member, Team, BlogPost, Event } from "@/types";
 import { Client } from "@notionhq/client";
 
-// Pre-warms the Next.js image cache during SSG revalidation to prevent expiring Notion S3 URLs 
-
-function warmImageCache(url: any) {
-  if (!url || url.startsWith("/")) return;
-  const domain = process.env.VERCEL_PROJECT_PRODUCTION_URL 
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` 
-    : "https://www.polimidatascientists.it";
-  
-  // Fire and forget (w=828 for cards, w=1920 for full screen)
-  fetch(`${domain}/_next/image?url=${url.replace("&", "%26").replace("?", "%3F")}&w=828&q=75`).catch(() => {});
-  fetch(`${domain}/_next/image?url=${url.replace("&", "%26").replace("?", "%3F")}&w=1920&q=75`).catch(() => {});
-}
 
 import { NotionToMarkdown } from "notion-to-md";
 
@@ -36,7 +24,6 @@ const fetchNotion = async (url: string, body: any) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(body),
-    next: { revalidate: 3600 } // Cache data for 1 hour
   });
   if (!res.ok) {
     throw new Error(`Notion API Error: ${await res.text()}`);
@@ -68,6 +55,33 @@ const getFileUrl = (prop: any) => {
   return file.type === "external" ? file.external.url : file.file.url;
 };
 
+/**
+ * Generates an immutable proxy URL for Notion S3 hosted files.
+ * Encodes the Notion page ID, property name, and unique upload path into a base64url token.
+ * This prevents AWS S3 temporary presigned signatures from busting Edge CDN caches.
+ */
+const getStableImageUrl = (pageId: string, propName: string, prop: any) => {
+  if (!prop || !prop.files || prop.files.length === 0) return null;
+  const file = prop.files[0];
+  if (file.type === "external") {
+    return file.external.url;
+  }
+  
+  let version = file.name || "image";
+  if (file.file?.url) {
+    try {
+      const pathname = new URL(file.file.url).pathname;
+      const parts = pathname.split('/');
+      if (parts.length >= 3) {
+        version = parts.slice(2).join('_');
+      }
+    } catch (_) {}
+  }
+  
+  const token = Buffer.from(JSON.stringify({ id: pageId, prop: propName, v: version })).toString("base64url");
+  return `/api/image/${token}`;
+};
+
 const getSelect = (prop: any) => prop?.select?.name || null;
 const getMultiSelect = (prop: any) => prop?.multi_select?.map((s: any) => s.name) || [];
 const getCheckbox = (prop: any) => prop?.checkbox || false;
@@ -84,8 +98,7 @@ export async function getMembers(): Promise<Member[]> {
     const roles = getMultiSelect(props["Role "]);
     const roleString = roles.length > 0 ? roles[0] : "Member";
 
-    // Get photo strictly from Files. Do not fallback to Notion account avatar.
-    let avatar = getFileUrl(props["Photo (if necessary)"]);
+    const avatar = getStableImageUrl(page.id, "Photo (if necessary)", props["Photo (if necessary)"]);
 
     return {
       id: page.id,
@@ -142,7 +155,7 @@ export async function getProjects(): Promise<Project[]> {
       id: page.id,
       title: displayedTitle || fallbackTitle || "Untitled Project",
       description: getText(props["Description (mandatory)"]),
-      imageUrl: (() => { const url = getFileUrl(props["Image (optional)"]); warmImageCache(url); return url || undefined; })(),
+      imageUrl: getStableImageUrl(page.id, "Image (optional)", props["Image (optional)"]) || undefined,
       tags: getMultiSelect(props["Tags (mandatory)"]),
       status: (getSelect(props["Status (mandatory)"]) as "Recruiting" | "Ongoing" | "Completed") || "Ongoing",
       date: getText(props["Date (mandatory)"]),
@@ -197,6 +210,7 @@ export async function getTeams(): Promise<Team[]> {
     const section = getSelect(props["Section (mandatory)"]) || "Other";
     const displayedRole = getText(props["Displayed role (optional)"]);
     const overrideEmail = props["Email (if different from personal)"]?.email;
+    const rawOrder = props["Order (optional)"]?.number;
 
     return {
       id: page.id,
@@ -206,6 +220,7 @@ export async function getTeams(): Promise<Team[]> {
       imageUrl: baseMember?.imageUrl,
       linkedinUrl: baseMember?.linkedinUrl,
       email: overrideEmail || baseMember?.email || null,
+      order: typeof rawOrder === "number" && !isNaN(rawOrder) ? rawOrder : undefined,
     };
   });
 
@@ -218,6 +233,19 @@ export async function getTeams(): Promise<Team[]> {
     acc[teamName].push(member);
     return acc;
   }, {} as Record<string, Member[]>);
+
+  // Predefined Team Display Order
+  const TEAM_ORDER = [
+    "Board",
+    "Events",
+    "Tech",
+    "Social & Brand",
+    "Projects",
+    "HR",
+    "Finance",
+    "Startup Relations",
+    "Polimi Quantum Computing",
+  ];
 
   // Hardcoded Team Emails
   const TEAM_EMAILS: Record<string, string> = {
@@ -232,13 +260,33 @@ export async function getTeams(): Promise<Team[]> {
     "Startup Relations": "startup-relations@polimidatascientists.it",
   };
 
-  // 5. Convert to Team[] array
-  return Object.entries(grouped).map(([teamName, teamMembers]) => ({
-    id: teamName.toLowerCase().replace(/\s+/g, '-'),
-    name: teamName,
-    email: TEAM_EMAILS[teamName] || undefined,
-    members: teamMembers as Member[]
-  }));
+  // 5. Convert to Team[] array with fixed team ordering and intra-team member sorting
+  return (Object.entries(grouped) as [string, Member[]][])
+    .sort(([teamA], [teamB]) => {
+      const indexA = TEAM_ORDER.indexOf(teamA);
+      const indexB = TEAM_ORDER.indexOf(teamB);
+      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      return teamA.localeCompare(teamB, 'it');
+    })
+    .map(([teamName, teamMembers]) => {
+      teamMembers.sort((a, b) => {
+        const orderA = typeof a.order === 'number' ? a.order : Infinity;
+        const orderB = typeof b.order === 'number' ? b.order : Infinity;
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+        return a.name.localeCompare(b.name, 'it', { sensitivity: 'base' });
+      });
+
+      return {
+        id: teamName.toLowerCase().replace(/\s+/g, '-'),
+        name: teamName,
+        email: TEAM_EMAILS[teamName] || undefined,
+        members: teamMembers,
+      };
+    });
 }
 
 export async function getPosts(): Promise<BlogPost[]> {
@@ -291,7 +339,7 @@ export async function getPosts(): Promise<BlogPost[]> {
       excerpt: getText(props["Excerpt (mandatory)"]),
       date: formattedDate,
       tags: [getSelect(props["Tag (mandatory)"]) || "General"],
-      imageUrl: (() => { const url = getFileUrl(props["Cover image (optional)"]); warmImageCache(url); return url || "/placeholder.jpg"; })(),
+      imageUrl: getStableImageUrl(page.id, "Cover image (optional)", props["Cover image (optional)"]) || "/placeholder.jpg",
       externalUrl: externalUrl || undefined,
       authors: authors,
       content: "" // We don't fetch content for the list
@@ -320,7 +368,7 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
 
 const EVENTS_DB = process.env.NOTION_EVENTS_DB_ID;
 
-export async function getEvents(): Promise<import("@/types").Event[]> {
+export async function getEvents(): Promise<Event[]> {
   if (!EVENTS_DB) return [];
 
   const response = await fetchNotion(`/databases/${EVENTS_DB}/query`, {
@@ -333,25 +381,47 @@ export async function getEvents(): Promise<import("@/types").Event[]> {
     sorts: [
       {
         property: "Date & Time (mandatory)",
-        direction: "ascending" // Upcoming first!
+        direction: "descending"
       }
     ]
   });
 
   const now = new Date();
+  const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome' }).format(now);
 
-  return response.results.map((page: any) => {
+  const items: { event: Event; timestamp: number }[] = response.results.map((page: any) => {
     const props = page.properties;
 
-    const dateProp = props["Date & Time (mandatory)"]?.date?.start;
-    const eventDate = dateProp ? new Date(dateProp) : new Date(0);
-    const upcoming = eventDate >= now;
+    const dateStart = props["Date & Time (mandatory)"]?.date?.start;
+    const dateEnd = props["Date & Time (mandatory)"]?.date?.end;
+    const eventDate = dateStart ? new Date(dateStart) : new Date(0);
 
-    // Format date and time
-    const formattedDate = dateProp ? eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : "Unknown date";
-    const formattedTime = dateProp && dateProp.includes('T') ? eventDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : undefined;
+    let upcoming = false;
+    if (dateEnd && dateEnd.includes('T')) {
+      upcoming = new Date(dateEnd) >= now;
+    } else if (dateEnd) {
+      upcoming = dateEnd >= todayStr;
+    } else if (dateStart && dateStart.includes('T')) {
+      upcoming = new Date(dateStart) >= now;
+    } else if (dateStart) {
+      upcoming = dateStart >= todayStr;
+    }
 
-    return {
+    // Format date and time using Rome timezone to fix Vercel UTC offset
+    const formattedDate = dateStart ? eventDate.toLocaleDateString('en-US', { timeZone: 'Europe/Rome', month: 'long', day: 'numeric', year: 'numeric' }) : "Unknown date";
+    
+    let formattedTime = undefined;
+    if (dateStart && dateStart.includes('T')) {
+      const startTime = eventDate.toLocaleTimeString('en-US', { timeZone: 'Europe/Rome', hour: 'numeric', minute: '2-digit' });
+      if (dateEnd && dateEnd.includes('T')) {
+        const endTime = new Date(dateEnd).toLocaleTimeString('en-US', { timeZone: 'Europe/Rome', hour: 'numeric', minute: '2-digit' });
+        formattedTime = `${startTime} - ${endTime}`;
+      } else {
+        formattedTime = startTime;
+      }
+    }
+
+    const event: Event = {
       id: page.id,
       title: getText(props["Name (mandatory)"]) || "Untitled Event",
       date: formattedDate,
@@ -359,10 +429,27 @@ export async function getEvents(): Promise<import("@/types").Event[]> {
       location: getText(props["Location (mandatory)"]) || getSelect(props["Location (mandatory)"]) || "TBA",
       type: getSelect(props["Type (mandatory)"]) || "Event",
       description: getText(props["Description (mandatory)"]),
-      imageUrl: (() => { const url = getFileUrl(props["Image (optional)"]); warmImageCache(url); return url || undefined; })(),
-      registrationUrl: getUrl(props["Registration URL (optional)"]),
-      resourcesUrl: getUrl(props["Resources URL (optional)"]),
+      imageUrl: getStableImageUrl(page.id, "Image (optional)", props["Image (optional)"]) || undefined,
+      registrationUrl: getUrl(props["Registration URL (optional)"]) || undefined,
+      resourcesUrl: getUrl(props["Resources URL (optional)"]) || undefined,
       upcoming
     };
+
+    return {
+      event,
+      timestamp: eventDate.getTime()
+    };
   });
+
+  const upcomingEvents = items
+    .filter((item) => item.event.upcoming)
+    .sort((a, b) => a.timestamp - b.timestamp)
+    .map((item) => item.event);
+
+  const pastEvents = items
+    .filter((item) => !item.event.upcoming)
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .map((item) => item.event);
+
+  return [...upcomingEvents, ...pastEvents];
 }
