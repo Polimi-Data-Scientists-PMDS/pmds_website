@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased text-white`}
+        className={`${inter.className} antialiased text-white overflow-x-clip`}
       >
         {/* 
           AnnouncementBar: Used for time-sensitive notifications (e.g. "Recruiting is OPEN").
