@@ -18,6 +18,7 @@ process.emitWarning = function (
 const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
+    unoptimized: true,
     minimumCacheTTL: 2678400, // Cache optimized images for 31 days (recommended by Vercel)
     formats: ['image/webp'], // Single modern format to prevent duplicate transformations
     deviceSizes: [640, 1080, 1920], // Reduced from 8 default sizes to 3 standard breakpoints
