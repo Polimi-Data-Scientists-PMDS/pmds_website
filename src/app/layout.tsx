@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 import Header from "@/components/Header";
-// import AnnouncementBar from "@/components/AnnouncementBar";
+import AnnouncementBar from "@/components/AnnouncementBar";
 
 export const metadata: Metadata = {
   title: {
@@ -36,7 +36,7 @@ export default function RootLayout({
           Uncomment the line below to enable it. It will appear at the very top of the page.
           Edit the text and link directly in src/components/AnnouncementBar.tsx.
         */}
-        {/* <AnnouncementBar /> */}
+        <AnnouncementBar />
         <Header />
         {children}
 
@@ -77,7 +77,7 @@ export default function RootLayout({
           <div className="w-full max-w-[1100px] mx-auto px-6 mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center md:items-start text-zinc-500 text-[13px] gap-6">
             <p className="shrink-0">&copy; 2026 Polimi Data Scientists. All rights reserved.</p>
             <p className="text-center md:text-right max-w-[500px] leading-relaxed">
-              Polimi Data Scientists is an independent student association recognized by Politecnico di Milano. 
+              Polimi Data Scientists is an independent student association recognized by Politecnico di Milano.
               This website is independently managed and is not an official publication of the university.
             </p>
           </div>
