@@ -13,7 +13,6 @@ const inter = Inter({
 import AnnouncementBar from '@/components/AnnouncementBar';
 import Header from '@/components/Header';
 import { getAnnouncements } from '@/lib/notion';
-// import AnnouncementBar from "@/components/AnnouncementBar";
 
 export const metadata: Metadata = {
   title: {
@@ -170,9 +169,8 @@ export default function RootLayout({
               &copy; 2026 Polimi Data Scientists. All rights reserved.
             </p>
             <p className="text-center md:text-right max-w-[500px] leading-relaxed">
-              Polimi Data Scientists is an independent student association
-              recognized by Politecnico di Milano. This website is independently
-              managed and is not an official publication of the university.
+              Polimi Data Scientists is an independent student association recognized by Politecnico di Milano.
+              This website is independently managed and is not an official publication of the university.
             </p>
           </div>
         </footer>
