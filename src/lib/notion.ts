@@ -580,8 +580,6 @@ export async function getAnnouncements(): Promise<Announcement[]> {
 
   if (!ANNOUNCEMENTS_DB) return [];
 
-  console.log('Announcements');
-
   const response = await fetchNotion(`/databases/${ANNOUNCEMENTS_DB}/query`, {
     filter: {
       and: [

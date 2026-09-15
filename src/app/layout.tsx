@@ -28,8 +28,6 @@ async function Announcements() {
 
   const firstAnnouncement = announcements[0];
 
-  console.log(firstAnnouncement);
-
   return firstAnnouncement && <AnnouncementBar {...firstAnnouncement} />;
 }
 

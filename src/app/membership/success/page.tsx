@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { FaCheckCircle, FaWhatsapp, FaExclamationTriangle } from "react-icons/fa";
 import Stripe from "stripe";
@@ -8,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_fallback", {
   apiVersion: "2024-06-20" as any,
 });
 
-export default async function MembershipSuccessPage({
+async function SuccessContent({
   searchParams,
 }: {
   searchParams: Promise<{ session_id?: string }>;
@@ -39,6 +40,24 @@ export default async function MembershipSuccessPage({
     // If the session is invalid, expired, or someone typed a fake ID
     return <ErrorState />;
   }
+}
+
+export default function MembershipSuccessPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ session_id?: string }>;
+}) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 pt-20">
+          <div className="w-10 h-10 border-2 border-[#4b6ffe] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }
+    >
+      <SuccessContent searchParams={searchParams} />
+    </Suspense>
+  );
 }
 
 // --- MODULAR UI COMPONENTS ---

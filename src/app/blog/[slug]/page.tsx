@@ -1,5 +1,5 @@
 import PeopleGroup from '@/components/PeopleGroup';
-import { getPost } from '@/lib/notion';
+import { getPost, getPosts } from '@/lib/notion';
 import 'katex/dist/katex.min.css'; // CSS for math
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -11,6 +11,13 @@ import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export async function generateMetadata({
   params,
