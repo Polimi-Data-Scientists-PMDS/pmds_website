@@ -7,8 +7,6 @@ export const metadata: Metadata = {
   title: "Members",
 };
 
-export const revalidate = 3600;
-
 export default async function MembersPage() {
   const teams = await getTeams();
 

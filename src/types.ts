@@ -66,3 +66,10 @@ export interface Event {
   resourcesUrl?: string;
   upcoming: boolean;
 }
+
+export interface Announcement {
+  id: string;
+  title: string;
+  linkText?: string;
+  link?: string;
+}

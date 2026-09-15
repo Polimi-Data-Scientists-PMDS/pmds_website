@@ -12,8 +12,6 @@ import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 
-export const revalidate = 3600;
-
 export async function generateMetadata({
   params,
 }: {

@@ -1,8 +1,6 @@
 import EventCard from '@/components/EventCard';
 import { getEvents } from '@/lib/notion';
 
-export const revalidate = 3600;
-
 export default async function EventsPage() {
   const events = await getEvents();
 

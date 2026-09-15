@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { FaCheck, FaStar, FaInfoCircle, FaCalendarAlt } from 'react-icons/fa';
-import Link from 'next/link';
 
 // Developer toggle for the active enrollment window
 const ACTIVE_TRANCHE: 'fall' | 'winter' = 'fall';

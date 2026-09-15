@@ -1,10 +1,10 @@
 'use server';
 
-import { Project, Member, Team, BlogPost, Event } from "@/types";
-import { Client } from "@notionhq/client";
+import { Announcement, BlogPost, Event, Member, Project, Team } from '@/types';
+import { Client } from '@notionhq/client';
+import { cacheLife, cacheTag } from 'next/cache';
 
-
-import { NotionToMarkdown } from "notion-to-md";
+import { NotionToMarkdown } from 'notion-to-md';
 
 const notionClient = new Client({ auth: process.env.NOTION_API_KEY });
 const n2m = new NotionToMarkdown({ notionClient: notionClient });
@@ -14,14 +14,15 @@ const PROJECTS_DB = process.env.NOTION_PROJECTS_DB_ID!;
 const MEMBERS_DB = process.env.NOTION_MEMBERS_DB_ID!;
 const WEBSITE_MEMBERS_DB = process.env.NOTION_WEBSITE_MEMBERS_DB_ID!;
 const POSTS_DB = process.env.NOTION_POSTS_DB_ID!;
+const ANNOUNCEMENTS_DB = process.env.NOTION_ANNOUNCEMENTS_DB_ID!;
 
 const fetchNotion = async (url: string, body: any) => {
   const res = await fetch(`https://api.notion.com/v1${url}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Authorization": `Bearer ${NOTION_API_KEY}`,
-      "Notion-Version": "2022-06-28",
-      "Content-Type": "application/json"
+      Authorization: `Bearer ${NOTION_API_KEY}`,
+      'Notion-Version': '2022-06-28',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
   });
@@ -33,10 +34,12 @@ const fetchNotion = async (url: string, body: any) => {
 
 // Utility to get text from Rich Text or Title properties
 const getText = (prop: any) => {
-  if (!prop) return "";
-  if (prop.type === "title") return prop.title.map((t: any) => t.plain_text).join("");
-  if (prop.type === "rich_text") return prop.rich_text.map((t: any) => t.plain_text).join("");
-  return "";
+  if (!prop) return '';
+  if (prop.type === 'title')
+    return prop.title.map((t: any) => t.plain_text).join('');
+  if (prop.type === 'rich_text')
+    return prop.rich_text.map((t: any) => t.plain_text).join('');
+  return '';
 };
 
 const formatUrlString = (url: string | null) => {
@@ -52,7 +55,7 @@ const getUrl = (prop: any) => formatUrlString(prop?.url || null);
 const getFileUrl = (prop: any) => {
   if (!prop || !prop.files || prop.files.length === 0) return null;
   const file = prop.files[0];
-  return file.type === "external" ? file.external.url : file.file.url;
+  return file.type === 'external' ? file.external.url : file.file.url;
 };
 
 /**
@@ -63,11 +66,11 @@ const getFileUrl = (prop: any) => {
 const getStableImageUrl = (pageId: string, propName: string, prop: any) => {
   if (!prop || !prop.files || prop.files.length === 0) return null;
   const file = prop.files[0];
-  if (file.type === "external") {
+  if (file.type === 'external') {
     return file.external.url;
   }
-  
-  let version = file.name || "image";
+
+  let version = file.name || 'image';
   if (file.file?.url) {
     try {
       const pathname = new URL(file.file.url).pathname;
@@ -77,16 +80,23 @@ const getStableImageUrl = (pageId: string, propName: string, prop: any) => {
       }
     } catch (_) {}
   }
-  
-  const token = Buffer.from(JSON.stringify({ id: pageId, prop: propName, v: version })).toString("base64url");
+
+  const token = Buffer.from(
+    JSON.stringify({ id: pageId, prop: propName, v: version }),
+  ).toString('base64url');
   return `/api/image/${token}`;
 };
 
 const getSelect = (prop: any) => prop?.select?.name || null;
-const getMultiSelect = (prop: any) => prop?.multi_select?.map((s: any) => s.name) || [];
+const getMultiSelect = (prop: any) =>
+  prop?.multi_select?.map((s: any) => s.name) || [];
 const getCheckbox = (prop: any) => prop?.checkbox || false;
 
 export async function getMembers(): Promise<Member[]> {
+  'use cache';
+  cacheLife('hours');
+  cacheTag('members');
+
   if (!MEMBERS_DB) return [];
 
   const response = await fetchNotion(`/databases/${MEMBERS_DB}/query`, {});
@@ -95,83 +105,117 @@ export async function getMembers(): Promise<Member[]> {
     const props = page.properties;
 
     // We map Role array to a single string for display, taking the first one
-    const roles = getMultiSelect(props["Role "]);
-    const roleString = roles.length > 0 ? roles[0] : "Member";
+    const roles = getMultiSelect(props['Role ']);
+    const roleString = roles.length > 0 ? roles[0] : 'Member';
 
-    const avatar = getStableImageUrl(page.id, "Photo (if necessary)", props["Photo (if necessary)"]);
+    const avatar = getStableImageUrl(
+      page.id,
+      'Photo (if necessary)',
+      props['Photo (if necessary)'],
+    );
 
     return {
       id: page.id,
-      name: getText(props["Name"]),
+      name: getText(props['Name']),
       role: roleString,
-      team: getMultiSelect(props["Team"])[0] || "Other", // Using first team
+      team: getMultiSelect(props['Team'])[0] || 'Other', // Using first team
       imageUrl: avatar,
-      linkedinUrl: formatUrlString(getText(props["Linkedin"])),
-      email: props["PMDS Email"]?.email || null,
+      linkedinUrl: formatUrlString(getText(props['Linkedin'])),
+      email: props['PMDS Email']?.email || null,
     };
   });
 }
 
 export async function getProjects(): Promise<Project[]> {
+  'use cache';
+  cacheLife('hours');
+  cacheTag('projects');
+
   if (!PROJECTS_DB) return [];
 
   // 1. Fetch all active members first so we can map relations
   const allMembers = await getMembers();
-  const membersMap = new Map(allMembers.map(m => [m.id, m]));
+  const membersMap = new Map(allMembers.map((m) => [m.id, m]));
 
   // 2. Fetch projects
   const response = await fetchNotion(`/databases/${PROJECTS_DB}/query`, {
     filter: {
-      property: "Published",
+      property: 'Published',
       checkbox: {
-        equals: true
-      }
-    }
+        equals: true,
+      },
+    },
   });
 
   const projects = response.results.map((page: any) => {
     const props = page.properties;
 
     // Resolve Partner
-    const partnerName = getText(props["Partner name (optional)"]);
-    const partnerUrl = formatUrlString(getText(props["Partner link (optional)"]));
-    const partner = partnerName ? { name: partnerName, url: partnerUrl } : undefined;
+    const partnerName = getText(props['Partner name (optional)']);
+    const partnerUrl = formatUrlString(
+      getText(props['Partner link (optional)']),
+    );
+    const partner = partnerName
+      ? { name: partnerName, url: partnerUrl }
+      : undefined;
 
     // Resolve Team Members via relation
-    const relationIds = props["Members (optional)"]?.relation?.map((r: any) => r.id) || [];
-    const team = relationIds.map((id: string) => {
-      const member = membersMap.get(id);
-      if (member) {
-        return { name: member.name, avatar: member.imageUrl || undefined, linkedinUrl: member.linkedinUrl };
-      }
-      return null;
-    }).filter(Boolean) as { name: string; avatar?: string; linkedinUrl?: string }[];
+    const relationIds =
+      props['Members (optional)']?.relation?.map((r: any) => r.id) || [];
+    const team = relationIds
+      .map((id: string) => {
+        const member = membersMap.get(id);
+        if (member) {
+          return {
+            name: member.name,
+            avatar: member.imageUrl || undefined,
+            linkedinUrl: member.linkedinUrl,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean) as {
+      name: string;
+      avatar?: string;
+      linkedinUrl?: string;
+    }[];
 
     // Display title vs slug project name
-    const displayedTitle = getText(props["Displayed title (mandatory)"]);
-    const fallbackTitle = getText(props["Project"]);
+    const displayedTitle = getText(props['Displayed title (mandatory)']);
+    const fallbackTitle = getText(props['Project']);
 
     return {
       id: page.id,
-      title: displayedTitle || fallbackTitle || "Untitled Project",
-      description: getText(props["Description (mandatory)"]),
-      imageUrl: getStableImageUrl(page.id, "Image (optional)", props["Image (optional)"]) || undefined,
-      tags: getMultiSelect(props["Tags (mandatory)"]),
-      status: (getSelect(props["Status (mandatory)"]) as "Recruiting" | "Ongoing" | "Completed") || "Ongoing",
-      date: getText(props["Date (mandatory)"]),
+      title: displayedTitle || fallbackTitle || 'Untitled Project',
+      description: getText(props['Description (mandatory)']),
+      imageUrl:
+        getStableImageUrl(
+          page.id,
+          'Image (optional)',
+          props['Image (optional)'],
+        ) || undefined,
+      tags: getMultiSelect(props['Tags (mandatory)']),
+      status:
+        (getSelect(props['Status (mandatory)']) as
+          | 'Recruiting'
+          | 'Ongoing'
+          | 'Completed') || 'Ongoing',
+      date: getText(props['Date (mandatory)']),
       team: team.length > 0 ? team : undefined,
       partner: partner,
-      applyUrl: getUrl(props["Application url (optional, mandatory if recruiting)"]),
-      githubUrl: getUrl(props["GitHub url (optional)"]),
-      paperUrl: getUrl(props["Paper url (optional)"]),
-      reportUrl: getUrl(props["Report url (optional)"]),
+      applyUrl: getUrl(
+        props['Application url (optional, mandatory if recruiting)'],
+      ),
+      githubUrl: getUrl(props['GitHub url (optional)']),
+      paperUrl: getUrl(props['Paper url (optional)']),
+      reportUrl: getUrl(props['Report url (optional)']),
     };
   });
 
   const statusOrder: Record<string, number> = {
-    "Recruiting": 1,
-    "Ongoing": 2,
-    "Completed": 3
+    Recruiting: 1,
+    Ongoing: 2,
+    Completed: 3,
   };
 
   return projects.sort((a: Project, b: Project) => {
@@ -182,20 +226,24 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getTeams(): Promise<Team[]> {
+  'use cache';
+  cacheLife('hours');
+  cacheTag('teams');
+
   if (!WEBSITE_MEMBERS_DB) return [];
 
   // 1. Fetch all members from "Our People" as a dictionary to extract avatars/linkedin
   const allMembers = await getMembers();
-  const membersMap = new Map(allMembers.map(m => [m.id, m]));
+  const membersMap = new Map(allMembers.map((m) => [m.id, m]));
 
   // 2. Fetch the "Website Directory"
   const response = await fetchNotion(`/databases/${WEBSITE_MEMBERS_DB}/query`, {
     sorts: [
       {
-        property: "Order (optional)",
-        direction: "ascending"
-      }
-    ]
+        property: 'Order (optional)',
+        direction: 'ascending',
+      },
+    ],
   });
 
   // 3. Map the data
@@ -203,61 +251,68 @@ export async function getTeams(): Promise<Team[]> {
     const props = page.properties;
 
     // The link to the "Our People" database
-    const relationIds = props["Our People link (mandatory)"]?.relation?.map((r: any) => r.id) || [];
-    const baseMember = relationIds.length > 0 ? membersMap.get(relationIds[0]) : null;
+    const relationIds =
+      props['Our People link (mandatory)']?.relation?.map((r: any) => r.id) ||
+      [];
+    const baseMember =
+      relationIds.length > 0 ? membersMap.get(relationIds[0]) : null;
 
-    const name = getText(props["Name and Surname (mandatory)"]);
-    const section = getSelect(props["Section (mandatory)"]) || "Other";
-    const displayedRole = getText(props["Displayed role (optional)"]);
-    const overrideEmail = props["Email (if different from personal)"]?.email;
-    const rawOrder = props["Order (optional)"]?.number;
+    const name = getText(props['Name and Surname (mandatory)']);
+    const section = getSelect(props['Section (mandatory)']) || 'Other';
+    const displayedRole = getText(props['Displayed role (optional)']);
+    const overrideEmail = props['Email (if different from personal)']?.email;
+    const rawOrder = props['Order (optional)']?.number;
 
     return {
       id: page.id,
-      name: name || "Unknown",
+      name: name || 'Unknown',
       role: displayedRole || undefined,
       team: section,
       imageUrl: baseMember?.imageUrl,
       linkedinUrl: baseMember?.linkedinUrl,
       email: overrideEmail || baseMember?.email || null,
-      order: typeof rawOrder === "number" && !isNaN(rawOrder) ? rawOrder : undefined,
+      order:
+        typeof rawOrder === 'number' && !isNaN(rawOrder) ? rawOrder : undefined,
     };
   });
 
   // 4. Group by Section (team string)
-  const grouped = websiteMembers.reduce((acc: Record<string, Member[]>, member: Member) => {
-    const teamName = member.team || "Other";
-    if (!acc[teamName]) {
-      acc[teamName] = [];
-    }
-    acc[teamName].push(member);
-    return acc;
-  }, {} as Record<string, Member[]>);
+  const grouped = websiteMembers.reduce(
+    (acc: Record<string, Member[]>, member: Member) => {
+      const teamName = member.team || 'Other';
+      if (!acc[teamName]) {
+        acc[teamName] = [];
+      }
+      acc[teamName].push(member);
+      return acc;
+    },
+    {} as Record<string, Member[]>,
+  );
 
   // Predefined Team Display Order
   const TEAM_ORDER = [
-    "Board",
-    "Events",
-    "Tech",
-    "Social & Brand",
-    "Projects",
-    "HR",
-    "Finance",
-    "Startup Relations",
-    "Polimi Quantum Computing",
+    'Board',
+    'Events',
+    'Tech',
+    'Social & Brand',
+    'Projects',
+    'HR',
+    'Finance',
+    'Startup Relations',
+    'Polimi Quantum Computing',
   ];
 
   // Hardcoded Team Emails
   const TEAM_EMAILS: Record<string, string> = {
-    "Board": "board@polimidatascientists.it",
-    "Finance": "finance@polimidatascientists.it",
-    "Projects": "projects@polimidatascientists.it",
-    "HR": "hr@polimidatascientists.it",
-    "Events": "events@polimidatascientists.it",
-    "Social & Brand": "social@polimidatascientists.it",
-    "Tech": "tech@polimidatascientists.it",
-    "Polimi Quantum Computing": "pmqc@polimidatascientists.it",
-    "Startup Relations": "startup-relations@polimidatascientists.it",
+    Board: 'board@polimidatascientists.it',
+    Finance: 'finance@polimidatascientists.it',
+    Projects: 'projects@polimidatascientists.it',
+    HR: 'hr@polimidatascientists.it',
+    Events: 'events@polimidatascientists.it',
+    'Social & Brand': 'social@polimidatascientists.it',
+    Tech: 'tech@polimidatascientists.it',
+    'Polimi Quantum Computing': 'pmqc@polimidatascientists.it',
+    'Startup Relations': 'startup-relations@polimidatascientists.it',
   };
 
   // 5. Convert to Team[] array with fixed team ordering and intra-team member sorting
@@ -290,67 +345,99 @@ export async function getTeams(): Promise<Team[]> {
 }
 
 export async function getPosts(): Promise<BlogPost[]> {
+  'use cache';
+  cacheLife('hours');
+  cacheTag('posts');
+
   if (!POSTS_DB) return [];
 
   const allMembers = await getMembers();
-  const membersMap = new Map(allMembers.map(m => [m.id, m]));
+  const membersMap = new Map(allMembers.map((m) => [m.id, m]));
 
   const response = await fetchNotion(`/databases/${POSTS_DB}/query`, {
     filter: {
-      property: "Published",
+      property: 'Published',
       checkbox: {
-        equals: true
-      }
+        equals: true,
+      },
     },
     sorts: [
       {
-        property: "Date (mandatory)",
-        direction: "descending"
-      }
-    ]
+        property: 'Date (mandatory)',
+        direction: 'descending',
+      },
+    ],
   });
 
   return response.results.map((page: any) => {
     const props = page.properties;
 
     // Resolve Authors
-    const relationIds = props["Authors (optional)"]?.relation?.map((r: any) => r.id) || [];
-    const authors = relationIds.map((id: string) => {
-      const member = membersMap.get(id);
-      return member ? {
-        name: member.name,
-        avatar: member.imageUrl,
-        linkedinUrl: member.linkedinUrl,
-        email: member.email
-      } : null;
-    }).filter(Boolean) as { name: string; avatar?: string; linkedinUrl?: string; email?: string }[];
+    const relationIds =
+      props['Authors (optional)']?.relation?.map((r: any) => r.id) || [];
+    const authors = relationIds
+      .map((id: string) => {
+        const member = membersMap.get(id);
+        return member
+          ? {
+              name: member.name,
+              avatar: member.imageUrl,
+              linkedinUrl: member.linkedinUrl,
+              email: member.email,
+            }
+          : null;
+      })
+      .filter(Boolean) as {
+      name: string;
+      avatar?: string;
+      linkedinUrl?: string;
+      email?: string;
+    }[];
 
-    const dateProp = props["Date (mandatory)"]?.date?.start;
-    const formattedDate = dateProp ? new Date(dateProp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "Unknown date";
+    const dateProp = props['Date (mandatory)']?.date?.start;
+    const formattedDate = dateProp
+      ? new Date(dateProp).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      : 'Unknown date';
 
-    const externalUrl = getUrl(props["External url (ONLY FOR LEGACY POSTS)"]);
-    const title = getText(props["Title (mandatory)"]) || "Untitled Post";
-    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    const externalUrl = getUrl(props['External url (ONLY FOR LEGACY POSTS)']);
+    const title = getText(props['Title (mandatory)']) || 'Untitled Post';
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
 
     return {
       id: page.id,
       slug: slug,
       title: title,
-      excerpt: getText(props["Excerpt (mandatory)"]),
+      excerpt: getText(props['Excerpt (mandatory)']),
       date: formattedDate,
-      tags: [getSelect(props["Tag (mandatory)"]) || "General"],
-      imageUrl: getStableImageUrl(page.id, "Cover image (optional)", props["Cover image (optional)"]) || "/placeholder.jpg",
+      tags: [getSelect(props['Tag (mandatory)']) || 'General'],
+      imageUrl:
+        getStableImageUrl(
+          page.id,
+          'Cover image (optional)',
+          props['Cover image (optional)'],
+        ) || '/placeholder.jpg',
       externalUrl: externalUrl || undefined,
       authors: authors,
-      content: "" // We don't fetch content for the list
+      content: '', // We don't fetch content for the list
     };
   });
 }
 
 export async function getPost(slug: string): Promise<BlogPost | null> {
+  'use cache';
+  cacheLife('days');
+  cacheTag('post');
+
   // 1. Fetch the page properties
   const posts = await getPosts();
-  const post = posts.find(p => p.slug === slug);
+  const post = posts.find((p) => p.slug === slug);
   if (!post) return null;
 
   // 2. Fetch the page content blocks and convert to markdown
@@ -359,8 +446,8 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
     const mdString = n2m.toMarkdownString(mdblocks);
     post.content = mdString.parent;
   } catch (e) {
-    console.error("Error fetching post content:", e);
-    post.content = "Failed to load content.";
+    console.error('Error fetching post content:', e);
+    post.content = 'Failed to load content.';
   }
 
   return post;
@@ -369,77 +456,109 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
 const EVENTS_DB = process.env.NOTION_EVENTS_DB_ID;
 
 export async function getEvents(): Promise<Event[]> {
+  'use cache';
+  cacheLife('hours');
+  cacheTag('events');
+
   if (!EVENTS_DB) return [];
 
   const response = await fetchNotion(`/databases/${EVENTS_DB}/query`, {
     filter: {
-      property: "Published",
+      property: 'Published',
       checkbox: {
-        equals: true
-      }
+        equals: true,
+      },
     },
     sorts: [
       {
-        property: "Date & Time (mandatory)",
-        direction: "descending"
-      }
-    ]
+        property: 'Date & Time (mandatory)',
+        direction: 'descending',
+      },
+    ],
   });
 
   const now = new Date();
-  const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome' }).format(now);
+  const todayStr = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Rome',
+  }).format(now);
 
-  const items: { event: Event; timestamp: number }[] = response.results.map((page: any) => {
-    const props = page.properties;
+  const items: { event: Event; timestamp: number }[] = response.results.map(
+    (page: any) => {
+      const props = page.properties;
 
-    const dateStart = props["Date & Time (mandatory)"]?.date?.start;
-    const dateEnd = props["Date & Time (mandatory)"]?.date?.end;
-    const eventDate = dateStart ? new Date(dateStart) : new Date(0);
+      const dateStart = props['Date & Time (mandatory)']?.date?.start;
+      const dateEnd = props['Date & Time (mandatory)']?.date?.end;
+      const eventDate = dateStart ? new Date(dateStart) : new Date(0);
 
-    let upcoming = false;
-    if (dateEnd && dateEnd.includes('T')) {
-      upcoming = new Date(dateEnd) >= now;
-    } else if (dateEnd) {
-      upcoming = dateEnd >= todayStr;
-    } else if (dateStart && dateStart.includes('T')) {
-      upcoming = new Date(dateStart) >= now;
-    } else if (dateStart) {
-      upcoming = dateStart >= todayStr;
-    }
-
-    // Format date and time using Rome timezone to fix Vercel UTC offset
-    const formattedDate = dateStart ? eventDate.toLocaleDateString('en-US', { timeZone: 'Europe/Rome', month: 'long', day: 'numeric', year: 'numeric' }) : "Unknown date";
-    
-    let formattedTime = undefined;
-    if (dateStart && dateStart.includes('T')) {
-      const startTime = eventDate.toLocaleTimeString('en-US', { timeZone: 'Europe/Rome', hour: 'numeric', minute: '2-digit' });
+      let upcoming = false;
       if (dateEnd && dateEnd.includes('T')) {
-        const endTime = new Date(dateEnd).toLocaleTimeString('en-US', { timeZone: 'Europe/Rome', hour: 'numeric', minute: '2-digit' });
-        formattedTime = `${startTime} - ${endTime}`;
-      } else {
-        formattedTime = startTime;
+        upcoming = new Date(dateEnd) >= now;
+      } else if (dateEnd) {
+        upcoming = dateEnd >= todayStr;
+      } else if (dateStart && dateStart.includes('T')) {
+        upcoming = new Date(dateStart) >= now;
+      } else if (dateStart) {
+        upcoming = dateStart >= todayStr;
       }
-    }
 
-    const event: Event = {
-      id: page.id,
-      title: getText(props["Name (mandatory)"]) || "Untitled Event",
-      date: formattedDate,
-      time: formattedTime,
-      location: getText(props["Location (mandatory)"]) || getSelect(props["Location (mandatory)"]) || "TBA",
-      type: getSelect(props["Type (mandatory)"]) || "Event",
-      description: getText(props["Description (mandatory)"]),
-      imageUrl: getStableImageUrl(page.id, "Image (optional)", props["Image (optional)"]) || undefined,
-      registrationUrl: getUrl(props["Registration URL (optional)"]) || undefined,
-      resourcesUrl: getUrl(props["Resources URL (optional)"]) || undefined,
-      upcoming
-    };
+      // Format date and time using Rome timezone to fix Vercel UTC offset
+      const formattedDate = dateStart
+        ? eventDate.toLocaleDateString('en-US', {
+            timeZone: 'Europe/Rome',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          })
+        : 'Unknown date';
 
-    return {
-      event,
-      timestamp: eventDate.getTime()
-    };
-  });
+      let formattedTime = undefined;
+      if (dateStart && dateStart.includes('T')) {
+        const startTime = eventDate.toLocaleTimeString('en-US', {
+          timeZone: 'Europe/Rome',
+          hour: 'numeric',
+          minute: '2-digit',
+        });
+        if (dateEnd && dateEnd.includes('T')) {
+          const endTime = new Date(dateEnd).toLocaleTimeString('en-US', {
+            timeZone: 'Europe/Rome',
+            hour: 'numeric',
+            minute: '2-digit',
+          });
+          formattedTime = `${startTime} - ${endTime}`;
+        } else {
+          formattedTime = startTime;
+        }
+      }
+
+      const event: Event = {
+        id: page.id,
+        title: getText(props['Name (mandatory)']) || 'Untitled Event',
+        date: formattedDate,
+        time: formattedTime,
+        location:
+          getText(props['Location (mandatory)']) ||
+          getSelect(props['Location (mandatory)']) ||
+          'TBA',
+        type: getSelect(props['Type (mandatory)']) || 'Event',
+        description: getText(props['Description (mandatory)']),
+        imageUrl:
+          getStableImageUrl(
+            page.id,
+            'Image (optional)',
+            props['Image (optional)'],
+          ) || undefined,
+        registrationUrl:
+          getUrl(props['Registration URL (optional)']) || undefined,
+        resourcesUrl: getUrl(props['Resources URL (optional)']) || undefined,
+        upcoming,
+      };
+
+      return {
+        event,
+        timestamp: eventDate.getTime(),
+      };
+    },
+  );
 
   const upcomingEvents = items
     .filter((item) => item.event.upcoming)
@@ -452,4 +571,62 @@ export async function getEvents(): Promise<Event[]> {
     .map((item) => item.event);
 
   return [...upcomingEvents, ...pastEvents];
+}
+
+export async function getAnnouncements(): Promise<Announcement[]> {
+  'use cache';
+  cacheLife('hours');
+  cacheTag('announcements');
+
+  if (!ANNOUNCEMENTS_DB) return [];
+
+  console.log('Announcements');
+
+  const response = await fetchNotion(`/databases/${ANNOUNCEMENTS_DB}/query`, {
+    filter: {
+      and: [
+        {
+          or: [
+            {
+              property: 'Displayed from (optional)',
+              date: {
+                is_not_empty: true,
+                on_or_before: 'today',
+              },
+            },
+            {
+              property: 'Displayed from (optional)',
+              date: {
+                is_empty: true,
+              },
+            },
+          ],
+        },
+        {
+          property: 'Displayed to (mandatory)',
+          date: {
+            is_not_empty: true,
+            on_or_after: 'today',
+          },
+        },
+      ],
+    },
+    sorts: [
+      {
+        property: 'Displayed to (mandatory)',
+        direction: 'ascending',
+      },
+    ],
+  });
+
+  return response.results.map((page: any) => {
+    const props = page.properties;
+
+    return {
+      id: page.id,
+      title: getText(props['Text (mandatory)']),
+      linkText: getText(props['Link text (optional)']) || 'Learn more',
+      link: formatUrlString(getText(props['Link URL (optional)'])) || undefined,
+    };
+  });
 }

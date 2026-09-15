@@ -6,8 +6,6 @@ import DynamicHomeSection from "@/components/DynamicHomeSection";
 import CtaSection from "@/components/CtaSection";
 import { getEvents } from "@/lib/notion";
 
-export const revalidate = 3600;
-
 export default async function Home() {
   const events = await getEvents();
 
