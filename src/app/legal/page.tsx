@@ -16,7 +16,7 @@ export default function LegalPage() {
         </p>
 
         {/* Association Details */}
-        <div className="mb-12 p-5 rounded-xl border border-white/10 bg-white/[0.02] text-sm text-zinc-400 space-y-1">
+        <div className="mb-12 p-5 rounded-xl bg-[#0a0a0a] border border-white/5 text-sm text-zinc-400 space-y-1">
           <p className="text-white font-semibold">Associazione Polimi Data Scientists (PMDS)</p>
           <p>Student association recognized by Politecnico di Milano</p>
           <p>Codice Fiscale: <span className="text-zinc-300 font-mono">97859030153</span></p>
