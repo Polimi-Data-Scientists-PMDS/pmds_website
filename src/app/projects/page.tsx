@@ -1,6 +1,6 @@
-import ProjectCard from '@/components/ProjectCard';
-import { getProjects } from '@/lib/notion';
+import { getProjects } from '@/shared/lib/notion';
 import { Metadata } from 'next';
+import ProjectCard from './_components/ProjectCard';
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -13,10 +13,10 @@ export default async function ProjectsPage() {
     <div className="flex flex-col min-h-[calc(100vh-200px)] pt-20 relative z-10 w-full max-w-[1100px] mx-auto px-6 mb-24">
       {/* Header */}
       <div className="mb-16 mt-10">
-        <h1 className="text-[56px] font-[700] text-white leading-snug">
+        <h1 className="text-6xl font-bold text-foreground leading-snug">
           Projects
         </h1>
-        <p className="text-[16px] text-zinc-400 max-w-[600px] mt-4 leading-relaxed">
+        <p className="text-base text-muted max-w-[600px] mt-4 leading-relaxed">
           Discover the hands-on initiatives driven by Polimi Data Scientists.
           From active research to completed projects.
         </p>

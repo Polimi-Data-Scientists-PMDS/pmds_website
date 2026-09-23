@@ -1,15 +1,15 @@
-import Hero from "@/components/Hero";
-import Stats from "@/components/Stats";
-import AboutSection from "@/components/AboutSection";
-import Collaborators from "@/components/Collaborators";
-import DynamicHomeSection from "@/components/DynamicHomeSection";
-import CtaSection from "@/components/CtaSection";
-import { getEvents } from "@/lib/notion";
+import { getEvents } from '@/shared/lib/notion';
+import AboutSection from './_components/AboutSection';
+import Collaborators from './_components/Collaborators';
+import CtaSection from './_components/CtaSection';
+import DynamicHomeSection from './_components/DynamicHomeSection';
+import Hero from './_components/Hero';
+import Stats from './_components/Stats';
 
 export default async function Home() {
   const events = await getEvents();
 
-  const upcomingEvents = events.filter(e => e.upcoming).slice(0, 2);
+  const upcomingEvents = events.filter((e) => e.upcoming).slice(0, 2);
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-200px)] pt-12 relative z-10">

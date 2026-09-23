@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
 import './globals.css';
 
 const inter = Inter({
@@ -10,9 +7,11 @@ const inter = Inter({
   subsets: ['latin'],
 });
 
-import AnnouncementBar from '@/components/AnnouncementBar';
-import Header from '@/components/Header';
-import { getAnnouncements } from '@/lib/notion';
+import AnnouncementBar from '@/shared/components/layout/AnnouncementBar';
+import Footer from '@/shared/components/layout/Footer';
+import Header from '@/shared/components/layout/Header';
+import { getAnnouncements } from '@/shared/lib/notion';
+import { cn } from '@/shared/lib/utils';
 
 export const metadata: Metadata = {
   title: {
@@ -39,139 +38,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased text-white overflow-x-clip`}
+        className={cn(
+          'antialiased text-foreground overflow-x-clip',
+          inter.className,
+        )}
       >
-        {/* 
-          AnnouncementBar: Used for time-sensitive notifications (e.g. "Recruiting is OPEN").
-          Uncomment the line below to enable it. It will appear at the very top of the page.
-          Edit the text and link directly in src/components/AnnouncementBar.tsx.
-        */}
         <Announcements />
         <Header />
         {children}
-
-        <footer className="w-full border-t border-white/10 bg-[#050505] pt-20 pb-10 mt-24">
-          <div className="w-full max-w-[1100px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
-            <div className="flex flex-col gap-6 md:w-1/3">
-              <Link href="/" className="relative block w-[200px] h-[55px]">
-                <Image
-                  src="/assets/logo.svg"
-                  alt="PMDS Logo"
-                  fill
-                  className="object-contain object-left"
-                />
-              </Link>
-              <p className="text-zinc-400 text-[14px] leading-relaxed">
-                Student-led association at Politecnico di Milano dedicated to
-                exploring the latest in Data Science.
-              </p>
-              <div className="flex gap-5 mt-2">
-                <a
-                  href="https://www.instagram.com/polimidatascientists/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-zinc-400 hover:text-white transition-colors text-[22px]"
-                >
-                  <FaInstagram />
-                </a>
-                <a
-                  href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-zinc-400 hover:text-white transition-colors text-[22px]"
-                >
-                  <FaTelegramPlane />
-                </a>
-                <a
-                  href="https://www.linkedin.com/company/polimi-data-scientists/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-zinc-400 hover:text-white transition-colors text-[22px]"
-                >
-                  <FaLinkedinIn />
-                </a>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-4 md:w-1/3 md:pl-16">
-              <h4 className="text-white text-[15px] font-semibold mb-2 tracking-wide">
-                Explore
-              </h4>
-              <Link
-                href="/blog"
-                className="text-zinc-400 hover:text-white text-[14px] transition-colors"
-              >
-                Blog
-              </Link>
-              <Link
-                href="/projects"
-                className="text-zinc-400 hover:text-white text-[14px] transition-colors"
-              >
-                Projects
-              </Link>
-              <Link
-                href="/events"
-                className="text-zinc-400 hover:text-white text-[14px] transition-colors"
-              >
-                Events
-              </Link>
-              <Link
-                href="/membership"
-                className="text-zinc-400 hover:text-white text-[14px] transition-colors"
-              >
-                Become a Member
-              </Link>
-              <a
-                href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#4b6ffe] hover:text-[#3f5fdf] font-medium text-[14px] transition-colors"
-              >
-                Support Us (Donate)
-              </a>
-              <Link
-                href="/members"
-                className="text-zinc-400 hover:text-white text-[14px] transition-colors"
-              >
-                Members
-              </Link>
-            </div>
-
-            <div className="flex flex-col gap-4 md:w-1/3">
-              <h4 className="text-white text-[15px] font-semibold mb-2 tracking-wide">
-                Contact & Legal
-              </h4>
-              <a
-                href="mailto:info@polimidatascientists.it"
-                className="text-zinc-400 hover:text-white text-[14px] transition-colors"
-              >
-                info@polimidatascientists.it
-              </a>
-              <a
-                href="mailto:startup-relations@polimidatascientists.it"
-                className="text-zinc-400 hover:text-white text-[14px] transition-colors"
-              >
-                startup-relations@polimidatascientists.it
-              </a>
-              <Link
-                href="/legal"
-                className="text-zinc-400 hover:text-white text-[14px] transition-colors"
-              >
-                Legal & Privacy Policy
-              </Link>
-            </div>
-          </div>
-
-          <div className="w-full max-w-[1100px] mx-auto px-6 mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center md:items-start text-zinc-500 text-[13px] gap-6">
-            <p className="shrink-0">
-              &copy; 2026 Polimi Data Scientists. All rights reserved.
-            </p>
-            <p className="text-center md:text-right max-w-[500px] leading-relaxed">
-              Polimi Data Scientists is an independent student association recognized by Politecnico di Milano.
-              This website is independently managed and is not an official publication of the university.
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   );

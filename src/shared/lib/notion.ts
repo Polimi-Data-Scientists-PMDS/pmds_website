@@ -1,6 +1,13 @@
 'use server';
 
-import { Announcement, BlogPost, Event, Member, Project, Team } from '@/types';
+import {
+  Announcement,
+  BlogPost,
+  Event,
+  Member,
+  Project,
+  Team,
+} from '@/shared/types';
 import { Client } from '@notionhq/client';
 import { cacheLife, cacheTag } from 'next/cache';
 
@@ -534,6 +541,8 @@ export async function getEvents(): Promise<Event[]> {
         id: page.id,
         title: getText(props['Name (mandatory)']) || 'Untitled Event',
         date: formattedDate,
+        dateStart: new Date(dateStart),
+        dateEnd: new Date(dateEnd),
         time: formattedTime,
         location:
           getText(props['Location (mandatory)']) ||

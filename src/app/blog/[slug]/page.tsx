@@ -1,5 +1,5 @@
-import PeopleGroup from '@/components/PeopleGroup';
-import { getPost, getPosts } from '@/lib/notion';
+import PeopleGroup from '@/shared/components/ui/PeopleGroup';
+import { getPost, getPosts } from '@/shared/lib/notion';
 import 'katex/dist/katex.min.css'; // CSS for math
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -55,7 +55,7 @@ export default async function BlogPostPage({
       <div className="max-w-[900px] mx-auto px-6 md:px-8 w-full mb-12">
         <Link
           href="/blog"
-          className="group inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-[14px] font-medium mb-6"
+          className="group inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors text-sm font-medium mb-6"
         >
           <FaArrowLeft
             size={12}
@@ -68,24 +68,24 @@ export default async function BlogPostPage({
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[#4b6ffe] text-[12px] font-medium uppercase tracking-wider"
+              className="px-3 py-1 rounded-full bg-surface-secondary border text-accent text-xs font-medium uppercase tracking-wider"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        <h1 className="text-[40px] md:text-[56px] font-bold text-white leading-tight mb-8">
+        <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight mb-8">
           {post.title}
         </h1>
 
-        <div className="flex items-center py-6 border-y border-white/10 gap-4">
-          <PeopleGroup people={post.authors}/>
+        <div className="flex items-center py-6 border-y gap-4">
+          <PeopleGroup people={post.authors} />
           <div className="flex flex-col">
-            <span className="text-white font-medium text-[15px]">
+            <span className="text-foreground font-medium text-sm">
               {post.authors.map((a) => a.name).join(', ')}
             </span>
-            <span className="text-zinc-500 text-[13px]">{post.date}</span>
+            <span className="text-muted text-xs">{post.date}</span>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default async function BlogPostPage({
       {/* Hero Image */}
       {post.imageUrl && post.imageUrl !== '/placeholder.jpg' && (
         <div className="w-full max-w-[900px] mx-auto px-6 md:px-8 mb-16">
-          <div className="w-full aspect-[21/9] relative rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
+          <div className="w-full aspect-[21/9] relative rounded-3xl overflow-hidden border shadow-2xl">
             <Image
               src={post.imageUrl}
               alt={post.title}
@@ -107,25 +107,29 @@ export default async function BlogPostPage({
       )}
 
       {/* Article Content */}
-      <article className="max-w-[900px] mx-auto px-6 md:px-8 w-full prose prose-invert prose-lg prose-a:text-[#4b6ffe] hover:prose-a:text-white prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-white/10 prose-img:rounded-xl prose-code:before:content-none prose-code:after:content-none prose-code:bg-zinc-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-normal">
+      <article className="max-w-[900px] mx-auto px-6 md:px-8 w-full prose prose-invert prose-lg prose-a:text-accent hover:prose-a:text-foreground prose-pre:bg-surface prose-pre:border prose-img:rounded-xl prose-code:before:content-none prose-code:after:content-none prose-code:bg-surface-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-normal">
         {post.content ? (
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkMath]}
             rehypePlugins={[rehypeKatex, rehypeRaw]}
             components={{
               img: (props: any) => {
-                const isNotion = props.src?.includes("amazonaws");
+                const isNotion = props.src?.includes('amazonaws');
                 return (
                   <span className="block relative w-full aspect-video my-8">
-                    <Image src={props.src || ""} alt={props.alt || ""} fill className="object-cover rounded-xl" unoptimized={!isNotion} />
+                    <Image
+                      src={props.src || ''}
+                      alt={props.alt || ''}
+                      fill
+                      className="object-cover rounded-xl"
+                      unoptimized={!isNotion}
+                    />
                   </span>
                 );
-              }
+              },
             }}
           >
-
             {post.content}
-          
           </ReactMarkdown>
         ) : (
           <p>No content available.</p>

@@ -1,4 +1,3 @@
-import createMDX from '@next/mdx';
 import type { NextConfig } from 'next';
 
 // Suppress the annoying url.parse() deprecation warning from Next.js internal dependencies
@@ -16,7 +15,6 @@ process.emitWarning = function (
 };
 
 const nextConfig: NextConfig = {
-  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   cacheComponents: true,
   images: {
     unoptimized: true,
@@ -57,8 +55,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withMDX = createMDX({
-  // Add markdown plugins here, as desired
-});
-
-export default withMDX(nextConfig);
+export default nextConfig;
