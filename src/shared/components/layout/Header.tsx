@@ -29,6 +29,7 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex gap-12 text-sm font-normal text-muted items-center">
           <HeaderLink text="Blog" href="/blog" />
+          <HeaderLink text="Projects" href="/projects" />
           <HeaderLink text="Events" href="/events" />
           <HeaderLink text="Become a Member" href="/membership" />
           <HeaderLink text="Members" href="/members" />
