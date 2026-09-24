@@ -10,7 +10,7 @@ export default function MemberCard({
   priority?: boolean;
 }) {
   return (
-    <div className="flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl overflow-hidden transition-all duration-300 group">
+    <div className="flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl overflow-hidden transition-colors duration-300 group">
       <div className="aspect-square w-full bg-[#151a2d] relative shrink-0">
         {member.imageUrl ? (
           <Image
@@ -18,7 +18,7 @@ export default function MemberCard({
             alt={member.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-700"
+            className="object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
             priority={priority}
           />
         ) : (

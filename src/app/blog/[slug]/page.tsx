@@ -79,7 +79,7 @@ export default async function BlogPostPage({
           {post.title}
         </h1>
 
-        <div className="flex items-center py-6 border-y gap-4">
+        <div className="flex items-center py-6 border-y border-white/5 gap-4 relative z-20">
           <PeopleGroup people={post.authors} />
           <div className="flex flex-col">
             <span className="text-foreground font-medium text-sm">

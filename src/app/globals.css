@@ -43,8 +43,22 @@
 }
 
 @layer base {
+  html {
+    scrollbar-gutter: stable;
+    overflow-y: scroll;
+  }
+
   * {
     border-color: var(--border);
+  }
+
+  .card-hover-elevate {
+    position: relative;
+  }
+
+  .card-hover-elevate:hover,
+  .card-hover-elevate:focus-within {
+    z-index: 50 !important;
   }
 
   .prose pre code {

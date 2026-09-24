@@ -20,7 +20,7 @@ export default function ProjectCard({
   priority?: boolean;
 }) {
   return (
-    <div className="group flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl transition-all duration-300 relative">
+    <div className="group flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl transition-colors duration-300 relative card-hover-elevate">
       {/* Image Container */}
       <div
         className={cn(
@@ -35,7 +35,7 @@ export default function ProjectCard({
             alt={project.title}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-700"
+            className="object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
             priority={priority}
           />
         ) : (

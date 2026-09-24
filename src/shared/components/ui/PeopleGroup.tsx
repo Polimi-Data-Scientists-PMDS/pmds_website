@@ -42,7 +42,7 @@ export default function PeopleGroup({
   };
 
   return (
-    <div className="flex flex-row gap-2">
+    <div className="flex flex-row gap-2 relative z-20">
       <div className={cn(SPACING[size], 'flex group/people relative')}>
         {people.map((person, i) => (
           <div
@@ -69,7 +69,7 @@ export default function PeopleGroup({
 
         <div
           className={cn(
-            'absolute z-10 top-full pt-2 transition-all',
+            'absolute z-50 top-full left-0 pt-2 transition-opacity duration-200 min-w-[240px]',
             mobile
               ? opened
                 ? 'opacity-100 pointer-events-auto'
@@ -77,14 +77,17 @@ export default function PeopleGroup({
               : 'opacity-0 pointer-events-none group-hover/people:opacity-100 group-hover/people:pointer-events-auto',
           )}
         >
-          <div className="flex flex-col gap-2 items-center bg-surface border p-3 rounded-2xl shadow-xl">
+          <div
+            style={{ backgroundColor: '#0d0e12' }}
+            className="flex flex-col gap-2 items-center border border-white/15 p-3 rounded-2xl shadow-2xl shadow-black"
+          >
             {people.map((person, i) => (
               <div
                 key={i}
                 className="flex flex-row justify-between w-full gap-6 items-center"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full border bg-surface-secondary relative overflow-hidden shrink-0">
+                  <div className="w-8 h-8 rounded-full border border-white/10 bg-white/5 relative overflow-hidden shrink-0">
                     {person.avatar ? (
                       <Image
                         src={person.avatar}
@@ -108,7 +111,7 @@ export default function PeopleGroup({
                   {person.email && (
                     <a
                       href={`mailto:${person.email}`}
-                      className="w-8 h-8 rounded-full bg-surface-secondary flex items-center justify-center text-muted hover:text-foreground hover:bg-surface-secondary transition-colors"
+                      className="w-8 h-8 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-muted hover:text-foreground hover:bg-white/10 transition-colors"
                       title={`Email ${person.name}`}
                     >
                       <FaEnvelope size={14} />
@@ -119,7 +122,7 @@ export default function PeopleGroup({
                       href={person.linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full bg-surface-secondary flex items-center justify-center text-muted hover:text-foreground hover:bg-[#0A66C2] transition-colors"
+                      className="w-8 h-8 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-muted hover:text-foreground hover:bg-[#0A66C2] transition-colors"
                       title={`LinkedIn ${person.name}`}
                     >
                       <FaLinkedinIn size={14} />
@@ -135,7 +138,7 @@ export default function PeopleGroup({
         <div
           className={cn(
             SIZING[size],
-            'cursor-pointer rounded-full border-2 border-background bg-surface-secondary relative overflow-hidden flex items-center justify-center text-muted text-sm shrink-0 transition-all',
+            'cursor-pointer rounded-full border-2 border-background bg-white/5 relative overflow-hidden flex items-center justify-center text-muted text-sm shrink-0 transition-all',
             opened ? 'rotate-180' : 'rotate-0',
           )}
           onClick={() => {

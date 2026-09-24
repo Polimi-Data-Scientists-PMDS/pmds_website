@@ -11,7 +11,7 @@ export default function EventCard({
   priority?: boolean;
 }) {
   return (
-    <div className="flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-[32px] overflow-hidden transition-all duration-300 group h-full">
+    <div className="flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-[32px] overflow-hidden transition-colors duration-300 group h-full">
       {/* Image Section */}
       {event.imageUrl && (
         <div className="relative w-full aspect-[16/9] overflow-hidden bg-zinc-900 border-b border-white/5 shrink-0">
@@ -20,7 +20,7 @@ export default function EventCard({
             alt={event.title}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 group-hover:scale-105 will-change-transform"
             priority={priority}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-80" />
