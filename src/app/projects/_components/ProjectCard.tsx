@@ -20,13 +20,13 @@ export default function ProjectCard({
   priority?: boolean;
 }) {
   return (
-    <div className="group flex flex-col bg-surface border rounded-3xl transition-all duration-300 relative">
+    <div className="group flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl transition-all duration-300 relative">
       {/* Image Container */}
       <div
         className={cn(
           'w-full h-[240px] relative overflow-hidden rounded-t-[1.4rem]',
           !project.imageUrl &&
-            'bg-gradient-to-br from-surface-accent to-surface flex items-center justify-center',
+            'bg-gradient-to-br from-[#151a2d] to-[#0a0a0a] flex items-center justify-center',
         )}
       >
         {project.imageUrl ? (
@@ -39,14 +39,14 @@ export default function ProjectCard({
             priority={priority}
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-surface-accent to-surface flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-[#151a2d] to-[#0a0a0a] flex items-center justify-center">
             <span className="text-foreground/30 font-bold text-4xl tracking-widest">
               PMDS
             </span>
           </div>
         )}
         {/* Status Badge */}
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md bg-background/40 border text-foreground">
+        <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md bg-black/40 border border-white/10 text-foreground">
           {project.status === 'Recruiting' && (
             <span className="flex items-center gap-2 text-amber-400">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
@@ -122,7 +122,7 @@ export default function ProjectCard({
             {project.tags?.map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 rounded-full bg-surface-secondary border text-muted text-xs font-medium"
+                className="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-muted text-xs font-medium"
               >
                 {tag}
               </span>
@@ -136,7 +136,7 @@ export default function ProjectCard({
         </div>
 
         {/* Conditional Action Buttons */}
-        <div className="flex flex-wrap gap-4 mt-auto border-t pt-6">
+        <div className="flex flex-wrap gap-4 mt-auto border-t border-white/5 pt-6">
           {/* Recruiting State */}
           {project.status === 'Recruiting' && project.applyUrl && (
             <a

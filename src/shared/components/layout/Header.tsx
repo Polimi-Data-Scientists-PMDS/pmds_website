@@ -33,10 +33,14 @@ export default function Header() {
           <HeaderLink text="Events" href="/events" />
           <HeaderLink text="Become a Member" href="/membership" />
           <HeaderLink text="Members" href="/members" />
-          <HeaderLink
-            text="Donate"
+          <a
             href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00"
-          />
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white/5 border border-white/10 hover:bg-white/10 px-4 py-2 rounded-full transition-colors text-white font-medium text-sm ml-[-1rem]"
+          >
+            Donate
+          </a>
         </nav>
 
         {/* Mobile Nav Toggle */}

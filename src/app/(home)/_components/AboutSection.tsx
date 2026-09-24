@@ -6,7 +6,7 @@ export default function AboutSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         {/* Left: Text Content */}
         <div className="flex flex-col">
-          <div className="inline-block px-3 py-1 bg-surface border rounded-full text-accent text-xs font-bold tracking-wider uppercase mb-6 w-fit">
+          <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-accent text-xs font-bold tracking-wider uppercase mb-6 w-fit">
             Since 2019
           </div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight leading-tight mb-6">
@@ -26,8 +26,8 @@ export default function AboutSection() {
 
         {/* Right: Feature grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="bg-surface border p-6 rounded-3xl">
-            <div className="w-10 h-10 bg-surface-secondary rounded-xl flex items-center justify-center text-accent mb-4">
+          <div className="bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 p-6 rounded-3xl transition-colors">
+            <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4">
               <FaGraduationCap size={20} />
             </div>
             <h3 className="text-foreground font-bold mb-2">Workshops</h3>
@@ -37,8 +37,8 @@ export default function AboutSection() {
             </p>
           </div>
 
-          <div className="bg-surface border p-6 rounded-3xl transition-colors sm:translate-y-8">
-            <div className="w-10 h-10 bg-surface-secondary rounded-xl flex items-center justify-center text-accent mb-4">
+          <div className="bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 p-6 rounded-3xl transition-colors sm:translate-y-8">
+            <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4">
               <FaLaptopCode size={20} />
             </div>
             <h3 className="text-foreground font-bold mb-2">Projects</h3>
@@ -48,8 +48,8 @@ export default function AboutSection() {
             </p>
           </div>
 
-          <div className="bg-surface border p-6 rounded-3xl transition-colors">
-            <div className="w-10 h-10 bg-surface-secondary rounded-xl flex items-center justify-center text-accent mb-4">
+          <div className="bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 p-6 rounded-3xl transition-colors">
+            <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4">
               <FaNetworkWired size={20} />
             </div>
             <h3 className="text-foreground font-bold mb-2">Networking</h3>
@@ -59,7 +59,7 @@ export default function AboutSection() {
           </div>
 
           {/* Decorative empty block */}
-          <div className="hidden sm:block rounded-3xl border border-dashed opacity-50 sm:translate-y-8"></div>
+          <div className="hidden sm:block rounded-3xl border border-white/5 border-dashed opacity-50 sm:translate-y-8"></div>
         </div>
       </div>
     </section>

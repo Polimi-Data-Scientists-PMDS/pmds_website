@@ -17,27 +17,27 @@
 }
 
 :root {
-  --background: var(--color-zinc-950);
-  --foreground: var(--color-white);
-  --muted: var(--color-zinc-400);
-  --link: var(--color-blue-500);
-  --border: var(--color-zinc-800);
-  --surface: var(--color-zinc-900);
-  --surface-secondary: var(--color-zinc-800);
-  --surface-accent: #151a2d;
+  --background: #020202;
+  --foreground: #ffffff;
+  --muted: #a1a1aa;
+  --link: #4b6ffe;
+  --border: rgba(255, 255, 255, 0.08);
+  --surface: rgba(10, 10, 10, 0.7);
+  --surface-secondary: rgba(255, 255, 255, 0.05);
+  --surface-accent: rgba(21, 26, 45, 0.85);
   --accent: #4b6ffe;
   --accent-secondary: #3f5fdf;
 }
 
 .dark {
-  --background: var(--color-zinc-950);
-  --foreground: var(--color-white);
-  --muted: var(--color-zinc-400);
-  --link: var(--color-blue-500);
-  --border: var(--color-zinc-800);
-  --surface: var(--color-zinc-900);
-  --surface-secondary: var(--color-zinc-800);
-  --surface-accent: #151a2d;
+  --background: #020202;
+  --foreground: #ffffff;
+  --muted: #a1a1aa;
+  --link: #4b6ffe;
+  --border: rgba(255, 255, 255, 0.08);
+  --surface: rgba(10, 10, 10, 0.7);
+  --surface-secondary: rgba(255, 255, 255, 0.05);
+  --surface-accent: rgba(21, 26, 45, 0.85);
   --accent: #4b6ffe;
   --accent-secondary: #3f5fdf;
 }

@@ -10,8 +10,8 @@ export default function MemberCard({
   priority?: boolean;
 }) {
   return (
-    <div className="flex flex-col bg-surface border rounded-3xl overflow-hidden transition-all duration-300 group">
-      <div className="aspect-square w-full bg-surface-accent relative shrink-0">
+    <div className="flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl overflow-hidden transition-all duration-300 group">
+      <div className="aspect-square w-full bg-[#151a2d] relative shrink-0">
         {member.imageUrl ? (
           <Image
             src={member.imageUrl}
@@ -44,7 +44,7 @@ export default function MemberCard({
               href={member.linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-surface-secondary flex items-center justify-center text-muted hover:text-foreground hover:bg-accent-secondary transition-colors"
+              className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-muted hover:text-white hover:bg-[#0A66C2] transition-colors"
               title="LinkedIn"
             >
               <FaLinkedinIn size={14} />
@@ -54,7 +54,7 @@ export default function MemberCard({
           {member.email && (
             <a
               href={`mailto:${member.email}`}
-              className="w-8 h-8 rounded-full bg-surface-secondary flex items-center justify-center text-muted hover:text-foreground hover:bg-muted/30 transition-all"
+              className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-muted hover:text-white hover:bg-zinc-700 transition-all"
               title="Send Email"
             >
               <FaEnvelope size={14} />

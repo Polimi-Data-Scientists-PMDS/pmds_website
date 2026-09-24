@@ -19,7 +19,7 @@ export default function Collaborators() {
       </div>
 
       <div className="relative flex flex-row overflow-hidden">
-        <div className="absolute top-0 left-0 bottom-0 right-0 inset-shadow-left z-10"></div>
+        <div className="absolute top-0 left-0 bottom-0 right-0 inset-shadow-left z-10 pointer-events-none"></div>
         <motion.div
           initial={{ x: 0 }}
           animate={{ x: '-100%' }}

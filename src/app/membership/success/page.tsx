@@ -80,7 +80,7 @@ function SuccessState() {
 
       <Confetti />
 
-      <div className="w-full max-w-[600px] bg-surface/80 backdrop-blur-xl border rounded-[32px] p-10 md:p-16 text-center flex flex-col items-center shadow-[0_0_80px_--alpha(var(--color-accent)/15%)] relative z-10">
+      <div className="w-full max-w-[600px] bg-surface/80 backdrop-blur-xl border border-white/10 rounded-[32px] p-10 md:p-16 text-center flex flex-col items-center shadow-[0_0_80px_rgba(75,111,254,0.15)] relative z-10">
         {/* Animated Checkmark Background (Checkmark is static) */}
         <div className="relative mb-6">
           <div className="absolute inset-0 bg-accent blur-[20px] opacity-40 rounded-full animate-pulse"></div>
@@ -95,7 +95,7 @@ function SuccessState() {
           excited to have you on board as an official member.
         </p>
 
-        <div className="w-full bg-surface-secondary border rounded-2xl p-6 mb-8 text-left">
+        <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 text-left">
           <h3 className="text-foreground font-semibold mb-3">Next Steps:</h3>
           <ul className="text-muted text-sm space-y-3">
             <li className="flex gap-2">
@@ -133,7 +133,7 @@ function SuccessState() {
             </a>
             <Link
               href="/"
-              className="flex-1 flex items-center justify-center bg-surface hover:bg-surface-secondary border text-foreground font-semibold py-3.5 px-6 rounded-full transition-colors"
+              className="flex-1 flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-foreground font-semibold py-3.5 px-6 rounded-full transition-colors"
             >
               Back to Home
             </Link>
@@ -151,7 +151,7 @@ function SuccessState() {
 function ErrorState() {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 pt-20">
-      <div className="w-full max-w-[600px] bg-surface border border-red-500/20 rounded-[32px] p-10 text-center flex flex-col items-center">
+      <div className="w-full max-w-[600px] bg-surface/80 backdrop-blur-xl border border-red-500/20 rounded-[32px] p-10 text-center flex flex-col items-center">
         <FaExclamationTriangle className="text-red-500 text-5xl mb-6" />
         <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
           Invalid Session
@@ -162,7 +162,7 @@ function ErrorState() {
         </p>
         <Link
           href="/membership"
-          className="bg-surface hover:bg-surface-secondary border text-foreground font-semibold py-3 px-6 rounded-full transition-colors"
+          className="bg-white/5 hover:bg-white/10 border border-white/10 text-foreground font-semibold py-3 px-6 rounded-full transition-colors"
         >
           Return to Membership
         </Link>

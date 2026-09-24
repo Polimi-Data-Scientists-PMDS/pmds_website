@@ -67,7 +67,7 @@ export default function Hero() {
           </Link>
           <Link
             href="/events"
-            className="w-fit bg-surface border backdrop-blur-md hover:bg-surface-secondary text-foreground text-sm font-semibold py-3.5 px-8 rounded-full transition-all text-center"
+            className="w-fit bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 text-foreground text-sm font-semibold py-3.5 px-8 rounded-full transition-all text-center"
           >
             Explore Events
           </Link>

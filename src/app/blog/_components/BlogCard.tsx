@@ -17,7 +17,7 @@ export default function BlogCard({
     : { href: `/blog/${post.slug}` };
 
   return (
-    <div className="group flex flex-col bg-surface border rounded-3xl transition-all duration-300 relative">
+    <div className="group flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl transition-all duration-300 relative">
       {post.imageUrl && post.imageUrl !== '/placeholder.jpg' && (
         <LinkWrapper
           {...wrapperProps}
@@ -32,7 +32,7 @@ export default function BlogCard({
             priority={priority}
           />
           {post.externalUrl && (
-            <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md bg-background/40 border text-foreground flex items-center gap-1.5">
+            <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md bg-black/40 border border-white/10 text-foreground flex items-center gap-1.5">
               <FaExternalLinkAlt size={10} /> External
             </div>
           )}
@@ -55,7 +55,7 @@ export default function BlogCard({
           {post.excerpt}
         </p>
 
-        <div className="flex items-center justify-between mt-auto pt-5 border-t">
+        <div className="flex items-center justify-between mt-auto pt-5 border-t border-white/5">
           {post.authors && post.authors.length !== 0 ? (
             <div className="relative z-10">
               <PeopleGroup size="sm" people={post.authors} />

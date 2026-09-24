@@ -9,7 +9,7 @@ export default function CtaSection() {
 
   return (
     <section className="w-full max-w-[850px] mx-auto px-6 mt-20 mb-20">
-      <div className="w-full bg-surface border rounded-[40px] px-8 py-12 md:py-16 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_80px_--alpha(var(--color-accent)/5%)]">
+      <div className="w-full bg-[#0a0a0a]/90 backdrop-blur-sm border border-white/5 rounded-[40px] px-8 py-12 md:py-16 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_80px_rgba(75,111,254,0.05)]">
 
         {/* Glow behind the CTA */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-accent/20 blur-[100px] rounded-full pointer-events-none"></div>
@@ -22,12 +22,12 @@ export default function CtaSection() {
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4 relative z-10">
-          <Link href="/membership" className="cursor-pointer flex items-center justify-center gap-2 bg-foreground text-background hover:bg-foreground/90 text-sm font-bold py-3.5 px-8 rounded-full transition-all group shadow-[0_0_20px_--alpha(var(--color-foreground)/10%)]">
+          <Link href="/membership" className="cursor-pointer flex items-center justify-center gap-2 bg-foreground text-background hover:bg-foreground/90 text-sm font-bold py-3.5 px-8 rounded-full transition-all group shadow-[0_0_20px_rgba(255,255,255,0.1)]">
             Become a Member <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
           </Link>
           <button
             onClick={() => setIsNewsletterOpen(true)}
-            className="cursor-pointer flex items-center justify-center gap-2 bg-surface border hover:bg-surface-secondary text-foreground text-sm font-semibold py-3.5 px-8 rounded-full transition-all"
+            className="cursor-pointer flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-foreground text-sm font-semibold py-3.5 px-8 rounded-full transition-all"
           >
             <FaEnvelope /> Subscribe to Newsletter
           </button>
@@ -36,13 +36,13 @@ export default function CtaSection() {
 
       {/* Newsletter Modal */}
       {isNewsletterOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
           <div
-            className="w-full max-w-[500px] bg-surface border rounded-3xl p-6 relative flex flex-col items-center shadow-2xl"
+            className="w-full max-w-[500px] bg-[#0a0a0a] border border-white/10 rounded-3xl p-6 relative flex flex-col items-center shadow-2xl"
           >
             <button
               onClick={() => setIsNewsletterOpen(false)}
-              className="cursor-pointer absolute top-4 right-4 text-muted hover:text-foreground transition-colors bg-surface-secondary p-2 rounded-full"
+              className="cursor-pointer absolute top-4 right-4 text-muted hover:text-foreground transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full"
             >
               <FaTimes size={18} />
             </button>

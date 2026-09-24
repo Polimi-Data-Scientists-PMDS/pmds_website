@@ -10,7 +10,7 @@ export default function ThankYouPage() {
 
       <Confetti />
 
-      <div className="w-full max-w-[600px] bg-surface/80 backdrop-blur-xl border rounded-[32px] p-10 md:p-16 text-center flex flex-col items-center shadow-[0_0_80px_--alpha(var(--color-accent)/15%)] relative z-10">
+      <div className="w-full max-w-[600px] bg-surface/80 backdrop-blur-xl border border-white/10 rounded-[32px] p-10 md:p-16 text-center flex flex-col items-center shadow-[0_0_80px_rgba(75,111,254,0.15)] relative z-10">
         <div className="relative mb-6">
           <div className="absolute inset-0 bg-accent blur-[20px] opacity-40 rounded-full animate-pulse"></div>
           <FaHeart className="text-accent text-7xl relative z-10" />
@@ -27,7 +27,7 @@ export default function ThankYouPage() {
 
         <Link
           href="/"
-          className="bg-accent hover:bg-accent-secondary text-foreground font-semibold py-3.5 px-8 rounded-full transition-colors shadow-[0_0_20px_--alpha(var(--color-accent)/30%)]"
+          className="bg-accent hover:bg-accent-secondary text-foreground font-semibold py-3.5 px-8 rounded-full transition-colors shadow-[0_0_20px_rgba(75,111,254,0.3)]"
         >
           Return to Homepage
         </Link>

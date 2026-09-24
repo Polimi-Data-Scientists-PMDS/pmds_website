@@ -92,7 +92,7 @@ export default function MembershipPage() {
 
       <div className="max-w-[1200px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-3 gap-8 items-center relative z-10">
         {/* Supporter Standard Tier */}
-        <div className="flex flex-col bg-surface border rounded-3xl p-8 relative overflow-hidden transition-all h-full">
+        <div className="flex flex-col bg-[#0a0a0a]/90 backdrop-blur-sm border border-white/10 rounded-3xl p-8 relative overflow-hidden transition-all h-full">
           <div className="mb-6">
             <h3 className="text-foreground text-2xl font-bold">Supporter</h3>
             <p className="text-muted text-sm mt-1">
@@ -127,14 +127,14 @@ export default function MembershipPage() {
 
           <button
             onClick={() => setCheckoutTier('standard')}
-            className="cursor-pointer w-full py-4 rounded-xl bg-surface border text-foreground font-medium hover:bg-surface-secondary transition-colors mt-auto"
+            className="cursor-pointer w-full py-4 rounded-xl bg-white/5 border border-white/10 text-foreground font-medium hover:bg-white/10 transition-colors mt-auto"
           >
             Get Supporter
           </button>
         </div>
 
         {/* Supporter Premium Tier */}
-        <div className="flex flex-col bg-gradient-to-b from-surface-accent to-surface border border-accent/40 rounded-3xl p-8 relative overflow-hidden transition-all hover:border-accent/60 shadow-[0_0_40px_--alpha(var(--color-accent)/10%)] md:scale-105 h-full z-10">
+        <div className="flex flex-col bg-gradient-to-b from-surface-accent to-[#0a0a0a]/90 backdrop-blur-sm border border-accent/40 rounded-3xl p-8 relative overflow-hidden transition-all hover:border-accent/60 shadow-[0_0_80px_rgba(75,111,254,0.15)] md:scale-105 h-full z-10">
           <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent" />
 
           <div className="mb-6">
@@ -181,14 +181,14 @@ export default function MembershipPage() {
 
           <button
             onClick={() => setCheckoutTier('premium')}
-            className="cursor-pointer w-full py-4 rounded-xl bg-accent text-foreground font-semibold hover:bg-accent-secondary transition-colors mt-auto shadow-[0_0_20px_--alpha(var(--color-accent)/30%)] hover:shadow-[0_0_30px_--alpha(var(--color-accent)/50%)]"
+            className="cursor-pointer w-full py-4 rounded-xl bg-accent text-foreground font-semibold hover:bg-accent-secondary transition-colors mt-auto shadow-[0_0_20px_rgba(75,111,254,0.3)] hover:shadow-[0_0_30px_rgba(75,111,254,0.5)]"
           >
             Go Premium
           </button>
         </div>
 
         {/* Active Tier */}
-        <div className="flex flex-col bg-surface border rounded-3xl p-8 relative overflow-hidden transition-all h-full">
+        <div className="flex flex-col bg-[#0a0a0a]/90 backdrop-blur-sm border border-white/10 rounded-3xl p-8 relative overflow-hidden transition-all h-full">
           <div className="mb-6">
             <h3 className="text-foreground text-2xl font-bold">
               Active Member
@@ -237,7 +237,7 @@ export default function MembershipPage() {
 
           <button
             onClick={() => setCheckoutTier('active')}
-            className="cursor-pointer w-full py-4 rounded-xl bg-surface border text-foreground font-medium hover:bg-surface-secondary transition-colors mt-auto"
+            className="cursor-pointer w-full py-4 rounded-xl bg-white/5 border border-white/10 text-foreground font-medium hover:bg-white/10 transition-colors mt-auto"
           >
             Apply Now
           </button>
@@ -251,7 +251,7 @@ export default function MembershipPage() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               What is the difference between Premium and Active?
             </h4>
@@ -265,7 +265,7 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               What are the responsibilities of an Active Member?
             </h4>
@@ -276,7 +276,7 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               Do I need to be approved by the Board?
             </h4>
@@ -290,7 +290,7 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               Who can become a member?
             </h4>
@@ -313,7 +313,7 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               How long is the membership valid?
             </h4>
@@ -324,7 +324,7 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               Are the membership fees refundable?
             </h4>
@@ -335,7 +335,7 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               When does a membership expire?
             </h4>
@@ -346,7 +346,7 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               How do I get my welcome gadget?
             </h4>
@@ -357,7 +357,7 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border bg-surface">
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
             <h4 className="text-foreground font-medium text-base mb-2">
               Can I switch tiers later?
             </h4>
@@ -384,8 +384,8 @@ export default function MembershipPage() {
 
       {/* Checkout Modal */}
       {checkoutTier && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/60 backdrop-blur-sm px-4">
-          <div className="bg-surface border p-8 rounded-3xl w-full max-w-md shadow-[0_0_80px_--alpha(var(--color-accent)/15%)] relative">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+          <div className="bg-[#0a0a0a] border border-white/10 p-8 rounded-3xl w-full max-w-md shadow-[0_0_80px_rgba(75,111,254,0.15)] relative">
             <button
               onClick={closeModal}
               className="absolute top-4 right-4 text-muted hover:text-foreground transition-colors p-2 text-xl"
@@ -406,7 +406,7 @@ export default function MembershipPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="mario.rossi@mail.polimi.it"
-                  className="w-full bg-surface-secondary border rounded-xl px-4 py-3 text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
                   required
                 />
                 {errorMsg && (
