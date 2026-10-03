@@ -23,7 +23,7 @@
   --link: #4b6ffe;
   --border: rgba(255, 255, 255, 0.08);
   --surface: rgba(10, 10, 10, 0.7);
-  --surface-secondary: rgba(255, 255, 255, 0.05);
+  --surface-secondary: #121212;
   --surface-accent: rgba(21, 26, 45, 0.85);
   --accent: #4b6ffe;
   --accent-secondary: #3f5fdf;
@@ -36,7 +36,7 @@
   --link: #4b6ffe;
   --border: rgba(255, 255, 255, 0.08);
   --surface: rgba(10, 10, 10, 0.7);
-  --surface-secondary: rgba(255, 255, 255, 0.05);
+  --surface-secondary: #121212;
   --surface-accent: rgba(21, 26, 45, 0.85);
   --accent: #4b6ffe;
   --accent-secondary: #3f5fdf;

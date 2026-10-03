@@ -47,6 +47,7 @@ export default function PeopleGroup({
         {people.map((person, i) => (
           <div
             key={i}
+            style={{ zIndex: i }}
             className={cn(
               SIZING[size],
               'rounded-full border-2 border-background bg-surface-secondary relative overflow-hidden flex items-center justify-center text-muted text-sm shrink-0',
@@ -62,7 +63,9 @@ export default function PeopleGroup({
                 unoptimized
               />
             ) : (
-              person.name.charAt(0)
+              <div className="inset-0 flex items-center justify-center">
+                {person.name.charAt(0)}
+              </div>
             )}
           </div>
         ))}
