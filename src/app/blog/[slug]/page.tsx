@@ -31,9 +31,26 @@ export async function generateMetadata({
     return { title: 'Post Not Found' };
   }
 
+  const images = post.imageUrl
+    ? [{ url: post.imageUrl, alt: post.title }]
+    : [{ url: '/assets/og-image.png', alt: post.title }];
+
   return {
     title: post.title,
     description: post.excerpt,
+    openGraph: {
+      type: 'article',
+      url: `/blog/${post.slug}`,
+      title: post.title,
+      description: post.excerpt,
+      images: images,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: post.imageUrl ? [post.imageUrl] : ['/assets/og-image.png'],
+    },
   };
 }
 

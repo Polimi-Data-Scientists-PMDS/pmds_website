@@ -53,6 +53,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/tree',
+        destination: '/l',
+        permanent: false,
+      },
+      {
+        source: '/links',
+        destination: '/l',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

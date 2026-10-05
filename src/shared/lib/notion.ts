@@ -417,13 +417,19 @@ export async function getPosts(): Promise<BlogPost[]> {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)+/g, '');
 
+    const rawTags =
+      props['Tag (mandatory)']?.type === 'multi_select'
+        ? getMultiSelect(props['Tag (mandatory)'])
+        : [getSelect(props['Tag (mandatory)'])].filter(Boolean);
+    const tags = rawTags.length > 0 ? (rawTags as string[]) : ['General'];
+
     return {
       id: page.id,
       slug: slug,
       title: title,
       excerpt: getText(props['Excerpt (mandatory)']),
       date: formattedDate,
-      tags: [getSelect(props['Tag (mandatory)']) || 'General'],
+      tags: tags,
       imageUrl:
         getStableImageUrl(
           page.id,

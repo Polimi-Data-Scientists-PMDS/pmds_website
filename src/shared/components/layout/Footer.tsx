@@ -1,9 +1,24 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
 import { FooterSection } from './FooterSection';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  const isBioPage =
+    pathname === '/l' ||
+    pathname === '/tree' ||
+    pathname === '/links' ||
+    pathname?.startsWith('/l/') ||
+    pathname?.startsWith('/tree/') ||
+    pathname?.startsWith('/links/');
+
+  if (isBioPage) return null;
+
   return (
     <footer className="w-full border-t bg-background pt-20 pb-10 mt-24">
       <div className="w-full max-w-[1100px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
