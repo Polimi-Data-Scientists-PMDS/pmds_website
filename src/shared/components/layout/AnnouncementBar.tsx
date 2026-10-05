@@ -1,3 +1,6 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import { FaRocket } from 'react-icons/fa';
 
 export default function AnnouncementBar({
@@ -9,6 +12,18 @@ export default function AnnouncementBar({
   linkText?: string;
   link?: string;
 }) {
+  const pathname = usePathname();
+
+  const isBioPage =
+    pathname === '/l' ||
+    pathname === '/tree' ||
+    pathname === '/links' ||
+    pathname?.startsWith('/l/') ||
+    pathname?.startsWith('/tree/') ||
+    pathname?.startsWith('/links/');
+
+  if (isBioPage) return null;
+
   return (
     <div className="w-full bg-gradient-to-r from-accent to-indigo-600 px-4 py-2 flex items-center justify-center relative z-50 shadow-md">
       <div className="flex items-center gap-2 text-foreground text-sm font-semibold">

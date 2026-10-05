@@ -1,7 +1,12 @@
 import { NextRequest } from "next/server";
 import { Client } from "@notionhq/client";
+import sharp from "sharp";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
+
+// Threshold above which we optimize raster images (250 KB)
+const COMPRESSION_THRESHOLD = 250 * 1024;
+const MAX_DIMENSION = 1600;
 
 export async function GET(
   request: NextRequest,
@@ -40,10 +45,38 @@ export async function GET(
       return new Response("Failed to fetch image from storage", { status: res.status });
     }
 
-    const contentType = res.headers.get("content-type") || "image/jpeg";
-    const buffer = await res.arrayBuffer();
+    let contentType = res.headers.get("content-type") || "image/jpeg";
+    const rawBuffer = Buffer.from(await res.arrayBuffer());
+    let finalBuffer: Buffer = rawBuffer;
 
-    return new Response(buffer, {
+    // Lightweight optimization for raster images exceeding the size threshold
+    const isRasterImage =
+      contentType.startsWith("image/") && !contentType.includes("svg");
+
+    if (isRasterImage && rawBuffer.length > COMPRESSION_THRESHOLD) {
+      try {
+        const optimized = await sharp(rawBuffer)
+          .rotate() // Automatically orient based on EXIF metadata
+          .resize({
+            width: MAX_DIMENSION,
+            height: MAX_DIMENSION,
+            fit: "inside",
+            withoutEnlargement: true,
+          })
+          .webp({ quality: 82, effort: 4 })
+          .toBuffer();
+
+        // Only adopt optimized version if it actually reduced the payload
+        if (optimized.length < rawBuffer.length) {
+          finalBuffer = optimized;
+          contentType = "image/webp";
+        }
+      } catch (sharpError) {
+        console.warn("Sharp optimization failed, serving original:", sharpError);
+      }
+    }
+
+    return new Response(new Uint8Array(finalBuffer), {
       headers: {
         "Content-Type": contentType,
         "Cache-Control": "public, max-age=31536000, s-maxage=31536000, immutable",

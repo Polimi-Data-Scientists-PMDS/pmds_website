@@ -44,6 +44,18 @@ export default function BlogCard({
           <span className="text-accent text-xs font-bold uppercase tracking-wider">
             {post.date}
           </span>
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/5 text-muted text-[10px] font-medium uppercase tracking-wider"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         <LinkWrapper {...wrapperProps} className="inline-block">

@@ -3,11 +3,23 @@
 import { cn } from '@/shared/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import HeaderLink from './HeaderLink';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isBioPage =
+    pathname === '/l' ||
+    pathname === '/tree' ||
+    pathname === '/links' ||
+    pathname?.startsWith('/l/') ||
+    pathname?.startsWith('/tree/') ||
+    pathname?.startsWith('/links/');
+
+  if (isBioPage) return null;
 
   return (
     <header className="w-full relative z-50">
