@@ -19,37 +19,41 @@ export default function Header() {
     pathname?.startsWith('/tree/') ||
     pathname?.startsWith('/links/');
 
+  const isPmqc = pathname === '/pmqc' || pathname?.startsWith('/pmqc/');
+
   if (isBioPage) return null;
 
   return (
     <header className="w-full relative z-50">
       <div
         className={cn(
-          'w-full max-w-[1100px] mx-auto px-6 py-8 flex items-center justify-between',
+          'w-full max-w-[1100px] mx-auto px-6 py-4 sm:py-6 lg:py-8 flex items-center justify-between',
           isOpen && 'bg-background/70 backdrop-blur-xl',
         )}
       >
         <Link href="/" className="relative block w-[200px] h-[55px]">
           <Image
-            src="/assets/logo.svg"
-            alt="PMDS Logo"
+            src={isPmqc ? '/assets/pmqc/logo-pmqc.svg' : '/assets/logo.svg'}
+            alt={isPmqc ? 'PMQC Logo' : 'PMDS Logo'}
             fill
             className="object-contain object-left"
+            priority
           />
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-12 text-sm font-normal text-muted items-center">
+        <nav className="hidden md:flex gap-10 xl:gap-12 text-sm font-normal text-muted items-center">
           <HeaderLink text="Blog" href="/blog" />
           <HeaderLink text="Projects" href="/projects" />
           <HeaderLink text="Events" href="/events" />
+          <HeaderLink text="PMQC" href="/pmqc" />
           <HeaderLink text="Become a Member" href="/membership" />
           <HeaderLink text="Members" href="/members" />
           <a
             href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white/5 border border-white/10 hover:bg-white/10 px-4 py-2 rounded-full transition-colors text-white font-medium text-sm ml-[-1rem]"
+            className="bg-white/5 border border-white/10 hover:bg-white/10 px-4 py-2 rounded-full transition-colors text-white font-medium text-sm ml-[-0.5rem] lg:ml-[-1rem]"
           >
             Donate
           </a>
@@ -59,6 +63,7 @@ export default function Header() {
         <button
           className="cursor-pointer md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle navigation menu"
         >
           <span
             className={cn(
@@ -104,6 +109,13 @@ export default function Header() {
             onClick={() => setIsOpen(false)}
           >
             Events
+          </Link>
+          <Link
+            href="/pmqc"
+            className="py-2 hover:text-foreground"
+            onClick={() => setIsOpen(false)}
+          >
+            PMQC
           </Link>
           <Link
             href="/membership"

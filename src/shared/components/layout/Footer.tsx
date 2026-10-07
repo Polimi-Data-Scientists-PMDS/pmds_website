@@ -17,6 +17,8 @@ export default function Footer() {
     pathname?.startsWith('/tree/') ||
     pathname?.startsWith('/links/');
 
+  const isPmqc = pathname === '/pmqc' || pathname?.startsWith('/pmqc/');
+
   if (isBioPage) return null;
 
   return (
@@ -25,8 +27,8 @@ export default function Footer() {
         <div className="flex flex-col gap-6 md:w-1/3">
           <Link href="/" className="relative block w-[200px] h-[55px]">
             <Image
-              src="/assets/logo.svg"
-              alt="PMDS Logo"
+              src={isPmqc ? '/assets/pmqc/logo-pmqc.svg' : '/assets/logo.svg'}
+              alt={isPmqc ? 'PMQC Logo' : 'PMDS Logo'}
               fill
               className="object-contain object-left"
             />
@@ -69,6 +71,7 @@ export default function Footer() {
             { text: 'Blog', href: '/blog' },
             { text: 'Projects', href: '/projects' },
             { text: 'Events', href: '/events' },
+            { text: 'PMQC', href: '/pmqc' },
             { text: 'Become a Member', href: '/membership' },
             {
               text: 'Support Us (Donate)',
