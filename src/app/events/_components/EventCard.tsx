@@ -2,6 +2,7 @@ import { cn } from '@/shared/lib/utils';
 import { Event } from '@/shared/types';
 import Image from 'next/image';
 import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaAtom } from 'react-icons/fa6';
 
 export default function EventCard({
   event,
@@ -10,6 +11,8 @@ export default function EventCard({
   event: Event;
   priority?: boolean;
 }) {
+  const isPmqc = event.departments?.some((d) => d.toUpperCase() === 'PMQC');
+
   return (
     <div className="flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-[32px] overflow-hidden transition-colors duration-300 group h-full">
       {/* Image Section */}
@@ -24,6 +27,16 @@ export default function EventCard({
             priority={priority}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-80" />
+
+          {/* PMQC Badge on Image */}
+          {isPmqc && (
+            <div className="absolute top-4 left-4 z-10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.25)]">
+                <FaAtom className="text-cyan-300 text-xs" />
+                <span>PMQC</span>
+              </span>
+            </div>
+          )}
 
           {/* Floating Badge on Image */}
           <div className="absolute top-4 right-4 z-10">
@@ -43,6 +56,15 @@ export default function EventCard({
 
       {/* Content Section */}
       <div className="flex flex-col flex-1 p-8">
+        {/* PMQC Badge if no image */}
+        {!event.imageUrl && isPmqc && (
+          <div className="mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.25)] w-fit">
+              <FaAtom className="text-cyan-300 text-xs" />
+              <span>PMQC</span>
+            </span>
+          </div>
+        )}
         {/* Title without line-clamp */}
         <h3 className="text-2xl font-bold text-foreground mb-3 leading-snug">
           {event.title}

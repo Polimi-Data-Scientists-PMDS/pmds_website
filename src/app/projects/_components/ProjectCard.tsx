@@ -11,6 +11,7 @@ import {
   FaHandshake,
   FaUsers,
 } from 'react-icons/fa';
+import { FaAtom } from 'react-icons/fa6';
 
 export default function ProjectCard({
   project,
@@ -19,6 +20,10 @@ export default function ProjectCard({
   project: Project;
   priority?: boolean;
 }) {
+  const isPmqc =
+    project.departments?.some((d) => d.toUpperCase() === 'PMQC') ||
+    project.tags?.some((t) => t.toUpperCase() === 'PMQC');
+
   return (
     <div className="group flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl transition-colors duration-300 relative card-hover-elevate">
       {/* Image Container */}
@@ -45,6 +50,17 @@ export default function ProjectCard({
             </span>
           </div>
         )}
+
+        {/* PMQC Badge */}
+        {isPmqc && (
+          <div className="absolute top-4 left-4 z-10">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.25)]">
+              <FaAtom className="text-cyan-300 text-xs" />
+              <span>PMQC</span>
+            </span>
+          </div>
+        )}
+
         {/* Status Badge */}
         <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md bg-black/40 border border-white/10 text-foreground">
           {project.status === 'Recruiting' && (
