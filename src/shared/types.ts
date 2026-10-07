@@ -37,6 +37,7 @@ export interface Project {
   githubUrl?: string;
   paperUrl?: string;
   reportUrl?: string;
+  departments?: string[];
 }
 
 export interface BlogPost {
@@ -67,6 +68,7 @@ export interface Event {
   registrationUrl?: string;
   resourcesUrl?: string;
   upcoming: boolean;
+  departments?: string[];
 }
 
 export interface Announcement {
