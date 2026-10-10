@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
+import { FaArrowLeftLong } from 'react-icons/fa6';
 import { FooterSection } from './FooterSection';
 
 export default function Footer() {
@@ -41,9 +42,12 @@ export default function Footer() {
           {isPmqc && (
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 font-semibold transition-colors w-fit -mt-2 group"
+              className="inline-flex items-center gap-2 text-xs text-cyan-400 hover:text-cyan-300 font-semibold transition-all w-fit -mt-2 group"
             >
-              <span>← Back to PMDS Home</span>
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-cyan-400/15 border border-cyan-400/30 text-cyan-300 group-hover:bg-cyan-400 group-hover:text-black transition-all duration-300">
+                <FaArrowLeftLong className="text-[10px] group-hover:-translate-x-0.5 transition-transform duration-300" />
+              </span>
+              <span>Back to PMDS Home</span>
             </Link>
           )}
           <div className="flex gap-5 mt-2">

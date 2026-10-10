@@ -76,15 +76,6 @@ export default function PmqcQuantumMonthSection() {
 
           <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs">
             <span className="text-cyan-400/90 font-medium">Dates coming soon</span>
-            <a
-              href="https://forms.gle/SJT29NADkTYmPbB97"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-muted hover:text-foreground transition-colors group/link"
-            >
-              <span>Get notified</span>
-              <FaArrowRight className="text-[10px] group-hover/link:translate-x-0.5 transition-transform" />
-            </a>
           </div>
         </div>
 
@@ -117,7 +108,7 @@ export default function PmqcQuantumMonthSection() {
               onClick={() => setIsNewsletterOpen(true)}
               className="cursor-pointer inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-semibold transition-colors"
             >
-              <span>Subscribe free</span>
+              <span>Subscribe for free</span>
               <FaArrowRight className="text-[10px]" />
             </button>
             <a
