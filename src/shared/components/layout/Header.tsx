@@ -1,15 +1,39 @@
 'use client';
 
 import { cn } from '@/shared/lib/utils';
+import {
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import HeaderLink from './HeaderLink';
 
+const NAV_LINKS = [
+  { text: 'Blog', href: '/blog' },
+  { text: 'Projects', href: '/projects' },
+  { text: 'Events', href: '/events' },
+  { text: 'PMQC', href: '/pmqc' },
+  { text: 'Become a Member', href: '/membership' },
+  { text: 'Members', href: '/members' },
+];
+
+const DONATE_URL = 'https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00';
+
+const BAR_CLASS = 'w-6 h-0.5 bg-foreground transition duration-300';
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, 'change', (y) => setIsScrolled(y > 0));
 
   const isBioPage =
     pathname === '/l' ||
@@ -24,124 +48,149 @@ export default function Header() {
   if (isBioPage) return null;
 
   return (
-    <header className="w-full relative z-50">
-      <div
-        className={cn(
-          'w-full max-w-[1100px] mx-auto px-6 py-4 sm:py-6 lg:py-8 flex items-center justify-between',
-          isOpen && 'bg-background/70 backdrop-blur-xl',
-        )}
-      >
-        <Link href="/" className="relative block w-[200px] h-[55px]">
-          <Image
-            src={isPmqc ? '/assets/pmqc/logo-pmqc.svg' : '/assets/logo.svg'}
-            alt={isPmqc ? 'PMQC Logo' : 'PMDS Logo'}
-            fill
-            className="object-contain object-left"
-            priority
-          />
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-10 xl:gap-12 text-sm font-normal text-muted items-center">
-          <HeaderLink text="Blog" href="/blog" />
-          <HeaderLink text="Projects" href="/projects" />
-          <HeaderLink text="Events" href="/events" />
-          <HeaderLink text="PMQC" href="/pmqc" />
-          <HeaderLink text="Become a Member" href="/membership" />
-          <HeaderLink text="Members" href="/members" />
-          <a
-            href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white/5 border border-white/10 hover:bg-white/10 px-4 py-2 rounded-full transition-colors text-white font-medium text-sm ml-[-0.5rem] lg:ml-[-1rem]"
-          >
-            Donate
-          </a>
-        </nav>
-
-        {/* Mobile Nav Toggle */}
-        <button
-          className="cursor-pointer md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle navigation menu"
+    <MotionConfig
+      reducedMotion="user"
+      transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
+    >
+      {/* In-flow spacer keeps page layout stable while the bar is fixed */}
+      <header className="relative z-50 h-22 md:h-30">
+        <div
+          className={cn(
+            'inset-x-0 top-0 p-4 md:p-6',
+            isScrolled ? 'fixed' : 'absolute',
+          )}
         >
-          <span
+          {/*
+           * Pill on mobile, and on desktop once scrolled. On desktop at the top
+           * of the page the md: overrides turn it back into the full nav bar
+           * (no background or border, so the radius is invisible there).
+           * Spacing: gutter p-4 mobile / p-6 desktop, pill padding px-4 py-2.
+           */}
+          <motion.div
+            layout
             className={cn(
-              'block w-6 h-0.5 bg-foreground transition-transform duration-300',
-              isOpen && 'rotate-45 translate-y-2',
+              'w-full rounded-3xl md:max-w-75 mx-auto p-4 flex flex-col border border-white/10 bg-background/70 backdrop-blur-xl shadow-2xl',
+              isOpen && 'md:max-w-125',
+              !isScrolled &&
+                'md:max-w-250 md:border-transparent md:bg-transparent md:shadow-none',
             )}
-          ></span>
-          <span
-            className={cn(
-              'block w-6 h-0.5 bg-foreground transition-opacity duration-300',
-              isOpen ? 'opacity-0' : 'opacity-100',
-            )}
-          ></span>
-          <span
-            className={cn(
-              'block w-6 h-0.5 bg-foreground transition-transform duration-300',
-              isOpen && '-rotate-45 -translate-y-2',
-            )}
-          ></span>
-        </button>
-      </div>
+          >
+            <div className="flex items-center justify-between gap-6">
+              <motion.div
+                layout
+                className={cn(
+                  'relative w-35 h-9.5',
+                  !isScrolled && 'md:w-50 md:h-13.75',
+                )}
+              >
+                <Link
+                  href="/"
+                  className="absolute inset-0 block"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Image
+                    src={
+                      isPmqc ? '/assets/pmqc/logo-pmqc.svg' : '/assets/logo.svg'
+                    }
+                    alt={isPmqc ? 'PMQC Logo' : 'PMDS Logo'}
+                    fill
+                    className="object-contain object-left"
+                    priority
+                  />
+                </Link>
+              </motion.div>
 
-      {/* Mobile Nav Menu */}
-      {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-background/70 backdrop-blur-xl border-b py-6 px-6 flex flex-col gap-4 text-sm font-medium text-muted shadow-2xl">
-          <Link
-            href="/blog"
-            className="py-2 hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            Blog
-          </Link>
-          <Link
-            href="/projects"
-            className="py-2 hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            Projects
-          </Link>
-          <Link
-            href="/events"
-            className="py-2 hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            Events
-          </Link>
-          <Link
-            href="/pmqc"
-            className="py-2 hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            PMQC
-          </Link>
-          <Link
-            href="/membership"
-            className="py-2 hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            Become a Member
-          </Link>
-          <Link
-            href="/members"
-            className="py-2 hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            Members
-          </Link>
-          <a
-            href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="py-2 hover:text-foreground text-accent font-semibold"
-            onClick={() => setIsOpen(false)}
-          >
-            Support Us (Donate)
-          </a>
+              {/* Desktop Nav */}
+              <AnimatePresence mode="popLayout" initial={false}>
+                {!isScrolled && (
+                  <motion.nav
+                    key="desktop-nav"
+                    layout
+                    initial={{ opacity: 0, filter: 'blur(4px)' }}
+                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, filter: 'blur(4px)' }}
+                    transition={{ duration: 0.2 }}
+                    className="hidden md:flex items-center gap-10 text-sm text-muted"
+                  >
+                    {NAV_LINKS.map((link) => (
+                      <HeaderLink key={link.href} {...link} />
+                    ))}
+                    <a
+                      href={DONATE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="-ml-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-foreground font-medium transition-colors"
+                    >
+                      Donate
+                    </a>
+                  </motion.nav>
+                )}
+              </AnimatePresence>
+
+              {/* Nav Toggle (mobile, and desktop once scrolled) */}
+              <motion.button
+                layout
+                className={cn(
+                  'size-8 flex flex-col justify-center items-center gap-1.5 cursor-pointer',
+                  !isScrolled && 'md:hidden',
+                )}
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="Toggle navigation menu"
+                aria-expanded={isOpen}
+              >
+                <span
+                  className={cn(BAR_CLASS, isOpen && 'rotate-45 translate-y-2')}
+                ></span>
+                <span className={cn(BAR_CLASS, isOpen && 'opacity-0')}></span>
+                <span
+                  className={cn(
+                    BAR_CLASS,
+                    isOpen && '-rotate-45 -translate-y-2',
+                  )}
+                ></span>
+              </motion.button>
+            </div>
+
+            {/* Pill Menu */}
+            <AnimatePresence initial={false} mode="popLayout">
+              {isOpen && (
+                <motion.nav
+                  key="pill-menu"
+                  layout
+                  initial={{ opacity: 0, scaleY: 0, transformOrigin: 'top' }}
+                  animate={{ opacity: 1, scaleY: 1 }}
+                  exit={{ opacity: 0, scaleY: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className={cn(
+                    'flex flex-col pt-6 text-sm font-medium text-muted',
+                    !isScrolled && 'md:hidden',
+                  )}
+                >
+                  {NAV_LINKS.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="py-2 hover:text-foreground transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.text}
+                    </Link>
+                  ))}
+                  <a
+                    href={DONATE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-2 text-accent font-semibold"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Support Us (Donate)
+                  </a>
+                </motion.nav>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </div>
-      )}
-    </header>
+      </header>
+    </MotionConfig>
   );
 }
