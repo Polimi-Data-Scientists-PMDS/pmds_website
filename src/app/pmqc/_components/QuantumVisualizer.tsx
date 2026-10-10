@@ -559,18 +559,20 @@ export default function QuantumVisualizer() {
       const sortedParticles = particles
         .map((part) => {
           const curPartPhi = part.phi + time * part.speed * 0.45;
-          let px = Math.sin(part.theta) * Math.cos(curPartPhi) * part.rRatio;
-          let py = Math.sin(part.theta) * Math.sin(curPartPhi) * part.rRatio;
-          let pz = Math.cos(part.theta) * part.rRatio;
+          const px = Math.sin(part.theta) * Math.cos(curPartPhi) * part.rRatio;
+          const py = Math.sin(part.theta) * Math.sin(curPartPhi) * part.rRatio;
+          const pz = Math.cos(part.theta) * part.rRatio;
 
           // Migrate to dual lobes in entangled stage
+          let finalPx = px;
+          let finalPy = py;
           if (morph > 1.1 && morph < 2.9) {
             const lobeOffset = part.lobe * 0.35 * Math.min(morph - 1.1, 1);
-            px = px * 0.72 + lobeOffset;
-            py = py * 0.72;
+            finalPx = px * 0.72 + lobeOffset;
+            finalPy = py * 0.72;
           }
 
-          const pos = project(px, py, pz);
+          const pos = project(finalPx, finalPy, pz);
           return { ...pos, size: part.size };
         })
         .sort((a, b) => a.depth - b.depth);

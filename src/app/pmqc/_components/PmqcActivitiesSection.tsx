@@ -2,7 +2,7 @@
 
 import { Event, Project } from '@/shared/types';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
   FaArrowRight,
   FaCalendarAlt,
@@ -13,6 +13,8 @@ import {
 import PmqcActivityEventCard from './PmqcActivityEventCard';
 import PmqcActivityModal from './PmqcActivityModal';
 import PmqcActivityProjectCard from './PmqcActivityProjectCard';
+
+const emptySubscribe = () => () => {};
 
 interface PmqcActivitiesSectionProps {
   events: Event[];
@@ -34,11 +36,7 @@ export default function PmqcActivitiesSection({
   // Modal details state
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   // Close modal on Escape key
   useEffect(() => {
