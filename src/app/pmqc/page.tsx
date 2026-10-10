@@ -135,7 +135,7 @@ export default async function PMQCPage() {
         {/* 4 Mini Quantum Visualizers Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {/* Mini 1: Quantum Algorithms */}
-          <div className="bg-[#0e0e12]/85 backdrop-blur-md border border-white/10 hover:border-cyan-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-cyan-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <SuperpositionWaveMini />
@@ -151,7 +151,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 2: Quantum ML */}
-          <div className="bg-[#0e0e12]/85 backdrop-blur-md border border-white/10 hover:border-blue-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(59,130,246,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-blue-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(59,130,246,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <QmlLandscapeMini />
@@ -167,7 +167,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 3: Error Correction & Hardware */}
-          <div className="bg-[#0e0e12]/85 backdrop-blur-md border border-white/10 hover:border-indigo-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(99,102,241,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(99,102,241,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <TransmonQubitMini />
@@ -182,7 +182,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 4: Papers & Newsletter */}
-          <div className="bg-[#0e0e12]/85 backdrop-blur-md border border-white/10 hover:border-purple-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(168,85,247,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-purple-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(168,85,247,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <EntangledPairMini />

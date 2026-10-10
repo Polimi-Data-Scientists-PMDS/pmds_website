@@ -50,7 +50,7 @@ export default function PmqcQuantumMonthSection() {
         } gap-5 sm:gap-6`}
       >
         {/* Card 1: Quantum Error Correction Course */}
-        <div className="relative group bg-[#0e0e12]/80 backdrop-blur-md border border-white/10 hover:border-cyan-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] overflow-hidden">
+        <div className="relative group bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-cyan-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all pointer-events-none" />
 
           <div>
@@ -89,7 +89,7 @@ export default function PmqcQuantumMonthSection() {
         </div>
 
         {/* Card 2: PMQC Newsletter */}
-        <div className="relative group bg-[#0e0e12]/80 backdrop-blur-md border border-white/10 hover:border-blue-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
+        <div className="relative group bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-blue-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all pointer-events-none" />
 
           <div>
@@ -134,7 +134,7 @@ export default function PmqcQuantumMonthSection() {
 
         {/* Card 3: PMQC Launch – 12 December (Hidden until approval from PoliMi) */}
         {SHOW_LAUNCH_EVENT && (
-          <div className="relative group bg-[#0e0e12]/80 backdrop-blur-md border border-white/10 hover:border-indigo-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] overflow-hidden">
+          <div className="relative group bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all pointer-events-none" />
 
             <div>

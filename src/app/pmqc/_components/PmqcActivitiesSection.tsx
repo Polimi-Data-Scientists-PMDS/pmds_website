@@ -92,7 +92,7 @@ export default function PmqcActivitiesSection({
         </div>
 
         {/* Tabs switcher */}
-        <div className="flex items-center p-1 bg-surface/80 border border-white/10 rounded-2xl backdrop-blur-md self-start md:self-auto shadow-sm">
+        <div className="flex items-center p-1 bg-[#0e0e12]/90 border border-white/10 rounded-2xl backdrop-blur-xl self-start md:self-auto shadow-sm">
           <button
             onClick={() => setActiveTab('events')}
             className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
@@ -185,8 +185,8 @@ export default function PmqcActivitiesSection({
               </div>
             </>
           ) : (
-            /* Empty State for Events */
-            <div className="w-full bg-[#0e0e12]/60 border border-white/5 rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center justify-center my-2">
+            /* Empty State */
+            <div className="w-full bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center justify-center my-2">
               <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4">
                 <FaCalendarAlt size={18} />
               </div>
@@ -261,7 +261,7 @@ export default function PmqcActivitiesSection({
             </>
           ) : (
             /* Empty State for Projects */
-            <div className="w-full bg-[#0e0e12]/60 border border-white/5 rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center justify-center my-2">
+            <div className="w-full bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center justify-center my-2">
               <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
                 <FaFolderOpen size={18} />
               </div>

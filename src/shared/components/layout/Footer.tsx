@@ -38,6 +38,14 @@ export default function Footer() {
               ? 'The quantum computing department of PoliMi Data Scientists, at Politecnico di Milano.'
               : 'Student-led association at Politecnico di Milano dedicated to exploring the latest in Data Science.'}
           </p>
+          {isPmqc && (
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 font-semibold transition-colors w-fit -mt-2 group"
+            >
+              <span>← Back to PMDS Home</span>
+            </Link>
+          )}
           <div className="flex gap-5 mt-2">
             <a
               href="https://www.instagram.com/polimidatascientists/"
@@ -69,10 +77,11 @@ export default function Footer() {
         <FooterSection
           title="Explore"
           links={[
+            ...(isPmqc ? [{ text: 'PMDS Home', href: '/' }] : []),
             { text: 'Blog', href: '/blog' },
             { text: 'Projects', href: '/projects' },
             { text: 'Events', href: '/events' },
-            { text: 'PMQC', href: '/pmqc' },
+            ...(isPmqc ? [] : [{ text: 'PMQC', href: '/pmqc' }]),
             { text: 'Become a Member', href: '/membership' },
             {
               text: 'Support Us (Donate)',
