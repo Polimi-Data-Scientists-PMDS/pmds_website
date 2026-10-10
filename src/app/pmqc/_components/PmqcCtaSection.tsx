@@ -15,16 +15,15 @@ export default function PmqcCtaSection() {
 
         {/* Division pill */}
         <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-cyan-400 text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-4 sm:mb-6 relative z-10">
-          Get Involved
+          GET INVOLVED
         </div>
 
         <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-foreground via-slate-100 to-muted tracking-tight leading-tight relative z-10">
-          Stay in the Quantum Field
+          Be part of it from the start
         </h2>
         <p className="text-muted mt-3 sm:mt-4 max-w-[540px] text-xs sm:text-sm md:text-base relative z-10 leading-relaxed">
-          The PMQC team created a short interest form for PoliMi students and
-          quantum enthusiasts. Let us know what topics you&apos;d like to explore,
-          propose project ideas, or simply get notified for our first activities!
+          Tell us what you&apos;d like to learn, pitch a project idea, or just
+          sign up to hear when registrations open. It takes two minutes.
         </p>
 
         {/* Main Actions */}
@@ -36,7 +35,7 @@ export default function PmqcCtaSection() {
             className="cursor-pointer flex items-center justify-center gap-2.5 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-extrabold text-xs sm:text-sm py-3.5 px-7 rounded-full transition-all shadow-[0_0_25px_rgba(6,182,212,0.35)] hover:shadow-[0_0_35px_rgba(6,182,212,0.55)]"
           >
             <FaWpforms className="text-sm" />
-            <span>Fill the Interest Form</span>
+            <span>Fill out the form</span>
             <FaExternalLinkAlt className="text-xs opacity-75" />
           </a>
 
@@ -45,7 +44,7 @@ export default function PmqcCtaSection() {
             className="cursor-pointer flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-foreground text-xs sm:text-sm font-semibold py-3.5 px-6 rounded-full transition-all"
           >
             <FaEnvelope className="text-cyan-400" />
-            <span>Subscribe to Newsletter</span>
+            <span>Subscribe to the newsletter</span>
           </button>
         </div>
 
@@ -55,7 +54,7 @@ export default function PmqcCtaSection() {
           rel="noopener noreferrer"
           className="mt-5 text-xs text-muted hover:text-cyan-300 transition-colors flex items-center gap-1.5 relative z-10"
         >
-          <span>Or explore articles on pmqc.substack.com</span>
+          <span>Or read us on pmqc.substack.com</span>
           <FaExternalLinkAlt className="text-[10px]" />
         </a>
       </div>
@@ -65,7 +64,7 @@ export default function PmqcCtaSection() {
         isOpen={isNewsletterOpen}
         onClose={() => setIsNewsletterOpen(false)}
         title="PMQC Newsletter"
-        description="Subscribe to get quantum computing insights, research digests, and workshop invites straight from Politecnico di Milano."
+        description="One email a week with the quantum papers worth your time, explained clearly. Written by PMQC students at Politecnico di Milano."
         embedUrl="https://pmqc.substack.com/embed?transparent=1&light=1"
       />
     </div>

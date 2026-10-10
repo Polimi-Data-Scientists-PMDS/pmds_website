@@ -25,7 +25,7 @@ export default function Footer() {
     <footer className="w-full border-t bg-background pt-20 pb-10 mt-24">
       <div className="w-full max-w-[1100px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="flex flex-col gap-6 md:w-1/3">
-          <Link href="/" className="relative block w-[200px] h-[55px]">
+          <Link href={isPmqc ? '/pmqc' : '/'} className="relative block w-[200px] h-[55px]">
             <Image
               src={isPmqc ? '/assets/pmqc/logo-pmqc.svg' : '/assets/logo.svg'}
               alt={isPmqc ? 'PMQC Logo' : 'PMDS Logo'}
@@ -34,8 +34,9 @@ export default function Footer() {
             />
           </Link>
           <p className="text-muted text-sm leading-relaxed">
-            Student-led association at Politecnico di Milano dedicated to
-            exploring the latest in Data Science.
+            {isPmqc
+              ? 'The quantum computing department of PoliMi Data Scientists, at Politecnico di Milano.'
+              : 'Student-led association at Politecnico di Milano dedicated to exploring the latest in Data Science.'}
           </p>
           <div className="flex gap-5 mt-2">
             <a

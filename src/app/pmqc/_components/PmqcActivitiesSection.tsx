@@ -23,22 +23,13 @@ export default function PmqcActivitiesSection({
   events,
   projects,
 }: PmqcActivitiesSectionProps) {
-  // 1. Show only UPCOMING events
+  // 1. Filter upcoming events and active projects
   const upcomingEvents = events.filter((e) => e.upcoming);
-
-  // 2. Show only HIRING (Recruiting) or ONGOING projects
   const activeProjects = projects.filter(
     (p) => p.status === 'Recruiting' || p.status === 'Ongoing',
   );
 
-  // If no upcoming events and no active projects, do not render
-  if (upcomingEvents.length === 0 && activeProjects.length === 0) {
-    return null;
-  }
-
-  const hasBoth = upcomingEvents.length > 0 && activeProjects.length > 0;
-  const initialTab = upcomingEvents.length > 0 ? 'events' : 'projects';
-  const [activeTab, setActiveTab] = useState<'events' | 'projects'>(initialTab);
+  const [activeTab, setActiveTab] = useState<'events' | 'projects'>('events');
 
   // Modal details state
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
@@ -82,174 +73,222 @@ export default function PmqcActivitiesSection({
   };
 
   return (
-    <section id="pmqc-activities-anchor" className="w-full max-w-[1200px] mx-auto relative px-2 sm:px-4">
+    <section
+      id="pmqc-activities-anchor"
+      className="w-full max-w-[1200px] mx-auto relative px-2 sm:px-4"
+    >
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 pb-4 border-b border-white/10 gap-4">
         <div>
           <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-cyan-400 text-xs font-bold tracking-wider uppercase mb-2">
-            Schedule & Initiatives
+            EVENTS &amp; PROJECTS
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
-            PMQC Activities
+            What&apos;s on
           </h2>
           <p className="text-muted mt-1.5 text-xs sm:text-sm max-w-[620px] leading-relaxed">
-            Upcoming sessions, open recruiting calls, and active projects driven by
-            PoliMi Quantum Computing.
+            Lessons, talks and projects run by PMQC.
           </p>
         </div>
 
-        {/* Tabs switcher if BOTH exist */}
-        {hasBoth && (
-          <div className="flex items-center p-1 bg-surface/80 border border-white/10 rounded-2xl backdrop-blur-md self-start md:self-auto shadow-sm">
-            <button
-              onClick={() => setActiveTab('events')}
-              className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === 'events'
-                  ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
-                  : 'text-muted hover:text-foreground hover:bg-white/5 border border-transparent'
-              }`}
-            >
-              <FaCalendarAlt size={12} className={activeTab === 'events' ? 'text-cyan-400' : 'text-muted'} />
-              <span>Upcoming Events</span>
-              <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-cyan-500/20 text-cyan-300">
+        {/* Tabs switcher */}
+        <div className="flex items-center p-1 bg-surface/80 border border-white/10 rounded-2xl backdrop-blur-md self-start md:self-auto shadow-sm">
+          <button
+            onClick={() => setActiveTab('events')}
+            className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              activeTab === 'events'
+                ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
+                : 'text-muted hover:text-foreground hover:bg-white/5 border border-transparent'
+            }`}
+          >
+            <FaCalendarAlt
+              size={12}
+              className={activeTab === 'events' ? 'text-cyan-400' : 'text-muted'}
+            />
+            <span>Upcoming events</span>
+            {upcomingEvents.length > 0 && (
+              <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-cyan-500/20 text-cyan-300 font-bold">
                 {upcomingEvents.length}
               </span>
-            </button>
+            )}
+          </button>
 
-            <button
-              onClick={() => setActiveTab('projects')}
-              className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === 'projects'
-                  ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]'
-                  : 'text-muted hover:text-foreground hover:bg-white/5 border border-transparent'
-              }`}
-            >
-              <FaFolderOpen size={12} className={activeTab === 'projects' ? 'text-blue-400' : 'text-muted'} />
-              <span>Active Projects</span>
-              <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-blue-500/20 text-blue-300">
+          <button
+            onClick={() => setActiveTab('projects')}
+            className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              activeTab === 'projects'
+                ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]'
+                : 'text-muted hover:text-foreground hover:bg-white/5 border border-transparent'
+            }`}
+          >
+            <FaFolderOpen
+              size={12}
+              className={
+                activeTab === 'projects' ? 'text-blue-400' : 'text-muted'
+              }
+            />
+            <span>Active projects</span>
+            {activeProjects.length > 0 && (
+              <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-blue-500/20 text-blue-300 font-bold">
                 {activeProjects.length}
               </span>
-            </button>
-          </div>
-        )}
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* EVENTS TAB (HORIZONTAL CAROUSEL) */}
-      {(!hasBoth ? upcomingEvents.length > 0 : activeTab === 'events') && (
+      {/* UPCOMING EVENTS TAB */}
+      {activeTab === 'events' && (
         <div className="w-full">
-          {/* Subheader with carousel controls */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-xs font-semibold text-foreground/90 uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              <span>Upcoming Quantum Sessions ({upcomingEvents.length})</span>
-            </div>
+          {upcomingEvents.length > 0 ? (
+            <>
+              {/* Subheader with carousel controls */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 text-xs font-semibold text-foreground/90 uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <span>Upcoming Quantum Sessions ({upcomingEvents.length})</span>
+                </div>
 
-            {upcomingEvents.length > 2 && (
-              <div className="hidden sm:flex items-center gap-2">
-                <button
-                  onClick={() => scrollCarousel(eventsCarouselRef, 'left')}
-                  className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/40 text-muted hover:text-cyan-300 transition-all cursor-pointer"
-                  aria-label="Scroll left"
-                >
-                  <FaChevronLeft size={11} />
-                </button>
-                <button
-                  onClick={() => scrollCarousel(eventsCarouselRef, 'right')}
-                  className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/40 text-muted hover:text-cyan-300 transition-all cursor-pointer"
-                  aria-label="Scroll right"
-                >
-                  <FaChevronRight size={11} />
-                </button>
+                {upcomingEvents.length > 2 && (
+                  <div className="hidden sm:flex items-center gap-2">
+                    <button
+                      onClick={() => scrollCarousel(eventsCarouselRef, 'left')}
+                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/40 text-muted hover:text-cyan-300 transition-all cursor-pointer"
+                      aria-label="Scroll left"
+                    >
+                      <FaChevronLeft size={11} />
+                    </button>
+                    <button
+                      onClick={() => scrollCarousel(eventsCarouselRef, 'right')}
+                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/40 text-muted hover:text-cyan-300 transition-all cursor-pointer"
+                      aria-label="Scroll right"
+                    >
+                      <FaChevronRight size={11} />
+                    </button>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Cards Carousel Container */}
-          <div
-            ref={eventsCarouselRef}
-            className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 px-1 scrollbar-none snap-x snap-mandatory"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {upcomingEvents.map((event) => (
-              <PmqcActivityEventCard
-                key={event.id}
-                event={event}
-                onOpenDetails={(ev) => setSelectedEvent(ev)}
-              />
-            ))}
-          </div>
+              {/* Cards Carousel Container */}
+              <div
+                ref={eventsCarouselRef}
+                className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 px-1 scrollbar-none snap-x snap-mandatory"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {upcomingEvents.map((event) => (
+                  <PmqcActivityEventCard
+                    key={event.id}
+                    event={event}
+                    onOpenDetails={(ev) => setSelectedEvent(ev)}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            /* Empty State for Events */
+            <div className="w-full bg-[#0e0e12]/60 border border-white/5 rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center justify-center my-2">
+              <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4">
+                <FaCalendarAlt size={18} />
+              </div>
+              <p className="text-foreground/90 font-medium text-sm sm:text-base max-w-[460px] leading-relaxed">
+                Nothing scheduled yet. Our first events are coming in November.
+              </p>
+            </div>
+          )}
 
           {/* Bottom link to view ALL events */}
           <div className="mt-4 pt-3 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
-            <span className="text-muted/70">
-              Looking for past sessions and archive records?
-            </span>
+            <span className="text-muted/70">Looking for past events?</span>
             <Link
               href="/events"
               className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-semibold transition-colors group"
             >
-              <span>Explore all PMDS & PMQC events</span>
+              <span>All PMDS events</span>
               <FaArrowRight className="text-[10px] group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
         </div>
       )}
 
-      {/* PROJECTS TAB (HORIZONTAL CAROUSEL) */}
-      {(!hasBoth ? activeProjects.length > 0 : activeTab === 'projects') && (
+      {/* ACTIVE PROJECTS TAB */}
+      {activeTab === 'projects' && (
         <div className="w-full">
-          {/* Subheader with carousel controls */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-xs font-semibold text-foreground/90 uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-              <span>Active & Recruiting Initiatives ({activeProjects.length})</span>
-            </div>
+          {activeProjects.length > 0 ? (
+            <>
+              {/* Subheader with carousel controls */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 text-xs font-semibold text-foreground/90 uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+                  <span>
+                    Active &amp; Recruiting Initiatives ({activeProjects.length})
+                  </span>
+                </div>
 
-            {activeProjects.length > 2 && (
-              <div className="hidden sm:flex items-center gap-2">
-                <button
-                  onClick={() => scrollCarousel(projectsCarouselRef, 'left')}
-                  className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/40 text-muted hover:text-blue-300 transition-all cursor-pointer"
-                  aria-label="Scroll left"
-                >
-                  <FaChevronLeft size={11} />
-                </button>
-                <button
-                  onClick={() => scrollCarousel(projectsCarouselRef, 'right')}
-                  className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/40 text-muted hover:text-blue-300 transition-all cursor-pointer"
-                  aria-label="Scroll right"
-                >
-                  <FaChevronRight size={11} />
-                </button>
+                {activeProjects.length > 2 && (
+                  <div className="hidden sm:flex items-center gap-2">
+                    <button
+                      onClick={() => scrollCarousel(projectsCarouselRef, 'left')}
+                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/40 text-muted hover:text-blue-300 transition-all cursor-pointer"
+                      aria-label="Scroll left"
+                    >
+                      <FaChevronLeft size={11} />
+                    </button>
+                    <button
+                      onClick={() => scrollCarousel(projectsCarouselRef, 'right')}
+                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/40 text-muted hover:text-blue-300 transition-all cursor-pointer"
+                      aria-label="Scroll right"
+                    >
+                      <FaChevronRight size={11} />
+                    </button>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Cards Carousel Container */}
-          <div
-            ref={projectsCarouselRef}
-            className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 px-1 scrollbar-none snap-x snap-mandatory"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {activeProjects.map((project) => (
-              <PmqcActivityProjectCard
-                key={project.id}
-                project={project}
-                onOpenDetails={(proj) => setSelectedProject(proj)}
-              />
-            ))}
-          </div>
+              {/* Cards Carousel Container */}
+              <div
+                ref={projectsCarouselRef}
+                className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 px-1 scrollbar-none snap-x snap-mandatory"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {activeProjects.map((project) => (
+                  <PmqcActivityProjectCard
+                    key={project.id}
+                    project={project}
+                    onOpenDetails={(proj) => setSelectedProject(proj)}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            /* Empty State for Projects */
+            <div className="w-full bg-[#0e0e12]/60 border border-white/5 rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center justify-center my-2">
+              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
+                <FaFolderOpen size={18} />
+              </div>
+              <p className="text-foreground/90 font-medium text-sm sm:text-base max-w-[500px] mb-4 leading-relaxed">
+                Projects start next semester. Fill out the interest form to hear when
+                applications open.
+              </p>
+              <a
+                href="https://forms.gle/SJT29NADkTYmPbB97"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-blue-500/15 border border-blue-500/30 hover:bg-blue-500/25 text-blue-300 font-medium text-xs sm:text-sm py-2 px-4 rounded-full transition-all cursor-pointer"
+              >
+                <span>Fill out the interest form</span>
+                <FaArrowRight className="text-[10px]" />
+              </a>
+            </div>
+          )}
 
           {/* Bottom link to view ALL projects */}
           <div className="mt-4 pt-3 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
-            <span className="text-muted/70">
-              Want to see all completed and archived works?
-            </span>
+            <span className="text-muted/70">Looking for other projects?</span>
             <Link
               href="/projects"
               className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-semibold transition-colors group"
             >
-              <span>Explore all PMDS projects</span>
+              <span>All PMDS projects</span>
               <FaArrowRight className="text-[10px] group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
