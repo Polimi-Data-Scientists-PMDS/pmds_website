@@ -607,7 +607,7 @@ export default function QuantumVisualizer() {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 w-screen h-screen pointer-events-none z-[1] overflow-hidden"
+      className="fixed inset-0 w-screen h-screen pointer-events-none z-0 overflow-hidden"
     >
       <canvas
         ref={canvasRef}

@@ -46,7 +46,7 @@ export default async function PMQCPage() {
       <QuantumVisualizer />
 
       {/* 1. Hero Section: PMQC Department Presentation */}
-      <section className="w-full flex flex-col lg:flex-row items-center justify-between gap-10 mt-2 md:mt-6 mb-12 sm:mb-20 relative">
+      <section className="w-full flex flex-col lg:flex-row items-center justify-between gap-10 mt-2 md:mt-6 mb-12 sm:mb-20 relative z-10">
         <div className="w-full lg:w-[54%] flex flex-col text-left z-10">
           {/* Badge sopra il titolo */}
           <a
@@ -116,7 +116,7 @@ export default async function PMQCPage() {
       <PmqcQuantumMonthSection />
 
       {/* 3. About PMQC Section: Zero Prerequisites + 4 Quantum Visualizers */}
-      <section className="w-full max-w-[1100px] mx-auto mt-4 mb-20 relative">
+      <section className="w-full max-w-[1100px] mx-auto mt-4 mb-20 relative z-10">
         <div id="pmqc-about-anchor" className="text-left mb-10">
           <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-cyan-400 text-xs font-bold tracking-wider uppercase mb-3">
             ABOUT PMQC
@@ -135,7 +135,7 @@ export default async function PMQCPage() {
         {/* 4 Mini Quantum Visualizers Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {/* Mini 1: Quantum Algorithms */}
-          <div className="bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-cyan-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="pmqc-card hover:border-cyan-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <SuperpositionWaveMini />
@@ -151,7 +151,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 2: Quantum ML */}
-          <div className="bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-blue-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(59,130,246,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="pmqc-card hover:border-blue-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(59,130,246,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <QmlLandscapeMini />
@@ -167,7 +167,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 3: Error Correction & Hardware */}
-          <div className="bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(99,102,241,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="pmqc-card hover:border-indigo-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(99,102,241,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <TransmonQubitMini />
@@ -182,7 +182,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 4: Papers & Newsletter */}
-          <div className="bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-purple-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(168,85,247,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="pmqc-card hover:border-purple-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(168,85,247,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <EntangledPairMini />
@@ -199,17 +199,17 @@ export default async function PMQCPage() {
       </section>
 
       {/* 4. PMQC Activities: Dynamic Notion Events & Projects in Tabbed Format */}
-      <section className="w-full mb-20 relative">
+      <section className="w-full mb-20 relative z-10">
         <PmqcActivitiesSection events={pmqcEvents} projects={pmqcProjects} />
       </section>
 
       {/* 5. Bottom CTA Banner: Interest form + Substack newsletter modal */}
-      <section className="w-full relative mt-4">
+      <section className="w-full relative z-10 mt-4">
         <PmqcCtaSection />
       </section>
 
       {/* Nota in fondo pagina */}
-      <p className="text-center text-xs text-muted/60 mt-12 mb-4 tracking-wide">
+      <p className="text-center text-xs text-muted/60 mt-12 mb-4 tracking-wide relative z-10">
         This page is new and still growing. More soon.
       </p>
     </div>

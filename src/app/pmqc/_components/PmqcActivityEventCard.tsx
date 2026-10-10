@@ -14,7 +14,7 @@ export default function PmqcActivityEventCard({
   onOpenDetails,
 }: PmqcActivityEventCardProps) {
   return (
-    <div className="w-[290px] sm:w-[330px] md:w-[350px] shrink-0 snap-start bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-cyan-500/40 rounded-2xl p-5 flex flex-col justify-between transition-all group shadow-[0_4px_24px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] relative">
+    <div className="w-[290px] sm:w-[330px] md:w-[350px] shrink-0 snap-start pmqc-card hover:border-cyan-500/40 rounded-2xl p-5 flex flex-col justify-between transition-all group shadow-[0_4px_24px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] relative z-10">
       <div>
         {/* Badges: Type and Date */}
         <div className="flex items-center justify-between gap-2 mb-3">

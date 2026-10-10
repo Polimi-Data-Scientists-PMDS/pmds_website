@@ -21,7 +21,7 @@ export default function PmqcQuantumMonthSection() {
   return (
     <section
       id="quantum-month"
-      className="w-full max-w-[1100px] mx-auto mt-6 sm:mt-12 mb-20 scroll-mt-24 relative"
+      className="w-full max-w-[1100px] mx-auto mt-6 sm:mt-12 mb-20 scroll-mt-24 relative z-10"
     >
       {/* Ambient background glow for Quantum Month */}
       <div className="absolute -top-10 left-1/4 w-[400px] h-[300px] bg-gradient-to-tr from-cyan-500/10 via-blue-500/10 to-indigo-500/10 blur-[110px] rounded-full pointer-events-none -z-10" />
@@ -50,7 +50,7 @@ export default function PmqcQuantumMonthSection() {
         } gap-5 sm:gap-6`}
       >
         {/* Card 1: Quantum Error Correction Course */}
-        <div className="relative group bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-cyan-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] overflow-hidden">
+        <div className="relative z-10 group pmqc-card hover:border-cyan-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all pointer-events-none" />
 
           <div>
@@ -80,7 +80,7 @@ export default function PmqcQuantumMonthSection() {
         </div>
 
         {/* Card 2: PMQC Newsletter */}
-        <div className="relative group bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-blue-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
+        <div className="relative z-10 group pmqc-card hover:border-blue-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all pointer-events-none" />
 
           <div>
@@ -125,7 +125,7 @@ export default function PmqcQuantumMonthSection() {
 
         {/* Card 3: PMQC Launch – 12 December (Hidden until approval from PoliMi) */}
         {SHOW_LAUNCH_EVENT && (
-          <div className="relative group bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 hover:border-indigo-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] overflow-hidden">
+          <div className="relative z-10 group pmqc-card hover:border-indigo-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all pointer-events-none" />
 
             <div>

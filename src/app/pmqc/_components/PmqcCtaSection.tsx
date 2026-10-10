@@ -8,8 +8,8 @@ export default function PmqcCtaSection() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
 
   return (
-    <div id="pmqc-cta-anchor" className="w-full max-w-[850px] mx-auto px-2 sm:px-4 relative">
-      <div id="pmqc-cta-card" className="w-full bg-[#0e0e12]/90 backdrop-blur-xl border border-white/10 rounded-3xl sm:rounded-[40px] px-5 sm:px-8 py-8 sm:py-12 md:py-14 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_80px_rgba(17,9,255,0.12)]">
+    <div id="pmqc-cta-anchor" className="w-full max-w-[850px] mx-auto px-2 sm:px-4 relative z-10">
+      <div id="pmqc-cta-card" className="w-full pmqc-card rounded-3xl sm:rounded-[40px] px-5 sm:px-8 py-8 sm:py-12 md:py-14 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_80px_rgba(17,9,255,0.12)]">
         {/* Quantum Glow behind the CTA */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] bg-gradient-to-tr from-[#1109FF]/20 via-cyan-500/20 to-indigo-500/15 blur-[100px] rounded-full pointer-events-none" />
 
