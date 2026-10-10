@@ -123,7 +123,7 @@ export default function PmqcQuantumMonthSection() {
           </div>
         </div>
 
-        {/* Card 3: PMQC Launch – 12 December (Hidden until approval from PoliMi) */}
+        {/* Card 3: PMQC Launch - 12 December (Hidden until approval from PoliMi) */}
         {SHOW_LAUNCH_EVENT && (
           <div className="relative z-10 group pmqc-card hover:border-indigo-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all pointer-events-none" />
@@ -140,7 +140,7 @@ export default function PmqcQuantumMonthSection() {
               </div>
 
               <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 group-hover:text-indigo-300 transition-colors">
-                PMQC Launch – 12 December.
+                PMQC Launch - 12 December.
               </h3>
 
               <p className="text-muted text-sm sm:text-base leading-relaxed">

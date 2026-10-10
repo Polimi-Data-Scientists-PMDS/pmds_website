@@ -14,11 +14,11 @@ import {
 import QuantumVisualizer from './_components/QuantumVisualizer';
 
 export const metadata: Metadata = {
-  title: 'PMQC – Polimi Quantum Computing | PoliMi Data Scientists',
+  title: 'PMQC - Polimi Quantum Computing | PoliMi Data Scientists',
   description:
     'The quantum computing department of PoliMi Data Scientists. Lessons, talks and projects at Politecnico di Milano, no background needed.',
   openGraph: {
-    title: 'PMQC – Polimi Quantum Computing | PoliMi Data Scientists',
+    title: 'PMQC - Polimi Quantum Computing | PoliMi Data Scientists',
     description:
       'The quantum computing department of PoliMi Data Scientists. Lessons, talks and projects at Politecnico di Milano, no background needed.',
   },
@@ -61,7 +61,7 @@ export default async function PMQCPage() {
           </a>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-foreground tracking-tight leading-tight">
-            PMQC – Polimi Quantum Computing
+            PMQC - Polimi Quantum Computing
           </h1>
 
           <div className="mt-3 mb-4 sm:mb-5">
