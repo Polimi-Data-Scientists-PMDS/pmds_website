@@ -1,8 +1,28 @@
 import { cn } from '@/shared/lib/utils';
 import { Event } from '@/shared/types';
 import Image from 'next/image';
-import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaDatabase, FaMapMarkerAlt } from 'react-icons/fa';
 import { FaAtom } from 'react-icons/fa6';
+
+function DepartmentBadge({ isPmqc }: { isPmqc: boolean }) {
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border backdrop-blur-md w-fit',
+        isPmqc
+          ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400/40 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+          : 'bg-accent/20 text-foreground border-accent/40 shadow-[0_0_15px_rgba(75,111,254,0.25)]',
+      )}
+    >
+      {isPmqc ? (
+        <FaAtom className="text-cyan-300 text-xs" />
+      ) : (
+        <FaDatabase className="text-accent text-xs" />
+      )}
+      <span>{isPmqc ? 'PMQC' : 'PMDS'}</span>
+    </span>
+  );
+}
 
 export default function EventCard({
   event,
@@ -28,7 +48,7 @@ export default function EventCard({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-80" />
 
-          {/* PMQC Badge on Image */}
+          {/* PMQC Badge */}
           {isPmqc && (
             <div className="absolute top-4 left-4 z-10">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.25)]">
