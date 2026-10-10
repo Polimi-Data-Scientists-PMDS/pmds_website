@@ -21,14 +21,14 @@ export default function PmqcQuantumMonthSection() {
   return (
     <section
       id="quantum-month"
-      className="w-full max-w-[1100px] mx-auto mt-6 sm:mt-12 mb-20 scroll-mt-24 relative z-10"
+      className="w-full max-w-[1100px] mx-auto mt-8 sm:mt-16 mb-24 scroll-mt-28 relative z-10"
     >
       {/* Ambient background glow for Quantum Month */}
       <div className="absolute -top-10 left-1/4 w-[400px] h-[300px] bg-gradient-to-tr from-cyan-500/10 via-blue-500/10 to-indigo-500/10 blur-[110px] rounded-full pointer-events-none -z-10" />
 
       {/* Header */}
-      <div className="text-left mb-8 sm:mb-12">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-cyan-300 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md">
+      <div className="text-left mb-10 sm:mb-14">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-cyan-300 text-xs font-bold tracking-wider uppercase mb-3.5 backdrop-blur-md">
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
           <span>QUANTUM MONTH · NOVEMBER and DECEMBER 2026</span>
         </div>
@@ -37,7 +37,7 @@ export default function PmqcQuantumMonthSection() {
           November and December are Quantum Month
         </h2>
 
-        <p className="text-muted mt-3 text-sm sm:text-base md:text-lg max-w-[700px] leading-relaxed">
+        <p className="text-muted mt-3.5 text-sm sm:text-base md:text-lg max-w-[700px] leading-relaxed">
           A month to get started with quantum computing. Here&apos;s what&apos;s
           coming.
         </p>
@@ -47,10 +47,10 @@ export default function PmqcQuantumMonthSection() {
       <div
         className={`grid grid-cols-1 ${
           SHOW_LAUNCH_EVENT ? 'md:grid-cols-3' : 'md:grid-cols-2'
-        } gap-5 sm:gap-6`}
+        } gap-6 sm:gap-8`}
       >
         {/* Card 1: Quantum Error Correction Course */}
-        <div className="relative z-10 group pmqc-card hover:border-cyan-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] overflow-hidden">
+        <div className="relative z-10 group pmqc-card hover:border-cyan-500/40 rounded-3xl p-7 sm:p-9 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all pointer-events-none" />
 
           <div>
@@ -80,7 +80,7 @@ export default function PmqcQuantumMonthSection() {
         </div>
 
         {/* Card 2: PMQC Newsletter */}
-        <div className="relative z-10 group pmqc-card hover:border-blue-500/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
+        <div className="relative z-10 group pmqc-card hover:border-blue-500/40 rounded-3xl p-7 sm:p-9 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all pointer-events-none" />
 
           <div>

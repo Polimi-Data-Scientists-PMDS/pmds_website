@@ -46,43 +46,36 @@ export default async function PMQCPage() {
       <QuantumVisualizer />
 
       {/* 1. Hero Section: PMQC Department Presentation */}
-      <section className="w-full flex flex-col lg:flex-row items-center justify-between gap-10 mt-2 md:mt-6 mb-12 sm:mb-20 relative z-10">
+      <section className="w-full flex flex-col lg:flex-row items-center justify-between gap-12 mt-4 md:mt-8 mb-16 sm:mb-24 relative z-10">
         <div className="w-full lg:w-[54%] flex flex-col text-left z-10">
           {/* Badge sopra il titolo */}
           <a
             href="#quantum-month"
-            className="inline-flex items-center gap-2.5 pl-3.5 pr-2 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/30 hover:border-cyan-400/60 rounded-full text-cyan-300 text-xs font-semibold tracking-wide mb-4 w-fit backdrop-blur-md transition-all duration-300 group cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_25px_rgba(6,182,212,0.3)]"
+            className="inline-flex items-center gap-2.5 pl-3.5 pr-2 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/30 hover:border-cyan-400/60 rounded-full text-cyan-300 text-xs font-semibold tracking-wide mb-4 sm:mb-5 w-fit backdrop-blur-md transition-all duration-300 group cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:shadow-[0_0_25px_rgba(6,182,212,0.3)]"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            <span>November is Quantum Month</span>
+            <span>November &amp; December are Quantum Month</span>
             <span className="flex items-center justify-center w-5 h-5 rounded-full bg-cyan-400/20 border border-cyan-400/40 text-cyan-200 group-hover:bg-cyan-400 group-hover:text-black transition-all duration-300 ml-0.5">
               <FaArrowRightLong className="text-[10px] group-hover:translate-x-0.5 transition-transform duration-300" />
             </span>
           </a>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-foreground tracking-tight leading-tight">
-            PMQC - Polimi Quantum Computing
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground tracking-tight leading-tight mb-3 sm:mb-4">
+            PMQC
           </h1>
 
-          <div className="mt-3 mb-4 sm:mb-5">
-            <p className="text-base sm:text-xl lg:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300 tracking-tight leading-snug">
-              Quantum computing at Politecnico di Milano, starting from zero.
-            </p>
-          </div>
-
-          <p className="text-muted text-sm sm:text-base leading-relaxed font-normal max-w-[580px] mb-3">
-            PMQC is the quantum computing department of PoliMi Data Scientists.
-            We learn the field together, from qubits and algorithms to quantum
-            machine learning and error correction. No background needed.
+          <p className="text-base sm:text-xl lg:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300 tracking-tight leading-snug mb-4 sm:mb-5 max-w-[580px]">
+            Quantum computing at Politecnico di Milano, starting from zero.
           </p>
 
-          <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed max-w-[580px] mb-8">
-            November is our Quantum Month. Fill out the interest form to hear
-            about it first.
+          <p className="text-muted text-sm sm:text-base leading-relaxed font-normal max-w-[540px] mb-8">
+            The quantum computing department of PoliMi Data Scientists. We learn
+            the field together, from qubits and algorithms to quantum machine
+            learning and error correction - no background needed.
           </p>
 
           {/* Quick CTAs: I'm interested · PMQC Substack */}
-          <div className="flex flex-col sm:flex-row gap-3.5 items-stretch sm:items-center">
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
             <a
               href="https://forms.gle/SJT29NADkTYmPbB97"
               target="_blank"
@@ -116,15 +109,15 @@ export default async function PMQCPage() {
       <PmqcQuantumMonthSection />
 
       {/* 3. About PMQC Section: Zero Prerequisites + 4 Quantum Visualizers */}
-      <section className="w-full max-w-[1100px] mx-auto mt-4 mb-20 relative z-10">
-        <div id="pmqc-about-anchor" className="text-left mb-10">
-          <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-cyan-400 text-xs font-bold tracking-wider uppercase mb-3">
+      <section className="w-full max-w-[1100px] mx-auto mt-6 sm:mt-12 mb-24 relative z-10">
+        <div id="pmqc-about-anchor" className="text-left mb-12">
+          <div className="inline-block px-3.5 py-1.5 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-cyan-300 text-xs font-bold tracking-wider uppercase mb-3.5 backdrop-blur-md">
             ABOUT PMQC
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
             Quantum, from scratch
           </h2>
-          <p className="text-muted mt-3 text-xs sm:text-base max-w-[780px] leading-relaxed">
+          <p className="text-muted mt-3.5 text-xs sm:text-base max-w-[780px] leading-relaxed">
             Quantum computing is moving out of physics labs and into
             engineering, computer science and industry. PMQC is where PoliMi
             students learn it together, whatever they study. You don&apos;t
@@ -133,9 +126,9 @@ export default async function PMQCPage() {
         </div>
 
         {/* 4 Mini Quantum Visualizers Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {/* Mini 1: Quantum Algorithms */}
-          <div className="pmqc-card hover:border-cyan-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="pmqc-card hover:border-cyan-500/40 p-6 sm:p-7 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <SuperpositionWaveMini />
@@ -151,7 +144,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 2: Quantum ML */}
-          <div className="pmqc-card hover:border-blue-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(59,130,246,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="pmqc-card hover:border-blue-500/40 p-6 sm:p-7 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(59,130,246,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <QmlLandscapeMini />
@@ -167,7 +160,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 3: Error Correction & Hardware */}
-          <div className="pmqc-card hover:border-indigo-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(99,102,241,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="pmqc-card hover:border-indigo-500/40 p-6 sm:p-7 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(99,102,241,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <TransmonQubitMini />
@@ -182,7 +175,7 @@ export default async function PMQCPage() {
           </div>
 
           {/* Mini 4: Papers & Newsletter */}
-          <div className="pmqc-card hover:border-purple-500/40 p-5 sm:p-6 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(168,85,247,0.15)] relative z-10 flex flex-col justify-between">
+          <div className="pmqc-card hover:border-purple-500/40 p-6 sm:p-7 rounded-2xl transition-all group hover:shadow-[0_0_25px_rgba(168,85,247,0.15)] relative z-10 flex flex-col justify-between">
             <div>
               <div className="mb-3">
                 <EntangledPairMini />
@@ -199,12 +192,12 @@ export default async function PMQCPage() {
       </section>
 
       {/* 4. PMQC Activities: Dynamic Notion Events & Projects in Tabbed Format */}
-      <section className="w-full mb-20 relative z-10">
+      <section className="w-full mb-24 relative z-10">
         <PmqcActivitiesSection events={pmqcEvents} projects={pmqcProjects} />
       </section>
 
       {/* 5. Bottom CTA Banner: Interest form + Substack newsletter modal */}
-      <section className="w-full relative z-10 mt-4">
+      <section className="w-full relative z-10 mt-6 mb-10">
         <PmqcCtaSection />
       </section>
 
