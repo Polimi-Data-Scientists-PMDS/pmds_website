@@ -1,4 +1,23 @@
+import { ReactNode } from 'react';
 import { FaGraduationCap, FaLaptopCode, FaNetworkWired } from 'react-icons/fa';
+
+interface FeatureCardProps {
+  title: string;
+  details?: string;
+  icon: ReactNode;
+}
+
+function FeatureCard({ title, details, icon }: FeatureCardProps) {
+  return (
+    <div className="bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 p-6 rounded-3xl transition-colors">
+      <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4">
+        {icon}
+      </div>
+      <h3 className="text-foreground font-bold mb-2">{title}</h3>
+      <p className="text-muted text-sm leading-relaxed">{details}</p>
+    </div>
+  );
+}
 
 export default function AboutSection() {
   return (
@@ -26,40 +45,23 @@ export default function AboutSection() {
 
         {/* Right: Feature grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 p-6 rounded-3xl transition-colors">
-            <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4">
-              <FaGraduationCap size={20} />
-            </div>
-            <h3 className="text-foreground font-bold mb-2">Workshops</h3>
-            <p className="text-muted text-sm leading-relaxed">
-              Hands-on sessions on modern ML frameworks, LLMs, and data
-              engineering.
-            </p>
-          </div>
+          <FeatureCard
+            title="Workshops"
+            details="Hands-on sessions on modern ML frameworks, LLMs, and data engineering."
+            icon={<FaGraduationCap size={20} />}
+          />
+          <FeatureCard
+            title="Projects"
+            details="Extracurricular open-source projects to build a solid technical portfolio."
+            icon={<FaLaptopCode size={20} />}
+          />
+          <FeatureCard
+            title="Networking"
+            details="Connect with top-tier companies, alumni, and passionate peers."
+            icon={<FaNetworkWired size={20} />}
+          />
 
-          <div className="bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 p-6 rounded-3xl transition-colors sm:translate-y-8">
-            <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4">
-              <FaLaptopCode size={20} />
-            </div>
-            <h3 className="text-foreground font-bold mb-2">Projects</h3>
-            <p className="text-muted text-sm leading-relaxed">
-              Extracurricular open-source projects to build a solid technical
-              portfolio.
-            </p>
-          </div>
-
-          <div className="bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 p-6 rounded-3xl transition-colors">
-            <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4">
-              <FaNetworkWired size={20} />
-            </div>
-            <h3 className="text-foreground font-bold mb-2">Networking</h3>
-            <p className="text-muted text-sm leading-relaxed">
-              Connect with top-tier companies, alumni, and passionate peers.
-            </p>
-          </div>
-
-          {/* Decorative empty block */}
-          <div className="hidden sm:block rounded-3xl border border-white/5 border-dashed opacity-50 sm:translate-y-8"></div>
+          <div className="hidden"></div>
         </div>
       </div>
     </section>

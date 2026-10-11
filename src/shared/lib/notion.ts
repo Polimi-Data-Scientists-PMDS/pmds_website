@@ -1,14 +1,32 @@
 'use server';
 
+import type { NotionPage } from '@/shared/lib/notion-properties';
 import {
   Announcement,
+  ANNOUNCEMENT_KEYS,
+  BLOG_POST_KEYS,
   BlogPost,
   Event,
+  EVENT_KEYS,
   Member,
+  parseAnnouncement,
+  parseBlogPost,
+  parseEvent,
+  parseMember,
+  parseProject,
+  parseWebsiteMember,
   Project,
+  PROJECT_KEYS,
   Team,
-} from '@/shared/types';
-import { Client } from '@notionhq/client';
+  WEBSITE_MEMBER_KEYS,
+} from '@/shared/models';
+import {
+  Client,
+  collectPaginatedAPI,
+  isFullDatabase,
+  isFullPage,
+  type QueryDataSourceParameters,
+} from '@notionhq/client';
 import { cacheLife, cacheTag } from 'next/cache';
 
 import { NotionToMarkdown } from 'notion-to-md';
@@ -16,88 +34,40 @@ import { NotionToMarkdown } from 'notion-to-md';
 const notionClient = new Client({ auth: process.env.NOTION_API_KEY });
 const n2m = new NotionToMarkdown({ notionClient: notionClient });
 
-const NOTION_API_KEY = process.env.NOTION_API_KEY!;
-const PROJECTS_DB = process.env.NOTION_PROJECTS_DB_ID!;
-const MEMBERS_DB = process.env.NOTION_MEMBERS_DB_ID!;
-const WEBSITE_MEMBERS_DB = process.env.NOTION_WEBSITE_MEMBERS_DB_ID!;
-const POSTS_DB = process.env.NOTION_POSTS_DB_ID!;
-const ANNOUNCEMENTS_DB = process.env.NOTION_ANNOUNCEMENTS_DB_ID!;
+const PROJECTS_DB = process.env.NOTION_PROJECTS_DB_ID;
+const MEMBERS_DB = process.env.NOTION_MEMBERS_DB_ID;
+const WEBSITE_MEMBERS_DB = process.env.NOTION_WEBSITE_MEMBERS_DB_ID;
+const POSTS_DB = process.env.NOTION_POSTS_DB_ID;
+const EVENTS_DB = process.env.NOTION_EVENTS_DB_ID;
+const ANNOUNCEMENTS_DB = process.env.NOTION_ANNOUNCEMENTS_DB_ID;
 
-const fetchNotion = async (url: string, body: any) => {
-  const res = await fetch(`https://api.notion.com/v1${url}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${NOTION_API_KEY}`,
-      'Notion-Version': '2022-06-28',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    throw new Error(`Notion API Error: ${await res.text()}`);
-  }
-  return res.json();
-};
-
-// Utility to get text from Rich Text or Title properties
-const getText = (prop: any) => {
-  if (!prop) return '';
-  if (prop.type === 'title')
-    return prop.title.map((t: any) => t.plain_text).join('');
-  if (prop.type === 'rich_text')
-    return prop.rich_text.map((t: any) => t.plain_text).join('');
-  return '';
-};
-
-const formatUrlString = (url: string | null) => {
-  if (!url) return null;
-  if (!url.startsWith('http://') && !url.startsWith('https://')) {
-    return `https://${url}`;
-  }
-  return url;
-};
-
-const getUrl = (prop: any) => formatUrlString(prop?.url || null);
-
-const getFileUrl = (prop: any) => {
-  if (!prop || !prop.files || prop.files.length === 0) return null;
-  const file = prop.files[0];
-  return file.type === 'external' ? file.external.url : file.file.url;
-};
+type QueryArgs = Omit<QueryDataSourceParameters, 'data_source_id'>;
 
 /**
- * Generates an immutable proxy URL for Notion S3 hosted files.
- * Encodes the Notion page ID, property name, and unique upload path into a base64url token.
- * This prevents AWS S3 temporary presigned signatures from busting Edge CDN caches.
+ * Queries every page of a database, following pagination.
+ * Since Notion API 2025-09-03 rows live in data sources, so the database ID
+ * from the env is first resolved to its (single) data source.
  */
-const getStableImageUrl = (pageId: string, propName: string, prop: any) => {
-  if (!prop || !prop.files || prop.files.length === 0) return null;
-  const file = prop.files[0];
-  if (file.type === 'external') {
-    return file.external.url;
+async function queryDatabase(
+  databaseId: string,
+  args: QueryArgs = {},
+): Promise<NotionPage[]> {
+  const database = await notionClient.databases.retrieve({
+    database_id: databaseId,
+  });
+  if (!isFullDatabase(database) || database.data_sources.length === 0) {
+    throw new Error(`Notion database ${databaseId} has no data source`);
   }
 
-  let version = file.name || 'image';
-  if (file.file?.url) {
-    try {
-      const pathname = new URL(file.file.url).pathname;
-      const parts = pathname.split('/');
-      if (parts.length >= 3) {
-        version = parts.slice(2).join('_');
-      }
-    } catch (_) {}
-  }
+  const results = await collectPaginatedAPI(notionClient.dataSources.query, {
+    ...args,
+    data_source_id: database.data_sources[0].id,
+  });
+  return results.filter(isFullPage);
+}
 
-  const token = Buffer.from(
-    JSON.stringify({ id: pageId, prop: propName, v: version }),
-  ).toString('base64url');
-  return `/api/image/${token}`;
-};
-
-const getSelect = (prop: any) => prop?.select?.name || null;
-const getMultiSelect = (prop: any) =>
-  prop?.multi_select?.map((s: any) => s.name) || [];
-const getCheckbox = (prop: any) => prop?.checkbox || false;
+const toMembersMap = (members: Member[]) =>
+  new Map(members.map((m) => [m.id, m]));
 
 export async function getMembers(): Promise<Member[]> {
   'use cache';
@@ -106,31 +76,8 @@ export async function getMembers(): Promise<Member[]> {
 
   if (!MEMBERS_DB) return [];
 
-  const response = await fetchNotion(`/databases/${MEMBERS_DB}/query`, {});
-
-  return response.results.map((page: any) => {
-    const props = page.properties;
-
-    // We map Role array to a single string for display, taking the first one
-    const roles = getMultiSelect(props['Role ']);
-    const roleString = roles.length > 0 ? roles[0] : 'Member';
-
-    const avatar = getStableImageUrl(
-      page.id,
-      'Photo (if necessary)',
-      props['Photo (if necessary)'],
-    );
-
-    return {
-      id: page.id,
-      name: getText(props['Name']),
-      role: roleString,
-      team: getMultiSelect(props['Team'])[0] || 'Other', // Using first team
-      imageUrl: avatar,
-      linkedinUrl: formatUrlString(getText(props['Linkedin'])),
-      email: props['PMDS Email']?.email || null,
-    };
-  });
+  const pages = await queryDatabase(MEMBERS_DB);
+  return pages.map(parseMember);
 }
 
 export async function getProjects(): Promise<Project[]> {
@@ -140,83 +87,16 @@ export async function getProjects(): Promise<Project[]> {
 
   if (!PROJECTS_DB) return [];
 
-  // 1. Fetch all active members first so we can map relations
-  const allMembers = await getMembers();
-  const membersMap = new Map(allMembers.map((m) => [m.id, m]));
+  // Fetch all active members first so we can map relations
+  const membersMap = toMembersMap(await getMembers());
 
-  // 2. Fetch projects
-  const response = await fetchNotion(`/databases/${PROJECTS_DB}/query`, {
+  const pages = await queryDatabase(PROJECTS_DB, {
     filter: {
-      property: 'Published',
+      property: PROJECT_KEYS.published,
       checkbox: {
         equals: true,
       },
     },
-  });
-
-  const projects = response.results.map((page: any) => {
-    const props = page.properties;
-
-    // Resolve Partner
-    const partnerName = getText(props['Partner name (optional)']);
-    const partnerUrl = formatUrlString(
-      getText(props['Partner link (optional)']),
-    );
-    const partner = partnerName
-      ? { name: partnerName, url: partnerUrl }
-      : undefined;
-
-    // Resolve Team Members via relation
-    const relationIds =
-      props['Members (optional)']?.relation?.map((r: any) => r.id) || [];
-    const team = relationIds
-      .map((id: string) => {
-        const member = membersMap.get(id);
-        if (member) {
-          return {
-            name: member.name,
-            avatar: member.imageUrl || undefined,
-            linkedinUrl: member.linkedinUrl,
-          };
-        }
-        return null;
-      })
-      .filter(Boolean) as {
-      name: string;
-      avatar?: string;
-      linkedinUrl?: string;
-    }[];
-
-    // Display title vs slug project name
-    const displayedTitle = getText(props['Displayed title (mandatory)']);
-    const fallbackTitle = getText(props['Project']);
-
-    return {
-      id: page.id,
-      title: displayedTitle || fallbackTitle || 'Untitled Project',
-      description: getText(props['Description (mandatory)']),
-      imageUrl:
-        getStableImageUrl(
-          page.id,
-          'Image (optional)',
-          props['Image (optional)'],
-        ) || undefined,
-      tags: getMultiSelect(props['Tags (mandatory)']),
-      status:
-        (getSelect(props['Status (mandatory)']) as
-          | 'Recruiting'
-          | 'Ongoing'
-          | 'Completed') || 'Ongoing',
-      date: getText(props['Date (mandatory)']),
-      team: team.length > 0 ? team : undefined,
-      partner: partner,
-      applyUrl: getUrl(
-        props['Application url (optional, mandatory if recruiting)'],
-      ),
-      githubUrl: getUrl(props['GitHub url (optional)']),
-      paperUrl: getUrl(props['Paper url (optional)']),
-      reportUrl: getUrl(props['Report url (optional)']),
-    };
   });
 
   const statusOrder: Record<string, number> = {
@@ -225,12 +105,38 @@ export async function getProjects(): Promise<Project[]> {
     Completed: 3,
   };
 
-  return projects.sort((a: Project, b: Project) => {
-    const orderA = statusOrder[a.status] || 99;
-    const orderB = statusOrder[b.status] || 99;
-    return orderA - orderB;
-  });
+  return pages
+    .map((page) => parseProject(page, membersMap))
+    .sort(
+      (a, b) => (statusOrder[a.status] || 99) - (statusOrder[b.status] || 99),
+    );
 }
+
+// Predefined Team Display Order
+const TEAM_ORDER = [
+  'Board',
+  'Events',
+  'Tech',
+  'Social & Brand',
+  'Projects',
+  'HR',
+  'Finance',
+  'Startup Relations',
+  'Polimi Quantum Computing',
+];
+
+// Hardcoded Team Emails
+const TEAM_EMAILS: Record<string, string> = {
+  Board: 'board@polimidatascientists.it',
+  Finance: 'finance@polimidatascientists.it',
+  Projects: 'projects@polimidatascientists.it',
+  HR: 'hr@polimidatascientists.it',
+  Events: 'events@polimidatascientists.it',
+  'Social & Brand': 'social@polimidatascientists.it',
+  Tech: 'tech@polimidatascientists.it',
+  'Polimi Quantum Computing': 'pmqc@polimidatascientists.it',
+  'Startup Relations': 'startup-relations@polimidatascientists.it',
+};
 
 export async function getTeams(): Promise<Team[]> {
   'use cache';
@@ -240,90 +146,30 @@ export async function getTeams(): Promise<Team[]> {
   if (!WEBSITE_MEMBERS_DB) return [];
 
   // 1. Fetch all members from "Our People" as a dictionary to extract avatars/linkedin
-  const allMembers = await getMembers();
-  const membersMap = new Map(allMembers.map((m) => [m.id, m]));
+  const membersMap = toMembersMap(await getMembers());
 
-  // 2. Fetch the "Website Directory"
-  const response = await fetchNotion(`/databases/${WEBSITE_MEMBERS_DB}/query`, {
+  // 2. Fetch and map the "Website Directory"
+  const pages = await queryDatabase(WEBSITE_MEMBERS_DB, {
     sorts: [
       {
-        property: 'Order (optional)',
+        property: WEBSITE_MEMBER_KEYS.order,
         direction: 'ascending',
       },
     ],
   });
-
-  // 3. Map the data
-  const websiteMembers = response.results.map((page: any) => {
-    const props = page.properties;
-
-    // The link to the "Our People" database
-    const relationIds =
-      props['Our People link (mandatory)']?.relation?.map((r: any) => r.id) ||
-      [];
-    const baseMember =
-      relationIds.length > 0 ? membersMap.get(relationIds[0]) : null;
-
-    const name = getText(props['Name and Surname (mandatory)']);
-    const section = getSelect(props['Section (mandatory)']) || 'Other';
-    const displayedRole = getText(props['Displayed role (optional)']);
-    const overrideEmail = props['Email (if different from personal)']?.email;
-    const rawOrder = props['Order (optional)']?.number;
-
-    return {
-      id: page.id,
-      name: name || 'Unknown',
-      role: displayedRole || undefined,
-      team: section,
-      imageUrl: baseMember?.imageUrl,
-      linkedinUrl: baseMember?.linkedinUrl,
-      email: overrideEmail || baseMember?.email || null,
-      order:
-        typeof rawOrder === 'number' && !isNaN(rawOrder) ? rawOrder : undefined,
-    };
-  });
-
-  // 4. Group by Section (team string)
-  const grouped = websiteMembers.reduce(
-    (acc: Record<string, Member[]>, member: Member) => {
-      const teamName = member.team || 'Other';
-      if (!acc[teamName]) {
-        acc[teamName] = [];
-      }
-      acc[teamName].push(member);
-      return acc;
-    },
-    {} as Record<string, Member[]>,
+  const websiteMembers = pages.map((page) =>
+    parseWebsiteMember(page, membersMap),
   );
 
-  // Predefined Team Display Order
-  const TEAM_ORDER = [
-    'Board',
-    'Events',
-    'Tech',
-    'Social & Brand',
-    'Projects',
-    'HR',
-    'Finance',
-    'Startup Relations',
-    'Polimi Quantum Computing',
-  ];
+  // 3. Group by Section (team string)
+  const grouped: Record<string, Member[]> = {};
+  for (const member of websiteMembers) {
+    const teamName = member.team || 'Other';
+    (grouped[teamName] ??= []).push(member);
+  }
 
-  // Hardcoded Team Emails
-  const TEAM_EMAILS: Record<string, string> = {
-    Board: 'board@polimidatascientists.it',
-    Finance: 'finance@polimidatascientists.it',
-    Projects: 'projects@polimidatascientists.it',
-    HR: 'hr@polimidatascientists.it',
-    Events: 'events@polimidatascientists.it',
-    'Social & Brand': 'social@polimidatascientists.it',
-    Tech: 'tech@polimidatascientists.it',
-    'Polimi Quantum Computing': 'pmqc@polimidatascientists.it',
-    'Startup Relations': 'startup-relations@polimidatascientists.it',
-  };
-
-  // 5. Convert to Team[] array with fixed team ordering and intra-team member sorting
-  return (Object.entries(grouped) as [string, Member[]][])
+  // 4. Convert to Team[] array with fixed team ordering and intra-team member sorting
+  return Object.entries(grouped)
     .sort(([teamA], [teamB]) => {
       const indexA = TEAM_ORDER.indexOf(teamA);
       const indexB = TEAM_ORDER.indexOf(teamB);
@@ -358,89 +204,24 @@ export async function getPosts(): Promise<BlogPost[]> {
 
   if (!POSTS_DB) return [];
 
-  const allMembers = await getMembers();
-  const membersMap = new Map(allMembers.map((m) => [m.id, m]));
+  const membersMap = toMembersMap(await getMembers());
 
-  const response = await fetchNotion(`/databases/${POSTS_DB}/query`, {
+  const pages = await queryDatabase(POSTS_DB, {
     filter: {
-      property: 'Published',
+      property: BLOG_POST_KEYS.published,
       checkbox: {
         equals: true,
       },
     },
     sorts: [
       {
-        property: 'Date (mandatory)',
+        property: BLOG_POST_KEYS.date,
         direction: 'descending',
       },
     ],
   });
 
-  return response.results.map((page: any) => {
-    const props = page.properties;
-
-    // Resolve Authors
-    const relationIds =
-      props['Authors (optional)']?.relation?.map((r: any) => r.id) || [];
-    const authors = relationIds
-      .map((id: string) => {
-        const member = membersMap.get(id);
-        return member
-          ? {
-              name: member.name,
-              avatar: member.imageUrl,
-              linkedinUrl: member.linkedinUrl,
-              email: member.email,
-            }
-          : null;
-      })
-      .filter(Boolean) as {
-      name: string;
-      avatar?: string;
-      linkedinUrl?: string;
-      email?: string;
-    }[];
-
-    const dateProp = props['Date (mandatory)']?.date?.start;
-    const formattedDate = dateProp
-      ? new Date(dateProp).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-        })
-      : 'Unknown date';
-
-    const externalUrl = getUrl(props['External url (ONLY FOR LEGACY POSTS)']);
-    const title = getText(props['Title (mandatory)']) || 'Untitled Post';
-    const slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)+/g, '');
-
-    const rawTags =
-      props['Tag (mandatory)']?.type === 'multi_select'
-        ? getMultiSelect(props['Tag (mandatory)'])
-        : [getSelect(props['Tag (mandatory)'])].filter(Boolean);
-    const tags = rawTags.length > 0 ? (rawTags as string[]) : ['General'];
-
-    return {
-      id: page.id,
-      slug: slug,
-      title: title,
-      excerpt: getText(props['Excerpt (mandatory)']),
-      date: formattedDate,
-      tags: tags,
-      imageUrl:
-        getStableImageUrl(
-          page.id,
-          'Cover image (optional)',
-          props['Cover image (optional)'],
-        ) || '/placeholder.jpg',
-      externalUrl: externalUrl || undefined,
-      authors: authors,
-      content: '', // We don't fetch content for the list
-    };
-  });
+  return pages.map((page) => parseBlogPost(page, membersMap));
 }
 
 export async function getPost(slug: string): Promise<BlogPost | null> {
@@ -466,8 +247,6 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
   return post;
 }
 
-const EVENTS_DB = process.env.NOTION_EVENTS_DB_ID;
-
 export async function getEvents(): Promise<Event[]> {
   'use cache';
   cacheLife('hours');
@@ -475,115 +254,30 @@ export async function getEvents(): Promise<Event[]> {
 
   if (!EVENTS_DB) return [];
 
-  const response = await fetchNotion(`/databases/${EVENTS_DB}/query`, {
+  const pages = await queryDatabase(EVENTS_DB, {
     filter: {
-      property: 'Published',
+      property: EVENT_KEYS.published,
       checkbox: {
         equals: true,
       },
     },
     sorts: [
       {
-        property: 'Date & Time (mandatory)',
+        property: EVENT_KEYS.date,
         direction: 'descending',
       },
     ],
   });
 
   const now = new Date();
-  const todayStr = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Rome',
-  }).format(now);
+  const events = pages.map((page) => parseEvent(page, now));
+  const byStart = (a: Event, b: Event) =>
+    a.dateStart.getTime() - b.dateStart.getTime();
 
-  const items: { event: Event; timestamp: number }[] = response.results.map(
-    (page: any) => {
-      const props = page.properties;
-
-      const dateStart = props['Date & Time (mandatory)']?.date?.start;
-      const dateEnd = props['Date & Time (mandatory)']?.date?.end;
-      const eventDate = dateStart ? new Date(dateStart) : new Date(0);
-
-      let upcoming = false;
-      if (dateEnd && dateEnd.includes('T')) {
-        upcoming = new Date(dateEnd) >= now;
-      } else if (dateEnd) {
-        upcoming = dateEnd >= todayStr;
-      } else if (dateStart && dateStart.includes('T')) {
-        upcoming = new Date(dateStart) >= now;
-      } else if (dateStart) {
-        upcoming = dateStart >= todayStr;
-      }
-
-      // Format date and time using Rome timezone to fix Vercel UTC offset
-      const formattedDate = dateStart
-        ? eventDate.toLocaleDateString('en-US', {
-            timeZone: 'Europe/Rome',
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric',
-          })
-        : 'Unknown date';
-
-      let formattedTime = undefined;
-      if (dateStart && dateStart.includes('T')) {
-        const startTime = eventDate.toLocaleTimeString('en-US', {
-          timeZone: 'Europe/Rome',
-          hour: 'numeric',
-          minute: '2-digit',
-        });
-        if (dateEnd && dateEnd.includes('T')) {
-          const endTime = new Date(dateEnd).toLocaleTimeString('en-US', {
-            timeZone: 'Europe/Rome',
-            hour: 'numeric',
-            minute: '2-digit',
-          });
-          formattedTime = `${startTime} - ${endTime}`;
-        } else {
-          formattedTime = startTime;
-        }
-      }
-
-      const event: Event = {
-        id: page.id,
-        title: getText(props['Name (mandatory)']) || 'Untitled Event',
-        date: formattedDate,
-        dateStart: new Date(dateStart),
-        dateEnd: new Date(dateEnd),
-        time: formattedTime,
-        location:
-          getText(props['Location (mandatory)']) ||
-          getSelect(props['Location (mandatory)']) ||
-          'TBA',
-        type: getSelect(props['Type (mandatory)']) || 'Event',
-        description: getText(props['Description (mandatory)']),
-        imageUrl:
-          getStableImageUrl(
-            page.id,
-            'Image (optional)',
-            props['Image (optional)'],
-          ) || undefined,
-        registrationUrl:
-          getUrl(props['Registration URL (optional)']) || undefined,
-        resourcesUrl: getUrl(props['Resources URL (optional)']) || undefined,
-        upcoming,
-      };
-
-      return {
-        event,
-        timestamp: eventDate.getTime(),
-      };
-    },
-  );
-
-  const upcomingEvents = items
-    .filter((item) => item.event.upcoming)
-    .sort((a, b) => a.timestamp - b.timestamp)
-    .map((item) => item.event);
-
-  const pastEvents = items
-    .filter((item) => !item.event.upcoming)
-    .sort((a, b) => b.timestamp - a.timestamp)
-    .map((item) => item.event);
+  const upcomingEvents = events.filter((e) => e.upcoming).sort(byStart);
+  const pastEvents = events
+    .filter((e) => !e.upcoming)
+    .sort((a, b) => byStart(b, a));
 
   return [...upcomingEvents, ...pastEvents];
 }
@@ -595,20 +289,20 @@ export async function getAnnouncements(): Promise<Announcement[]> {
 
   if (!ANNOUNCEMENTS_DB) return [];
 
-  const response = await fetchNotion(`/databases/${ANNOUNCEMENTS_DB}/query`, {
+  const pages = await queryDatabase(ANNOUNCEMENTS_DB, {
     filter: {
       and: [
         {
           or: [
             {
-              property: 'Displayed from (optional)',
+              property: ANNOUNCEMENT_KEYS.displayedFrom,
               date: {
                 is_not_empty: true,
                 on_or_before: 'today',
               },
             },
             {
-              property: 'Displayed from (optional)',
+              property: ANNOUNCEMENT_KEYS.displayedFrom,
               date: {
                 is_empty: true,
               },
@@ -616,7 +310,7 @@ export async function getAnnouncements(): Promise<Announcement[]> {
           ],
         },
         {
-          property: 'Displayed to (mandatory)',
+          property: ANNOUNCEMENT_KEYS.displayedTo,
           date: {
             is_not_empty: true,
             on_or_after: 'today',
@@ -626,20 +320,11 @@ export async function getAnnouncements(): Promise<Announcement[]> {
     },
     sorts: [
       {
-        property: 'Displayed to (mandatory)',
+        property: ANNOUNCEMENT_KEYS.displayedTo,
         direction: 'ascending',
       },
     ],
   });
 
-  return response.results.map((page: any) => {
-    const props = page.properties;
-
-    return {
-      id: page.id,
-      title: getText(props['Text (mandatory)']),
-      linkText: getText(props['Link text (optional)']) || 'Learn more',
-      link: formatUrlString(getText(props['Link URL (optional)'])) || undefined,
-    };
-  });
+  return pages.map(parseAnnouncement);
 }

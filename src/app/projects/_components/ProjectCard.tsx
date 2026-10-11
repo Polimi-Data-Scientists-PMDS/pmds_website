@@ -1,10 +1,10 @@
 'use client';
 
+import Card from '@/shared/components/ui/Card';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
-import { cn } from '@/shared/lib/utils';
 import { Project } from '@/shared/types';
-import Image from 'next/image';
 import {
+  FaAtom,
   FaExternalLinkAlt,
   FaFilePdf,
   FaGithub,
@@ -19,67 +19,56 @@ export default function ProjectCard({
   project: Project;
   priority?: boolean;
 }) {
-  return (
-    <div className="group flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl transition-colors duration-300 relative card-hover-elevate">
-      {/* Image Container */}
-      <div
-        className={cn(
-          'w-full h-[240px] relative overflow-hidden rounded-t-[1.4rem]',
-          !project.imageUrl &&
-            'bg-gradient-to-br from-[#151a2d] to-[#0a0a0a] flex items-center justify-center',
-        )}
-      >
-        {project.imageUrl ? (
-          <Image
-            src={project.imageUrl}
-            alt={project.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
-            priority={priority}
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#151a2d] to-[#0a0a0a] flex items-center justify-center">
-            <span className="text-foreground/30 font-bold text-4xl tracking-widest">
-              PMDS
-            </span>
-          </div>
-        )}
-        {/* Status Badge */}
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md bg-black/40 border border-white/10 text-foreground">
-          {project.status === 'Recruiting' && (
-            <span className="flex items-center gap-2 text-amber-400">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-              Hiring Now
-            </span>
-          )}
-          {project.status === 'Ongoing' && (
-            <span className="flex items-center gap-2 text-accent">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              Ongoing
-            </span>
-          )}
-          {project.status === 'Completed' && (
-            <span className="flex items-center gap-2 text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              Completed
-            </span>
-          )}
-        </div>
-      </div>
+  const isPmqc =
+    project.departments?.some((d) => d.toUpperCase() === 'PMQC') ||
+    project.tags?.some((t) => t.toUpperCase() === 'PMQC');
 
-      {/* Content Container */}
-      <div className="p-8 flex flex-col flex-1 relative">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-accent text-xs font-bold uppercase tracking-wider">
-            {project.date}
+  return (
+    <Card
+      title={project.title}
+      details={project.description}
+      imageUrl={project.imageUrl}
+      priority={priority}
+      date={project.date}
+      chips={[
+        isPmqc && (
+          <span
+            key={1}
+            className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/40 bg-cyan-500/20 px-3 py-1 text-xs font-bold tracking-wider text-cyan-300 uppercase shadow-[0_0_15px_rgba(6,182,212,0.25)] backdrop-blur-md"
+          >
+            <FaAtom className="text-xs text-cyan-300" />
+            <span>PMQC</span>
           </span>
+        ),
+        project.status === 'Recruiting' && (
+          <span key={2} className="flex items-center gap-2 text-amber-400">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-amber-400"></span>
+            Hiring Now
+          </span>
+        ),
+        project.status === 'Ongoing' && (
+          <span key={2} className="flex items-center gap-2 text-accent">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-accent"></span>
+            Ongoing
+          </span>
+        ),
+        project.status === 'Completed' && (
+          <span key={2} className="flex items-center gap-2 text-emerald-400">
+            <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+            Completed
+          </span>
+        ),
+      ]}
+    >
+      {/* Content Container */}
+      <div className="relative flex flex-1 flex-col p-8">
+        <div className="mb-3 flex items-center justify-between">
           {project.githubUrl && (
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors"
+              className="text-muted transition-colors hover:text-foreground"
               title="View Source on GitHub"
             >
               <FaGithub size={18} />
@@ -87,13 +76,9 @@ export default function ProjectCard({
           )}
         </div>
 
-        <h3 className="text-foreground text-2xl font-bold mb-2">
-          {project.title}
-        </h3>
-
         {/* Partner Info */}
         {project.partner && (
-          <div className="flex items-center gap-2 text-muted text-xs font-medium mb-4">
+          <div className="mb-4 flex items-center gap-2 text-xs font-medium text-muted">
             <FaHandshake className="text-muted" />
             In collaboration with:
             {project.partner.url ? (
@@ -101,7 +86,7 @@ export default function ProjectCard({
                 href={project.partner.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:text-accent transition-colors underline decoration-white/20 underline-offset-2"
+                className="text-foreground underline decoration-white/20 underline-offset-2 transition-colors hover:text-accent"
               >
                 {project.partner.name}
               </a>
@@ -111,18 +96,14 @@ export default function ProjectCard({
           </div>
         )}
 
-        <p className="text-muted text-sm leading-relaxed mb-6">
-          {project.description}
-        </p>
-
         {/* Tags and Team */}
-        <div className="flex flex-col gap-5 mt-auto mb-8">
+        <div className="mt-auto mb-8 flex flex-col gap-5">
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
             {project.tags?.map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-muted text-xs font-medium"
+                className="rounded-full border border-white/5 bg-white/5 px-3 py-1 text-xs font-medium text-muted"
               >
                 {tag}
               </span>
@@ -136,14 +117,14 @@ export default function ProjectCard({
         </div>
 
         {/* Conditional Action Buttons */}
-        <div className="flex flex-wrap gap-4 mt-auto border-t border-white/5 pt-6">
+        <div className="mt-auto flex flex-wrap gap-4 border-t border-white/5 pt-6">
           {/* Recruiting State */}
           {project.status === 'Recruiting' && project.applyUrl && (
             <a
               href={project.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-amber-500/10 text-amber-500 border border-amber-500/20 px-4 py-2 rounded-xl font-medium hover:bg-amber-500/20 transition-colors w-full justify-center"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-2 font-medium text-amber-500 transition-colors hover:bg-amber-500/20"
             >
               <FaUsers size={16} /> Apply for this Project
             </a>
@@ -151,13 +132,13 @@ export default function ProjectCard({
 
           {/* Completed State */}
           {project.status === 'Completed' && (
-            <div className="flex gap-4 w-full">
+            <div className="flex w-full gap-4">
               {project.paperUrl && (
                 <a
                   href={project.paperUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors py-2 text-sm"
+                  className="inline-flex items-center gap-2 py-2 text-sm text-muted transition-colors hover:text-foreground"
                 >
                   <FaFilePdf size={14} /> Paper
                 </a>
@@ -167,7 +148,7 @@ export default function ProjectCard({
                   href={project.reportUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors py-2 text-sm"
+                  className="inline-flex items-center gap-2 py-2 text-sm text-muted transition-colors hover:text-foreground"
                 >
                   <FaExternalLinkAlt size={12} /> Report
                 </a>
@@ -177,12 +158,12 @@ export default function ProjectCard({
 
           {/* Ongoing State */}
           {project.status === 'Ongoing' && (
-            <span className="text-muted text-xs italic flex items-center py-2">
+            <span className="flex items-center py-2 text-xs text-muted italic">
               Currently in development. Check back later for updates.
             </span>
           )}
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
