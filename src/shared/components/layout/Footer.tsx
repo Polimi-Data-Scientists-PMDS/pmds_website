@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
+import { FaArrowLeftLong } from 'react-icons/fa6';
 import { FooterSection } from './FooterSection';
 
 export default function Footer() {
@@ -17,24 +18,38 @@ export default function Footer() {
     pathname?.startsWith('/tree/') ||
     pathname?.startsWith('/links/');
 
+  const isPmqc = pathname === '/pmqc' || pathname?.startsWith('/pmqc/');
+
   if (isBioPage) return null;
 
   return (
     <footer className="w-full border-t bg-background pt-20 pb-10 mt-24">
       <div className="w-full max-w-[1100px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="flex flex-col gap-6 md:w-1/3">
-          <Link href="/" className="relative block w-[200px] h-[55px]">
+          <Link href={isPmqc ? '/pmqc' : '/'} className="relative block w-[200px] h-[55px]">
             <Image
-              src="/assets/logo.svg"
-              alt="PMDS Logo"
+              src={isPmqc ? '/assets/pmqc/logo-pmqc.svg' : '/assets/logo.svg'}
+              alt={isPmqc ? 'PMQC Logo' : 'PMDS Logo'}
               fill
               className="object-contain object-left"
             />
           </Link>
           <p className="text-muted text-sm leading-relaxed">
-            Student-led association at Politecnico di Milano dedicated to
-            exploring the latest in Data Science.
+            {isPmqc
+              ? 'The quantum computing department of PoliMi Data Scientists, at Politecnico di Milano.'
+              : 'Student-led association at Politecnico di Milano dedicated to exploring the latest in Data Science.'}
           </p>
+          {isPmqc && (
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs text-cyan-400 hover:text-cyan-300 font-semibold transition-all w-fit -mt-2 group"
+            >
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-cyan-400/15 border border-cyan-400/30 text-cyan-300 group-hover:bg-cyan-400 group-hover:text-black transition-all duration-300">
+                <FaArrowLeftLong className="text-[10px] group-hover:-translate-x-0.5 transition-transform duration-300" />
+              </span>
+              <span>Back to PMDS Home</span>
+            </Link>
+          )}
           <div className="flex gap-5 mt-2">
             <a
               href="https://www.instagram.com/polimidatascientists/"
@@ -66,9 +81,11 @@ export default function Footer() {
         <FooterSection
           title="Explore"
           links={[
+            ...(isPmqc ? [{ text: 'PMDS Home', href: '/' }] : []),
             { text: 'Blog', href: '/blog' },
             { text: 'Projects', href: '/projects' },
             { text: 'Events', href: '/events' },
+            ...(isPmqc ? [] : [{ text: 'PMQC', href: '/pmqc' }]),
             { text: 'Become a Member', href: '/membership' },
             {
               text: 'Support Us (Donate)',

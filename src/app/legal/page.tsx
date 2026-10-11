@@ -175,7 +175,7 @@ export default function LegalPage() {
               <div>
                 <h3 className="text-foreground font-semibold mb-2">6. Your Rights</h3>
                 <p>
-                  Under the GDPR (Articles 15–22), you have the right to request access to, rectification, or deletion of your personal data, as well as the restriction of processing. To exercise your rights, please email <a href="mailto:privacy@polimidatascientists.it" className="text-accent hover:underline">privacy@polimidatascientists.it</a>. You also have the right to file a complaint with the Italian Data Protection Authority (<em>Garante Privacy</em>).
+                  Under the GDPR (Articles 15-22), you have the right to request access to, rectification, or deletion of your personal data, as well as the restriction of processing. To exercise your rights, please email <a href="mailto:privacy@polimidatascientists.it" className="text-accent hover:underline">privacy@polimidatascientists.it</a>. You also have the right to file a complaint with the Italian Data Protection Authority (<em>Garante Privacy</em>).
                 </p>
               </div>
 

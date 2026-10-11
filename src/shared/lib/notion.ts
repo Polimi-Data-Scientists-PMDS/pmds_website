@@ -98,6 +98,16 @@ const getSelect = (prop: any) => prop?.select?.name || null;
 const getMultiSelect = (prop: any) =>
   prop?.multi_select?.map((s: any) => s.name) || [];
 const getCheckbox = (prop: any) => prop?.checkbox || false;
+const getDepartments = (prop: any): string[] => {
+  if (!prop) return [];
+  if (prop.type === 'multi_select') {
+    return prop.multi_select?.map((s: any) => s.name?.trim()).filter(Boolean) || [];
+  }
+  if (prop.type === 'select' && prop.select?.name) {
+    return [prop.select.name.trim()];
+  }
+  return [];
+};
 
 export async function getMembers(): Promise<Member[]> {
   'use cache';
@@ -216,6 +226,9 @@ export async function getProjects(): Promise<Project[]> {
       githubUrl: getUrl(props['GitHub url (optional)']),
       paperUrl: getUrl(props['Paper url (optional)']),
       reportUrl: getUrl(props['Report url (optional)']),
+      departments: getDepartments(
+        props['Department'] || props['Department (optional)'],
+      ),
     };
   });
 
@@ -468,6 +481,83 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
 
 const EVENTS_DB = process.env.NOTION_EVENTS_DB_ID;
 
+function formatEventDates(
+  dateStart?: string,
+  dateEnd?: string,
+): {
+  formattedDate: string;
+  formattedTime?: string;
+  startDate: Date;
+  endDate: Date;
+} {
+  if (!dateStart) {
+    const fallback = new Date(0);
+    return {
+      formattedDate: 'Unknown date',
+      formattedTime: undefined,
+      startDate: fallback,
+      endDate: fallback,
+    };
+  }
+
+  const startDate = new Date(dateStart);
+  if (isNaN(startDate.getTime())) {
+    const fallback = new Date(0);
+    return {
+      formattedDate: 'Unknown date',
+      formattedTime: undefined,
+      startDate: fallback,
+      endDate: fallback,
+    };
+  }
+
+  const rawEndDate = dateEnd ? new Date(dateEnd) : null;
+  const endDate =
+    rawEndDate && !isNaN(rawEndDate.getTime()) ? rawEndDate : startDate;
+
+  // Use Europe/Rome calendar date string YYYY-MM-DD for day comparison
+  const getRomeDayKey = (d: Date) =>
+    new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome' }).format(d);
+
+  const isSameDay = getRomeDayKey(startDate) === getRomeDayKey(endDate);
+
+  const dateFmt = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Rome',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  let formattedDate: string;
+  if (isSameDay || endDate < startDate) {
+    formattedDate = dateFmt.format(startDate);
+  } else {
+    // Multi-day range formatted in en-US with en-dash and normalized spaces
+    formattedDate = dateFmt
+      .formatRange(startDate, endDate)
+      .replace(/[\u2009\u202F]/g, ' ');
+  }
+
+  let formattedTime: string | undefined = undefined;
+  if (dateStart.includes('T')) {
+    const timeFmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Rome',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+    const startTime = timeFmt.format(startDate).replace(/[\u2009\u202F]/g, ' ');
+
+    if (dateEnd && dateEnd.includes('T')) {
+      const endTime = timeFmt.format(endDate).replace(/[\u2009\u202F]/g, ' ');
+      formattedTime = `${startTime} - ${endTime}`;
+    } else {
+      formattedTime = startTime;
+    }
+  }
+
+  return { formattedDate, formattedTime, startDate, endDate };
+}
+
 export async function getEvents(): Promise<Event[]> {
   'use cache';
   cacheLife('hours');
@@ -501,7 +591,9 @@ export async function getEvents(): Promise<Event[]> {
 
       const dateStart = props['Date & Time (mandatory)']?.date?.start;
       const dateEnd = props['Date & Time (mandatory)']?.date?.end;
-      const eventDate = dateStart ? new Date(dateStart) : new Date(0);
+
+      const { formattedDate, formattedTime, startDate, endDate } =
+        formatEventDates(dateStart, dateEnd);
 
       let upcoming = false;
       if (dateEnd && dateEnd.includes('T')) {
@@ -514,41 +606,12 @@ export async function getEvents(): Promise<Event[]> {
         upcoming = dateStart >= todayStr;
       }
 
-      // Format date and time using Rome timezone to fix Vercel UTC offset
-      const formattedDate = dateStart
-        ? eventDate.toLocaleDateString('en-US', {
-            timeZone: 'Europe/Rome',
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric',
-          })
-        : 'Unknown date';
-
-      let formattedTime = undefined;
-      if (dateStart && dateStart.includes('T')) {
-        const startTime = eventDate.toLocaleTimeString('en-US', {
-          timeZone: 'Europe/Rome',
-          hour: 'numeric',
-          minute: '2-digit',
-        });
-        if (dateEnd && dateEnd.includes('T')) {
-          const endTime = new Date(dateEnd).toLocaleTimeString('en-US', {
-            timeZone: 'Europe/Rome',
-            hour: 'numeric',
-            minute: '2-digit',
-          });
-          formattedTime = `${startTime} - ${endTime}`;
-        } else {
-          formattedTime = startTime;
-        }
-      }
-
       const event: Event = {
         id: page.id,
         title: getText(props['Name (mandatory)']) || 'Untitled Event',
         date: formattedDate,
-        dateStart: new Date(dateStart),
-        dateEnd: new Date(dateEnd),
+        dateStart: startDate,
+        dateEnd: endDate,
         time: formattedTime,
         location:
           getText(props['Location (mandatory)']) ||
@@ -566,11 +629,14 @@ export async function getEvents(): Promise<Event[]> {
           getUrl(props['Registration URL (optional)']) || undefined,
         resourcesUrl: getUrl(props['Resources URL (optional)']) || undefined,
         upcoming,
+        departments: getDepartments(
+          props['Department'] || props['Department (optional)'],
+        ),
       };
 
       return {
         event,
-        timestamp: eventDate.getTime(),
+        timestamp: startDate.getTime(),
       };
     },
   );
