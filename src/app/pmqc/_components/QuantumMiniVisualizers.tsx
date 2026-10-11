@@ -13,14 +13,17 @@ export function SuperpositionWaveMini() {
     if (!ctx) return;
 
     let animId: number;
+    let isVisible = false;
     let time = 0;
     const size = 56;
-    const dpr = window.devicePixelRatio || 1;
+    const isMobile = window.innerWidth < 768;
+    const dpr = isMobile ? 1 : window.devicePixelRatio || 1;
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     ctx.scale(dpr, dpr);
 
     const render = () => {
+      if (!isVisible) return;
       time += 0.04;
       ctx.clearRect(0, 0, size, size);
 
@@ -46,10 +49,12 @@ export function SuperpositionWaveMini() {
       }
       ctx.strokeStyle = '#06b6d4';
       ctx.lineWidth = 2;
-      ctx.shadowColor = '#06b6d4';
-      ctx.shadowBlur = 8;
+      if (!isMobile) {
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 8;
+      }
       ctx.stroke();
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       // Secondary out-of-phase wave
       ctx.beginPath();
@@ -69,16 +74,41 @@ export function SuperpositionWaveMini() {
       ctx.beginPath();
       ctx.arc(size / 2, cy, 3 * centerPulse, 0, Math.PI * 2);
       ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = '#06b6d4';
-      ctx.shadowBlur = 10;
+      if (!isMobile) {
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 10;
+      }
       ctx.fill();
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       animId = requestAnimationFrame(render);
     };
 
-    render();
-    return () => cancelAnimationFrame(animId);
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const nextVisible = entry.isIntersecting;
+          if (nextVisible && !isVisible) {
+            isVisible = true;
+            animId = requestAnimationFrame(render);
+          } else if (!nextVisible && isVisible) {
+            isVisible = false;
+            cancelAnimationFrame(animId);
+          }
+        },
+        { threshold: 0.05 },
+      );
+      observer.observe(canvas);
+    } else {
+      isVisible = true;
+      animId = requestAnimationFrame(render);
+    }
+
+    return () => {
+      cancelAnimationFrame(animId);
+      observer?.disconnect();
+    };
   }, []);
 
   return (
@@ -99,9 +129,11 @@ export function QmlLandscapeMini() {
     if (!ctx) return;
 
     let animId: number;
+    let isVisible = false;
     let time = 0;
     const size = 56;
-    const dpr = window.devicePixelRatio || 1;
+    const isMobile = window.innerWidth < 768;
+    const dpr = isMobile ? 1 : window.devicePixelRatio || 1;
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     ctx.scale(dpr, dpr);
@@ -111,6 +143,7 @@ export function QmlLandscapeMini() {
     const maxTrail = 14;
 
     const render = () => {
+      if (!isVisible) return;
       time += 0.032;
       ctx.clearRect(0, 0, size, size);
 
@@ -151,26 +184,53 @@ export function QmlLandscapeMini() {
       ctx.beginPath();
       ctx.arc(dotX, dotY, 3, 0, Math.PI * 2);
       ctx.fillStyle = '#38bdf8';
-      ctx.shadowColor = '#38bdf8';
-      ctx.shadowBlur = 8;
+      if (!isMobile) {
+        ctx.shadowColor = '#38bdf8';
+        ctx.shadowBlur = 8;
+      }
       ctx.fill();
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       // Minimum ground state target (global minimum)
       const minPulse = 1 + Math.sin(time * 2.5) * 0.2;
       ctx.beginPath();
       ctx.arc(cx, cy, 2.5 * minPulse, 0, Math.PI * 2);
       ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = '#60a5fa';
-      ctx.shadowBlur = 6;
+      if (!isMobile) {
+        ctx.shadowColor = '#60a5fa';
+        ctx.shadowBlur = 6;
+      }
       ctx.fill();
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       animId = requestAnimationFrame(render);
     };
 
-    render();
-    return () => cancelAnimationFrame(animId);
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const nextVisible = entry.isIntersecting;
+          if (nextVisible && !isVisible) {
+            isVisible = true;
+            animId = requestAnimationFrame(render);
+          } else if (!nextVisible && isVisible) {
+            isVisible = false;
+            cancelAnimationFrame(animId);
+          }
+        },
+        { threshold: 0.05 },
+      );
+      observer.observe(canvas);
+    } else {
+      isVisible = true;
+      animId = requestAnimationFrame(render);
+    }
+
+    return () => {
+      cancelAnimationFrame(animId);
+      observer?.disconnect();
+    };
   }, []);
 
   return (
@@ -191,14 +251,17 @@ export function TransmonQubitMini() {
     if (!ctx) return;
 
     let animId: number;
+    let isVisible = false;
     let time = 0;
     const size = 56;
-    const dpr = window.devicePixelRatio || 1;
+    const isMobile = window.innerWidth < 768;
+    const dpr = isMobile ? 1 : window.devicePixelRatio || 1;
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     ctx.scale(dpr, dpr);
 
     const render = () => {
+      if (!isVisible) return;
       time += 0.035;
       ctx.clearRect(0, 0, size, size);
 
@@ -219,29 +282,56 @@ export function TransmonQubitMini() {
 
       // Transmon island cross capacitor plates
       ctx.fillStyle = '#818cf8';
-      ctx.shadowColor = '#6366f1';
-      ctx.shadowBlur = 6;
+      if (!isMobile) {
+        ctx.shadowColor = '#6366f1';
+        ctx.shadowBlur = 6;
+      }
       // Horizontal bar
       ctx.fillRect(cx - 9, cy - 2, 18, 4);
       // Vertical bar
       ctx.fillRect(cx - 2, cy - 9, 4, 18);
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       // Josephson junction center core
       const coreFlash = 1 + Math.sin(time * 4) * 0.25;
       ctx.beginPath();
       ctx.arc(cx, cy, 3 * coreFlash, 0, Math.PI * 2);
       ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = '#a5b4fc';
-      ctx.shadowBlur = 10;
+      if (!isMobile) {
+        ctx.shadowColor = '#a5b4fc';
+        ctx.shadowBlur = 10;
+      }
       ctx.fill();
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       animId = requestAnimationFrame(render);
     };
 
-    render();
-    return () => cancelAnimationFrame(animId);
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const nextVisible = entry.isIntersecting;
+          if (nextVisible && !isVisible) {
+            isVisible = true;
+            animId = requestAnimationFrame(render);
+          } else if (!nextVisible && isVisible) {
+            isVisible = false;
+            cancelAnimationFrame(animId);
+          }
+        },
+        { threshold: 0.05 },
+      );
+      observer.observe(canvas);
+    } else {
+      isVisible = true;
+      animId = requestAnimationFrame(render);
+    }
+
+    return () => {
+      cancelAnimationFrame(animId);
+      observer?.disconnect();
+    };
   }, []);
 
   return (
@@ -262,14 +352,17 @@ export function EntangledPairMini() {
     if (!ctx) return;
 
     let animId: number;
+    let isVisible = false;
     let time = 0;
     const size = 56;
-    const dpr = window.devicePixelRatio || 1;
+    const isMobile = window.innerWidth < 768;
+    const dpr = isMobile ? 1 : window.devicePixelRatio || 1;
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     ctx.scale(dpr, dpr);
 
     const render = () => {
+      if (!isVisible) return;
       time += 0.04;
       ctx.clearRect(0, 0, size, size);
 
@@ -291,34 +384,63 @@ export function EntangledPairMini() {
       ctx.quadraticCurveTo(midX, midY, p2X, p2Y);
       ctx.strokeStyle = 'rgba(168, 85, 247, 0.65)';
       ctx.lineWidth = 1.5;
-      ctx.shadowColor = '#c084fc';
-      ctx.shadowBlur = 8;
+      if (!isMobile) {
+        ctx.shadowColor = '#c084fc';
+        ctx.shadowBlur = 8;
+      }
       ctx.stroke();
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       // Particle 1 (|0> or spin up)
       ctx.beginPath();
       ctx.arc(p1X, p1Y, 3.5, 0, Math.PI * 2);
       ctx.fillStyle = '#06b6d4';
-      ctx.shadowColor = '#06b6d4';
-      ctx.shadowBlur = 8;
+      if (!isMobile) {
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 8;
+      }
       ctx.fill();
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       // Particle 2 (|1> or spin down)
       ctx.beginPath();
       ctx.arc(p2X, p2Y, 3.5, 0, Math.PI * 2);
       ctx.fillStyle = '#c084fc';
-      ctx.shadowColor = '#c084fc';
-      ctx.shadowBlur = 8;
+      if (!isMobile) {
+        ctx.shadowColor = '#c084fc';
+        ctx.shadowBlur = 8;
+      }
       ctx.fill();
-      ctx.shadowBlur = 0;
+      if (!isMobile) ctx.shadowBlur = 0;
 
       animId = requestAnimationFrame(render);
     };
 
-    render();
-    return () => cancelAnimationFrame(animId);
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const nextVisible = entry.isIntersecting;
+          if (nextVisible && !isVisible) {
+            isVisible = true;
+            animId = requestAnimationFrame(render);
+          } else if (!nextVisible && isVisible) {
+            isVisible = false;
+            cancelAnimationFrame(animId);
+          }
+        },
+        { threshold: 0.05 },
+      );
+      observer.observe(canvas);
+    } else {
+      isVisible = true;
+      animId = requestAnimationFrame(render);
+    }
+
+    return () => {
+      cancelAnimationFrame(animId);
+      observer?.disconnect();
+    };
   }, []);
 
   return (

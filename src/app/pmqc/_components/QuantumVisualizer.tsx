@@ -6,6 +6,9 @@ export default function QuantumVisualizer() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    // Only run on desktop: completely disabled on mobile
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -49,11 +52,11 @@ export default function QuantumVisualizer() {
     const updateAnchorTargets = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const isLandscapePhone = h < 550 && w < 1024;
       const isMobile = w < 1024 || h < 550;
 
       // Locate real DOM layout anchors
       const heroEl = document.getElementById('pmqc-hero-anchor');
+      const qmEl = document.getElementById('quantum-month');
       const aboutEl = document.getElementById('pmqc-about-anchor');
       const actEl = document.getElementById('pmqc-activities-anchor');
       const ctaEl = document.getElementById('pmqc-cta-anchor');
@@ -70,126 +73,109 @@ export default function QuantumVisualizer() {
       };
 
       const heroPos = getCenter(heroEl, isMobile ? w * 0.5 : w * 0.72, h * 0.42);
-      const aboutPos = getCenter(aboutEl, isMobile ? w * 0.5 : w * 0.72, h * 1.2);
-      const ctaPos = getCenter(ctaEl, w * 0.5, h * 2.5);
+
+      // Quantum Month section anchor (positioned on the right side next to header)
+      const qmRect = qmEl ? qmEl.getBoundingClientRect() : null;
+      const qmPos = qmRect
+        ? {
+            x: qmRect.left + qmRect.width * 0.74,
+            y: qmRect.top + Math.min(260, qmRect.height * 0.35),
+          }
+        : { x: w * 0.72, y: heroPos.y + 700 };
+
+      const aboutPos = getCenter(aboutEl, isMobile ? w * 0.5 : w * 0.72, h * 1.4);
+      const ctaPos = getCenter(ctaEl, w * 0.5, h * 2.8);
 
       const hasAct = !!actEl;
       const actPos = hasAct
-        ? getCenter(actEl, w * 0.5, h * 1.8)
+        ? getCenter(actEl, w * 0.5, h * 2.1)
         : null;
 
-      const screenCenterY = h * 0.5;
+      const scrollY = window.scrollY || window.pageYOffset || 0;
 
-      let p = 0; // 0: Hero, 1: About, 2: Activities, 3: CTA
-      if (aboutPos.y > screenCenterY) {
-        // Between Hero and About
-        const dist = Math.max(100, aboutPos.y - heroPos.y);
-        const t = Math.max(0, Math.min(1, 1 - (aboutPos.y - screenCenterY) / dist));
-        const ease = t * t * (3 - 2 * t);
-        p = ease;
-      } else if (hasAct && actPos && actPos.y > screenCenterY) {
-        // Between About and Activities
-        const dist = Math.max(100, actPos.y - aboutPos.y);
-        const t = Math.max(0, Math.min(1, 1 - (actPos.y - screenCenterY) / dist));
-        const ease = t * t * (3 - 2 * t);
-        p = 1.0 + ease;
-      } else if (hasAct && actPos) {
-        // Between Activities and CTA
-        const dist = Math.max(100, ctaPos.y - actPos.y);
-        const t = Math.max(0, Math.min(1, 1 - (ctaPos.y - screenCenterY) / dist));
-        const ease = t * t * (3 - 2 * t);
-        p = 2.0 + ease;
+      // Absolute document Y coordinates for each section
+      const heroDocY = heroPos.y + scrollY;
+      const qmDocY = qmPos.y + scrollY;
+      const aboutDocY = aboutPos.y + scrollY;
+      const actDocY = actPos ? actPos.y + scrollY : aboutDocY + 800;
+      const ctaDocY = ctaPos.y + scrollY;
+
+      const d1 = Math.max(150, qmDocY - heroDocY);
+      const d2 = Math.max(150, aboutDocY - qmDocY);
+      const d3 = Math.max(150, actDocY - aboutDocY);
+      const d4 = Math.max(150, ctaDocY - actDocY);
+
+      let p = 0; // 0: Hero, 1: Quantum Month, 2: About, 3: Activities, 4: CTA
+      if (scrollY <= 0) {
+        // Firmly locked in Hero on initial page load
+        p = 0;
+      } else if (scrollY < d1) {
+        const t = Math.max(0, Math.min(1, scrollY / d1));
+        p = t * t * (3 - 2 * t);
+      } else if (scrollY < d1 + d2) {
+        const t = Math.max(0, Math.min(1, (scrollY - d1) / d2));
+        p = 1.0 + t * t * (3 - 2 * t);
+      } else if (scrollY < d1 + d2 + d3) {
+        const t = Math.max(0, Math.min(1, (scrollY - d1 - d2) / d3));
+        p = 2.0 + t * t * (3 - 2 * t);
       } else {
-        // No Activities: directly Between About and CTA
-        const dist = Math.max(100, ctaPos.y - aboutPos.y);
-        const t = Math.max(0, Math.min(1, 1 - (ctaPos.y - screenCenterY) / dist));
-        const ease = t * t * (3 - 2 * t);
-        p = 1.0 + ease * 2.0; // scale directly to 3.0
+        const t = Math.max(0, Math.min(1, (scrollY - d1 - d2 - d3) / d4));
+        p = 3.0 + t * t * (3 - 2 * t);
       }
 
-      // Interpolate targets based on continuous milestone p (0.0 to 3.0)
+      // Interpolate targets based on continuous milestone p (0.0 to 4.0)
       let destX = heroPos.x;
       let destY = heroPos.y;
-      let destR = Math.min(w, h) * (isMobile ? (isLandscapePhone ? 0.38 : 0.35) : 0.22);
-      let destMorph = isMobile ? 1.2 : 0.0;
-      let destRotX = isMobile ? 0.5 : 0.32;
-      let destRotY = isMobile ? 0.8 : 0.45;
-      let destAlpha = isMobile ? (isLandscapePhone ? 0.22 : 0.28) : 1.0;
+      let destR = Math.min(Math.min(w, h) * 0.22, 190);
+      let destMorph = 0.0;
+      let destRotX = 0.32;
+      let destRotY = 0.45;
+      let destAlpha = 1.0;
 
-      if (isMobile) {
-        // MOBILE / LANDSCAPE: Starts ALREADY destructured as an atmospheric background right from the top!
-        // No rigid Bloch sphere, no awkward stacking. Pure soft quantum wave field.
-        const startY = isLandscapePhone ? Math.min(h * 0.48, 190) : Math.min(h * 0.36, 260);
-        destX = w * 0.5;
-        destR = Math.min(w, h) * (isLandscapePhone ? 0.38 : 0.36);
-        const heroAlpha = isLandscapePhone ? 0.22 : 0.28;
-
-        if (p <= 1.0) {
-          // Hero -> About
-          const t = p;
-          destY = startY + (aboutPos.y - startY) * t;
-          destMorph = 1.2 + t * 0.4; // 1.2 -> 1.6
-          destRotX = 0.5 + t * 0.25;
-          destRotY = 0.8 + t * 0.8;
-          destAlpha = heroAlpha * (1 - t) + 0.20 * t;
-        } else if (p <= 2.0) {
-          // About -> Activities
-          const t = p - 1.0;
-          const nextY = actPos ? actPos.y : (aboutPos.y + ctaPos.y) * 0.5;
-          destY = aboutPos.y + (nextY - aboutPos.y) * t;
-          destMorph = 1.6 + t * 0.6; // 1.6 -> 2.2
-          destRotX = 0.75 + t * 0.3;
-          destRotY = 1.6 + t * 1.0;
-          destAlpha = 0.20 * (1 - t) + 0.18 * t;
-        } else {
-          // Activities -> CTA
-          const t = Math.min(1.0, p - 2.0);
-          const prevY = actPos ? actPos.y : (aboutPos.y + ctaPos.y) * 0.5;
-          destY = prevY + (ctaPos.y - prevY) * t;
-          destR = Math.min(w, h) * (isLandscapePhone ? 0.38 : 0.36) * (1.0 + t * 0.35);
-          destMorph = 2.2 + t * 0.8; // 2.2 -> 3.0
-          destRotX = 1.05 + t * 0.25;
-          destRotY = 2.6 + t * 0.8;
-          destAlpha = 0.18 * (1 - t) + (isLandscapePhone ? 0.26 : 0.32) * t;
-        }
+      if (p <= 1.0) {
+        // 0 -> 1: Hero -> Quantum Month
+        const t = p;
+        destX = heroPos.x + (qmPos.x - heroPos.x) * t;
+        destY = heroPos.y + (qmPos.y - heroPos.y) * t;
+        destR = Math.min(Math.min(w, h) * 0.22, 190) * (1 - t * 0.05);
+        destMorph = t * 0.6; // 0.0 -> 0.6: starts breathing into harmonic superposition
+        destRotX = 0.32 + t * 0.16;
+        destRotY = 0.45 + t * 0.50;
+        destAlpha = 1.0 * (1 - t) + 0.85 * t; // prominent & crisp in Quantum Month!
+      } else if (p <= 2.0) {
+        // 1 -> 2: Quantum Month -> About PMQC
+        const t = p - 1.0;
+        destX = qmPos.x + (aboutPos.x - qmPos.x) * t;
+        destY = qmPos.y + (aboutPos.y - qmPos.y) * t;
+        destR = Math.min(Math.min(w, h) * 0.21, 180) * (1 + t * 0.08);
+        destMorph = 0.6 + t * 0.6; // 0.6 -> 1.2 (Wave Superposition under About cards)
+        destRotX = 0.48 + t * 0.19;
+        destRotY = 0.95 + t * 0.45;
+        destAlpha = 0.85 * (1 - t) + 0.35 * t;
+      } else if (p <= 3.0) {
+        // 2 -> 3: About PMQC -> Activities
+        const t = p - 2.0;
+        const nextX = actPos ? actPos.x : (aboutPos.x + ctaPos.x) * 0.5;
+        const nextY = actPos ? actPos.y : (aboutPos.y + ctaPos.y) * 0.5;
+        destX = aboutPos.x + (nextX - aboutPos.x) * t;
+        destY = aboutPos.y + (nextY - aboutPos.y) * t;
+        destR = Math.min(Math.min(w, h) * 0.23, 195);
+        destMorph = 1.2 + t * 0.8; // 1.2 -> 2.0 (Dual Torus)
+        destRotX = 0.67 + t * 0.40;
+        destRotY = 1.40 + t * 1.00;
+        destAlpha = 0.35 * (1 - t) + 0.32 * t;
       } else {
-        // DESKTOP: Crisp, defined Bloch sphere on the right in Hero, then smoothly glides and destructures down
-        if (p <= 1.0) {
-          // Hero -> About
-          const t = p;
-          destX = heroPos.x + (aboutPos.x - heroPos.x) * t;
-          destY = heroPos.y + (aboutPos.y - heroPos.y) * t;
-          destR = Math.min(w, h) * 0.22 * (1 + t * 0.1);
-          destMorph = t * 1.0; // 0.0 -> 1.0 (Bloch to Wave Superposition)
-          destRotX = 0.32 + t * 0.35;
-          destRotY = 0.45 + t * 0.95;
-          destAlpha = 1.0 * (1 - t) + 0.35 * t;
-        } else if (p <= 2.0) {
-          // About -> Activities (or halfway to CTA)
-          const t = p - 1.0;
-          const nextX = actPos ? actPos.x : (aboutPos.x + ctaPos.x) * 0.5;
-          const nextY = actPos ? actPos.y : (aboutPos.y + ctaPos.y) * 0.5;
-          destX = aboutPos.x + (nextX - aboutPos.x) * t;
-          destY = aboutPos.y + (nextY - aboutPos.y) * t;
-          destR = Math.min(w, h) * 0.24 * (1.1 - t * 0.05);
-          destMorph = 1.0 + t * 1.0; // 1.0 -> 2.0 (Wave to Entangled / Dual Torus)
-          destRotX = 0.67 + t * 0.4;
-          destRotY = 1.4 + t * 1.2;
-          destAlpha = 0.35 * (1 - t) + 0.32 * t;
-        } else {
-          // Activities -> CTA
-          const t = Math.min(1.0, p - 2.0);
-          const prevX = actPos ? actPos.x : (aboutPos.x + ctaPos.x) * 0.5;
-          const prevY = actPos ? actPos.y : (aboutPos.y + ctaPos.y) * 0.5;
-          destX = prevX + (ctaPos.x - prevX) * t;
-          destY = prevY + (ctaPos.y - prevY) * t;
-          // Expands into a giant portal behind the CTA card!
-          destR = Math.min(w, h) * 0.23 * (1.05 + t * 0.65);
-          destMorph = 2.0 + t * 1.0; // 2.0 -> 3.0 (Concentric Portal Singularity)
-          destRotX = 1.07 + t * 0.3;
-          destRotY = 2.6 + t * 1.0;
-          destAlpha = 0.32 * (1 - t) + 0.45 * t;
-        }
+        // 3 -> 4: Activities -> CTA
+        const t = Math.min(1.0, p - 3.0);
+        const prevX = actPos ? actPos.x : (aboutPos.x + ctaPos.x) * 0.5;
+        const prevY = actPos ? actPos.y : (aboutPos.y + ctaPos.y) * 0.5;
+        destX = prevX + (ctaPos.x - prevX) * t;
+        destY = prevY + (ctaPos.y - prevY) * t;
+        destR = Math.min(Math.min(w, h) * 0.23, 195) * (1.0 + t * 0.2);
+        destMorph = 2.0 + t * 1.0; // 2.0 -> 3.0 (Portal)
+        destRotX = 1.07 + t * 0.28;
+        destRotY = 2.40 + t * 1.00;
+        destAlpha = 0.32 * (1 - t) + 0.45 * t;
       }
 
       targetCoords = {
@@ -609,7 +595,7 @@ export default function QuantumVisualizer() {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 w-screen h-screen pointer-events-none z-0 overflow-hidden"
+      className="hidden lg:block fixed inset-0 w-screen h-screen pointer-events-none z-0 overflow-hidden"
     >
       <canvas
         ref={canvasRef}

@@ -30,7 +30,7 @@ export default function PmqcQuantumMonthSection() {
       <div className="text-left mb-10 sm:mb-14">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-cyan-300 text-xs font-bold tracking-wider uppercase mb-3.5 backdrop-blur-md">
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-          <span>QUANTUM MONTH · NOVEMBER and DECEMBER 2026</span>
+          <span>QUANTUM MONTH</span>
         </div>
 
         <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-foreground tracking-tight leading-tight">

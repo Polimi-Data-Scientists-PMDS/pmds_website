@@ -75,9 +75,11 @@
 
 @utility pmqc-card {
   background-color: var(--pmqc-surface);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--pmqc-border);
+  @media (min-width: 768px) {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
 }
 
 @utility pmqc-glow-cyan {

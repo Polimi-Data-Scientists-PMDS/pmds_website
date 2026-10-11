@@ -37,17 +37,43 @@ export default async function PMQCPage() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen pt-4 md:pt-8 pb-16 relative z-10 w-full max-w-[1100px] mx-auto px-6 overflow-x-clip">
+    <div className="flex flex-col min-h-screen pt-4 md:pt-8 pb-16 relative z-10 w-full max-w-[1100px] mx-auto px-6">
       {/* Top Ambient Glow Overlays */}
       <div className="absolute top-[2%] left-1/2 -translate-x-1/2 w-[85vw] max-w-[850px] h-[400px] bg-gradient-to-tr from-cyan-500/10 via-[#1109FF]/15 to-indigo-500/10 blur-[140px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute top-[45%] right-[-120px] w-[350px] h-[350px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none -z-10" />
 
-      {/* Reactive 3D Quantum Canvas smoothly reacting to page scroll */}
+      {/* Reactive 3D Quantum Canvas smoothly reacting to page scroll (Desktop Only) */}
       <QuantumVisualizer />
+
+      {/* Style for mobile ambient glow float animation */}
+      <style>{`
+        @keyframes float-glow {
+          0%   { transform: translate(0, 0) scale(1); }
+          10%  { transform: translate(30px, -20px) scale(1.1); }
+          20%  { transform: translate(40px, 10px) scale(1.05); }
+          30%  { transform: translate(10px, 20px) scale(0.95); }
+          40%  { transform: translate(-25px, 30px) scale(0.9); }
+          50%  { transform: translate(-35px, -10px) scale(1); }
+          60%  { transform: translate(-15px, -30px) scale(1.1); }
+          70%  { transform: translate(30px, -15px) scale(1.05); }
+          80%  { transform: translate(15px, 25px) scale(0.95); }
+          90%  { transform: translate(-20px, 10px) scale(0.9); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
+        .pmqc-animate-glow {
+          animation: float-glow 20s ease-in-out infinite;
+        }
+      `}</style>
 
       {/* 1. Hero Section: PMQC Department Presentation */}
       <section className="w-full flex flex-col lg:flex-row items-center justify-between gap-12 mt-4 md:mt-8 mb-16 sm:mb-24 relative z-10">
-        <div className="w-full lg:w-[54%] flex flex-col text-left z-10">
+        <div className="w-full lg:w-[54%] flex flex-col text-left z-10 relative">
+          {/* Spotlight ombre colorate (solo mobile/tablet: su desktop c'è la Quantum Sphere e zero cropping) */}
+          <div className="lg:hidden absolute top-[-10px] left-[0px] w-[220px] h-[220px] sm:w-[320px] sm:h-[320px] bg-cyan-500/20 blur-[80px] rounded-full pointer-events-none -z-10 pmqc-animate-glow" />
+          <div
+            className="lg:hidden absolute top-[40px] left-[30px] w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] bg-[#1109FF]/15 blur-[85px] rounded-full pointer-events-none -z-10 pmqc-animate-glow"
+            style={{ animationDelay: '-5s' }}
+          />
+
           {/* Badge sopra il titolo */}
           <a
             href="#quantum-month"
