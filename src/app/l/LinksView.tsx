@@ -1,6 +1,7 @@
 'use client';
 
 import NewsletterModal from '@/shared/components/ui/NewsletterModal';
+import { formatDate } from '@/shared/lib/utils';
 import { Event, Project } from '@/shared/types';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -270,7 +271,7 @@ export default function LinksView({
                   <div className="flex items-center gap-2">
                     <FaCalendarAlt size={11} className="text-accent shrink-0" />
                     <span className="font-medium text-foreground/90">
-                      {event.date} {event.time ? `· ${event.time}` : ''}
+                      {formatDate(event.dateStart, event.dateEnd, 'time')}
                     </span>
                   </div>
                   {event.location && (
