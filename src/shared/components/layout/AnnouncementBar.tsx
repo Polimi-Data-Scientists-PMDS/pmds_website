@@ -25,8 +25,8 @@ export default function AnnouncementBar({
   if (isBioPage) return null;
 
   return (
-    <div className="w-full bg-gradient-to-r from-accent to-indigo-600 px-4 py-2 flex items-center justify-center relative z-50 shadow-md">
-      <div className="flex items-center gap-2 text-foreground text-sm font-semibold">
+    <div className="relative z-50 flex w-full items-center justify-center bg-gradient-to-r from-accent to-indigo-600 px-4 py-2 shadow-md">
+      <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
         <FaRocket className="text-foreground/80" />
         <span>{title}</span>
         {link && (
@@ -34,7 +34,7 @@ export default function AnnouncementBar({
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 underline underline-offset-2 hover:text-foreground/80 transition-colors"
+            className="ml-2 underline underline-offset-2 transition-colors hover:text-foreground/80"
           >
             {linkText}
           </a>

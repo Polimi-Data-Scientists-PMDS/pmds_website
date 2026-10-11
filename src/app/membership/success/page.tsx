@@ -54,8 +54,8 @@ export default function MembershipSuccessPage({
   return (
     <Suspense
       fallback={
-        <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 pt-20">
-          <div className="w-10 h-10 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+        <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 pt-20">
+          <div className="h-10 w-10 animate-spin rounded-full border-2 border-accent border-t-transparent"></div>
         </div>
       }
     >
@@ -74,30 +74,30 @@ function SuccessState() {
     process.env.WHATSAPP_GROUP_LINK || 'https://chat.whatsapp.com/fallback';
 
   return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 pt-20 relative overflow-hidden">
+    <div className="relative flex min-h-[70vh] flex-col items-center justify-center overflow-hidden px-6 pt-20">
       {/* Celebration Background Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-accent/20 blur-[120px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -z-10 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-accent/20 blur-[120px] md:h-[600px] md:w-[600px]"></div>
 
       <Confetti />
 
-      <div className="w-full max-w-[600px] bg-surface/80 backdrop-blur-xl border border-white/10 rounded-[32px] p-10 md:p-16 text-center flex flex-col items-center shadow-[0_0_80px_rgba(75,111,254,0.15)] relative z-10">
+      <div className="relative z-10 flex w-full max-w-[600px] flex-col items-center rounded-[32px] border border-white/10 bg-surface/80 p-10 text-center shadow-[0_0_80px_rgba(75,111,254,0.15)] backdrop-blur-xl md:p-16">
         {/* Animated Checkmark Background (Checkmark is static) */}
         <div className="relative mb-6">
-          <div className="absolute inset-0 bg-accent blur-[20px] opacity-40 rounded-full animate-pulse"></div>
-          <FaCheckCircle className="text-accent text-7xl relative z-10" />
+          <div className="absolute inset-0 animate-pulse rounded-full bg-accent opacity-40 blur-[20px]"></div>
+          <FaCheckCircle className="relative z-10 text-7xl text-accent" />
         </div>
 
-        <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-foreground to-muted mb-4 tracking-tight">
+        <h1 className="mb-4 bg-gradient-to-r from-foreground to-muted bg-clip-text text-3xl font-extrabold tracking-tight text-transparent md:text-4xl">
           Welcome to the Club!
         </h1>
-        <p className="text-muted text-base leading-relaxed mb-8">
+        <p className="mb-8 text-base leading-relaxed text-muted">
           Your membership payment was successfully processed. We're incredibly
           excited to have you on board as an official member.
         </p>
 
-        <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 text-left">
-          <h3 className="text-foreground font-semibold mb-3">Next Steps:</h3>
-          <ul className="text-muted text-sm space-y-3">
+        <div className="mb-8 w-full rounded-2xl border border-white/10 bg-white/5 p-6 text-left">
+          <h3 className="mb-3 font-semibold text-foreground">Next Steps:</h3>
+          <ul className="space-y-3 text-sm text-muted">
             <li className="flex gap-2">
               <span className="text-accent">1.</span>
               <span>
@@ -121,24 +121,24 @@ function SuccessState() {
           </ul>
         </div>
 
-        <div className="flex flex-col gap-4 w-full">
-          <div className="flex flex-col sm:flex-row gap-4 w-full">
+        <div className="flex w-full flex-col gap-4">
+          <div className="flex w-full flex-col gap-4 sm:flex-row">
             <a
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-foreground font-bold py-3.5 px-6 rounded-full transition-colors shadow-[0_0_20px_rgba(37,211,102,0.2)]"
+              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 font-bold text-foreground shadow-[0_0_20px_rgba(37,211,102,0.2)] transition-colors hover:bg-[#1EBE5D]"
             >
               <FaWhatsapp size={20} /> Join WhatsApp
             </a>
             <Link
               href="/"
-              className="flex-1 flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-foreground font-semibold py-3.5 px-6 rounded-full transition-colors"
+              className="flex flex-1 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3.5 font-semibold text-foreground transition-colors hover:bg-white/10"
             >
               Back to Home
             </Link>
           </div>
-          <p className="text-muted text-xs italic mt-2">
+          <p className="mt-2 text-xs text-muted italic">
             Note: For security reasons, your request to join the group will be
             manually approved by our admins.
           </p>
@@ -150,19 +150,19 @@ function SuccessState() {
 
 function ErrorState() {
   return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 pt-20">
-      <div className="w-full max-w-[600px] bg-surface/80 backdrop-blur-xl border border-red-500/20 rounded-[32px] p-10 text-center flex flex-col items-center">
-        <FaExclamationTriangle className="text-red-500 text-5xl mb-6" />
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+    <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 pt-20">
+      <div className="flex w-full max-w-[600px] flex-col items-center rounded-[32px] border border-red-500/20 bg-surface/80 p-10 text-center backdrop-blur-xl">
+        <FaExclamationTriangle className="mb-6 text-5xl text-red-500" />
+        <h1 className="mb-4 text-2xl font-bold text-foreground md:text-3xl">
           Invalid Session
         </h1>
-        <p className="text-muted mb-8">
+        <p className="mb-8 text-muted">
           We couldn't verify your payment. Please ensure you completed checkout
           or contact us if this is an error.
         </p>
         <Link
           href="/membership"
-          className="bg-white/5 hover:bg-white/10 border border-white/10 text-foreground font-semibold py-3 px-6 rounded-full transition-colors"
+          className="rounded-full border border-white/10 bg-white/5 px-6 py-3 font-semibold text-foreground transition-colors hover:bg-white/10"
         >
           Return to Membership
         </Link>

@@ -1,34 +1,38 @@
 'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { FaArrowRight, FaEnvelope } from "react-icons/fa";
-import NewsletterModal from "@/shared/components/ui/NewsletterModal";
+import Link from 'next/link';
+import { useState } from 'react';
+import { FaArrowRight, FaEnvelope } from 'react-icons/fa';
+import NewsletterModal from '@/shared/components/ui/NewsletterModal';
 
 export default function CtaSection() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
 
   return (
-    <section className="w-full max-w-[850px] mx-auto px-6 mt-20 mb-20">
-      <div className="w-full bg-[#0a0a0a]/90 backdrop-blur-sm border border-white/5 rounded-[40px] px-8 py-12 md:py-16 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_80px_rgba(75,111,254,0.05)]">
-
+    <section className="mx-auto mt-20 mb-20 w-full max-w-[850px] px-6">
+      <div className="relative flex w-full flex-col items-center overflow-hidden rounded-[40px] border border-white/5 bg-[#0a0a0a]/90 px-8 py-12 text-center shadow-[0_0_80px_rgba(75,111,254,0.05)] backdrop-blur-sm md:py-16">
         {/* Glow behind the CTA */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-accent/20 blur-[100px] rounded-full pointer-events-none"></div>
+        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/20 blur-[100px]"></div>
 
-        <h2 className="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-foreground to-muted tracking-tight leading-tight relative z-10">
+        <h2 className="relative z-10 bg-gradient-to-r from-foreground to-muted bg-clip-text text-3xl leading-tight font-extrabold tracking-tight text-transparent md:text-5xl">
           Ready to dive into Data Science?
         </h2>
-        <p className="text-muted mt-4 max-w-[450px] text-sm md:text-base relative z-10">
-          Join a community of students passionate about AI, Machine Learning, and everything data.
+        <p className="relative z-10 mt-4 max-w-[450px] text-sm text-muted md:text-base">
+          Join a community of students passionate about AI, Machine Learning,
+          and everything data.
         </p>
 
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 relative z-10">
-          <Link href="/membership" className="cursor-pointer flex items-center justify-center gap-2 bg-foreground text-background hover:bg-foreground/90 text-sm font-bold py-3.5 px-8 rounded-full transition-all group shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-            Become a Member <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+        <div className="relative z-10 mt-8 flex flex-col gap-4 sm:flex-row">
+          <Link
+            href="/membership"
+            className="group flex cursor-pointer items-center justify-center gap-2 rounded-full bg-foreground px-8 py-3.5 text-sm font-bold text-background shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all hover:bg-foreground/90"
+          >
+            Become a Member{' '}
+            <FaArrowRight className="transition-transform group-hover:translate-x-1" />
           </Link>
           <button
             onClick={() => setIsNewsletterOpen(true)}
-            className="cursor-pointer flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-foreground text-sm font-semibold py-3.5 px-8 rounded-full transition-all"
+            className="flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-white/10"
           >
             <FaEnvelope /> Subscribe to Newsletter
           </button>

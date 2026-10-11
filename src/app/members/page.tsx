@@ -11,13 +11,13 @@ export default async function MembersPage() {
   const teams = await getTeams();
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-200px)] pt-20 relative z-10 w-full max-w-[1100px] mx-auto px-6 mb-24">
+    <div className="relative z-10 mx-auto mb-24 flex min-h-[calc(100vh-200px)] w-full max-w-[1100px] flex-col px-6 pt-20">
       {/* Header */}
-      <div className="mb-16 mt-10">
-        <h1 className="text-6xl font-bold text-foreground leading-snug">
+      <div className="mt-10 mb-16">
+        <h1 className="text-6xl leading-snug font-bold text-foreground">
           Members
         </h1>
-        <p className="text-base text-muted max-w-[600px] mt-4 leading-relaxed">
+        <p className="mt-4 max-w-[600px] text-base leading-relaxed text-muted">
           Meet the minds behind Polimi Data Scientists.
         </p>
       </div>
@@ -26,21 +26,21 @@ export default async function MembersPage() {
       <div className="flex flex-col gap-16">
         {teams.map((team, teamIndex) => (
           <div key={team.id} className="flex flex-col">
-            <div className="mb-8 border-b pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="mb-8 flex flex-col justify-between gap-4 border-b pb-4 md:flex-row md:items-end">
               <h2 className="text-3xl font-bold text-foreground">
                 {team.name}
               </h2>
               {team.email && (
                 <a
                   href={`mailto:${team.email}`}
-                  className="text-accent hover:text-accent-secondary transition-colors text-sm font-medium flex items-center gap-2"
+                  className="flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent-secondary"
                 >
                   <FaEnvelope /> {team.email}
                 </a>
               )}
             </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-6">
+            <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-6 md:grid-cols-5 lg:grid-cols-6">
               {team.members.map((member, index) => (
                 <MemberCard
                   key={`${team.id}-${member.id}-${index}`}

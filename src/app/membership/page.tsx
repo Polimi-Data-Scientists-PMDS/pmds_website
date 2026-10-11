@@ -55,32 +55,32 @@ export default function MembershipPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen pt-32 pb-24 relative overflow-hidden">
+    <div className="relative flex min-h-screen flex-col overflow-hidden pt-32 pb-24">
       {/* Background ambient glow */}
-      <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[80vw] max-w-[800px] h-[400px] bg-accent/15 blur-[120px] rounded-full pointer-events-none -z-10" />
+      <div className="pointer-events-none absolute top-[10%] left-1/2 -z-10 h-[400px] w-[80vw] max-w-[800px] -translate-x-1/2 rounded-full bg-accent/15 blur-[120px]" />
 
-      <div className="max-w-[800px] mx-auto px-6 text-center mb-8">
-        <h1 className="text-4xl md:text-6xl font-extrabold text-foreground tracking-tight leading-[1.1] mb-6">
+      <div className="mx-auto mb-8 max-w-[800px] px-6 text-center">
+        <h1 className="mb-6 text-4xl leading-[1.1] font-extrabold tracking-tight text-foreground md:text-6xl">
           Join the{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-[#8b9ffe]">
+          <span className="bg-gradient-to-r from-accent to-[#8b9ffe] bg-clip-text text-transparent">
             Community
           </span>
         </h1>
-        <p className="text-muted text-base md:text-lg max-w-[600px] mx-auto leading-relaxed">
+        <p className="mx-auto max-w-[600px] text-base leading-relaxed text-muted md:text-lg">
           Unlock exclusive workshops, join real-world data science projects, and
           connect with industry leaders.
         </p>
       </div>
 
       {/* Active Tranche Indicator */}
-      <div className="flex flex-col items-center mb-16 relative z-10">
-        <div className="inline-flex items-center gap-3 bg-accent/10 border border-accent/30 text-accent px-5 py-2.5 rounded-full text-sm font-semibold shadow-[0_0_20px_--alpha(var(--color-accent)/15%)] mb-3">
+      <div className="relative z-10 mb-16 flex flex-col items-center">
+        <div className="mb-3 inline-flex items-center gap-3 rounded-full border border-accent/30 bg-accent/10 px-5 py-2.5 text-sm font-semibold text-accent shadow-[0_0_20px_--alpha(var(--color-accent)/15%)]">
           <FaCalendarAlt size={16} />
           {ACTIVE_TRANCHE === 'fall'
             ? `Now Enrolling: Fall Tranche (${ACADEMIC_YEAR})`
             : `Now Enrolling: Winter Tranche (${ACADEMIC_YEAR})`}
         </div>
-        <div className="text-muted text-xs flex items-center gap-1.5 bg-background/20 px-3 py-1 rounded-full border">
+        <div className="flex items-center gap-1.5 rounded-full border bg-background/20 px-3 py-1 text-xs text-muted">
           <FaInfoCircle />
           <span>
             {ACTIVE_TRANCHE === 'fall'
@@ -90,32 +90,32 @@ export default function MembershipPage() {
         </div>
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-3 gap-8 items-center relative z-10">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-8 px-6 md:grid-cols-3">
         {/* Supporter Standard Tier */}
-        <div className="flex flex-col bg-[#0a0a0a]/90 backdrop-blur-sm border border-white/10 rounded-3xl p-8 relative overflow-hidden transition-all h-full">
+        <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#0a0a0a]/90 p-8 backdrop-blur-sm transition-all">
           <div className="mb-6">
-            <h3 className="text-foreground text-2xl font-bold">Supporter</h3>
-            <p className="text-muted text-sm mt-1">
+            <h3 className="text-2xl font-bold text-foreground">Supporter</h3>
+            <p className="mt-1 text-sm text-muted">
               Everything you need to get started
             </p>
           </div>
-          <div className="flex items-baseline gap-1 mb-6">
-            <span className="text-foreground text-3xl font-bold">€6</span>
-            <span className="text-muted text-sm">/year</span>
+          <div className="mb-6 flex items-baseline gap-1">
+            <span className="text-3xl font-bold text-foreground">€6</span>
+            <span className="text-sm text-muted">/year</span>
           </div>
 
           <div className="flex-1">
-            <ul className="flex flex-col gap-4 mb-8">
+            <ul className="mb-8 flex flex-col gap-4">
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-accent mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-accent" size={14} />
                 <span>Official Associate Status</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-accent mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-accent" size={14} />
                 <span>Access to member-only Events & Workshops</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-accent mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-accent" size={14} />
                 <span>Eligibility to join internal Projects</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted opacity-70">
@@ -127,40 +127,40 @@ export default function MembershipPage() {
 
           <button
             onClick={() => setCheckoutTier('standard')}
-            className="cursor-pointer w-full py-4 rounded-xl bg-white/5 border border-white/10 text-foreground font-medium hover:bg-white/10 transition-colors mt-auto"
+            className="mt-auto w-full cursor-pointer rounded-xl border border-white/10 bg-white/5 py-4 font-medium text-foreground transition-colors hover:bg-white/10"
           >
             Get Supporter
           </button>
         </div>
 
         {/* Supporter Premium Tier */}
-        <div className="flex flex-col bg-gradient-to-b from-surface-accent to-[#0a0a0a]/90 backdrop-blur-sm border border-accent/40 rounded-3xl p-8 relative overflow-hidden transition-all hover:border-accent/60 shadow-[0_0_80px_rgba(75,111,254,0.15)] md:scale-105 h-full z-10">
-          <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent" />
+        <div className="relative z-10 flex h-full flex-col overflow-hidden rounded-3xl border border-accent/40 bg-gradient-to-b from-surface-accent to-[#0a0a0a]/90 p-8 shadow-[0_0_80px_rgba(75,111,254,0.15)] backdrop-blur-sm transition-all hover:border-accent/60 md:scale-105">
+          <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent" />
 
           <div className="mb-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-foreground text-2xl font-bold">Premium</h3>
-              <span className="bg-accent/20 text-accent text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
+              <h3 className="text-2xl font-bold text-foreground">Premium</h3>
+              <span className="flex items-center gap-1 rounded-full bg-accent/20 px-2 py-0.5 text-xs font-bold tracking-wider text-accent uppercase">
                 <FaStar size={10} /> Popular
               </span>
             </div>
-            <p className="text-muted text-sm mt-1">
+            <p className="mt-1 text-sm text-muted">
               For true data science enthusiasts
             </p>
           </div>
-          <div className="flex items-baseline gap-1 mb-6">
-            <span className="text-foreground text-3xl font-bold">€11</span>
-            <span className="text-muted text-sm">/year</span>
+          <div className="mb-6 flex items-baseline gap-1">
+            <span className="text-3xl font-bold text-foreground">€11</span>
+            <span className="text-sm text-muted">/year</span>
           </div>
 
           <div className="flex-1">
-            <ul className="flex flex-col gap-4 mb-8">
-              <li className="flex items-start gap-3 text-sm text-foreground font-medium">
-                <FaCheck className="text-accent mt-1 shrink-0" size={14} />
+            <ul className="mb-8 flex flex-col gap-4">
+              <li className="flex items-start gap-3 text-sm font-medium text-foreground">
+                <FaCheck className="mt-1 shrink-0 text-accent" size={14} />
                 <span>Everything in Supporter</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-foreground mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-foreground" size={14} />
                 <span>
                   <strong className="text-foreground">
                     Complimentary PMDS Gadget
@@ -169,11 +169,11 @@ export default function MembershipPage() {
                 </span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-foreground mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-foreground" size={14} />
                 <span>Priority access to limited-seat Workshops</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-foreground mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-foreground" size={14} />
                 <span>Exclusive networking with Partners</span>
               </li>
             </ul>
@@ -181,42 +181,42 @@ export default function MembershipPage() {
 
           <button
             onClick={() => setCheckoutTier('premium')}
-            className="cursor-pointer w-full py-4 rounded-xl bg-accent text-foreground font-semibold hover:bg-accent-secondary transition-colors mt-auto shadow-[0_0_20px_rgba(75,111,254,0.3)] hover:shadow-[0_0_30px_rgba(75,111,254,0.5)]"
+            className="mt-auto w-full cursor-pointer rounded-xl bg-accent py-4 font-semibold text-foreground shadow-[0_0_20px_rgba(75,111,254,0.3)] transition-colors hover:bg-accent-secondary hover:shadow-[0_0_30px_rgba(75,111,254,0.5)]"
           >
             Go Premium
           </button>
         </div>
 
         {/* Active Tier */}
-        <div className="flex flex-col bg-[#0a0a0a]/90 backdrop-blur-sm border border-white/10 rounded-3xl p-8 relative overflow-hidden transition-all h-full">
+        <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#0a0a0a]/90 p-8 backdrop-blur-sm transition-all">
           <div className="mb-6">
-            <h3 className="text-foreground text-2xl font-bold">
+            <h3 className="text-2xl font-bold text-foreground">
               Active Member
             </h3>
-            <p className="text-muted text-sm mt-1">
+            <p className="mt-1 text-sm text-muted">
               For those who want to shape PMDS
             </p>
           </div>
-          <div className="flex items-baseline gap-1 mb-6">
-            <span className="text-foreground text-3xl font-bold">€11</span>
-            <span className="text-muted text-sm">/year</span>
+          <div className="mb-6 flex items-baseline gap-1">
+            <span className="text-3xl font-bold text-foreground">€11</span>
+            <span className="text-sm text-muted">/year</span>
           </div>
 
           <div className="flex-1">
-            <ul className="flex flex-col gap-4 mb-8">
-              <li className="flex items-start gap-3 text-sm text-foreground font-medium">
-                <FaCheck className="text-accent mt-1 shrink-0" size={14} />
+            <ul className="mb-8 flex flex-col gap-4">
+              <li className="flex items-start gap-3 text-sm font-medium text-foreground">
+                <FaCheck className="mt-1 shrink-0 text-accent" size={14} />
                 <span>Everything in Premium</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-foreground mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-foreground" size={14} />
                 <span>
                   Official{' '}
                   <strong className="text-foreground">Active Status</strong>
                 </span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-foreground mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-foreground" size={14} />
                 <span>
                   <strong className="text-foreground">
                     Full Voting Rights
@@ -225,7 +225,7 @@ export default function MembershipPage() {
                 </span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted">
-                <FaCheck className="text-foreground mt-1 shrink-0" size={14} />
+                <FaCheck className="mt-1 shrink-0 text-foreground" size={14} />
                 <span>Eligibility for Executive Board</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted opacity-70">
@@ -237,7 +237,7 @@ export default function MembershipPage() {
 
           <button
             onClick={() => setCheckoutTier('active')}
-            className="cursor-pointer w-full py-4 rounded-xl bg-white/5 border border-white/10 text-foreground font-medium hover:bg-white/10 transition-colors mt-auto"
+            className="mt-auto w-full cursor-pointer rounded-xl border border-white/10 bg-white/5 py-4 font-medium text-foreground transition-colors hover:bg-white/10"
           >
             Apply Now
           </button>
@@ -245,17 +245,17 @@ export default function MembershipPage() {
       </div>
 
       {/* FAQ / Info Section */}
-      <div className="max-w-[1000px] mx-auto px-6 w-full mt-32 relative z-10">
-        <h2 className="text-3xl font-bold text-foreground text-center mb-12">
+      <div className="relative z-10 mx-auto mt-32 w-full max-w-[1000px] px-6">
+        <h2 className="mb-12 text-center text-3xl font-bold text-foreground">
           Frequently Asked Questions
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               What is the difference between Premium and Active?
             </h4>
-            <p className="text-muted text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-muted">
               Both have a €11 membership fee and come with a complimentary PMDS
               gadget as a welcome gift. However, <strong>Premium</strong> is a
               Supporter tier (no voting rights), while <strong>Active</strong>{' '}
@@ -265,22 +265,22 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               What are the responsibilities of an Active Member?
             </h4>
-            <p className="text-muted text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-muted">
               Active Members must attend the General Assembly (held at least
               once a year) and participate in bureaucratic duties such as
               approving the annual budget and deliberating on statutory matters.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               Do I need to be approved by the Board?
             </h4>
-            <p className="text-muted text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-muted">
               Yes. Supporter requests are routinely approved as long as you meet
               the basic student eligibility criteria. Active Member requests
               undergo a thorough review process by the Board. In the unlikely
@@ -290,11 +290,11 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               Who can become a member?
             </h4>
-            <p className="text-muted text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-muted">
               Membership is strictly reserved for current{' '}
               <strong className="text-foreground">
                 BSc, MSc, and PhD students enrolled at Politecnico di Milano
@@ -305,7 +305,7 @@ export default function MembershipPage() {
                 href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground underline decoration-white/20 hover:text-accent transition-colors"
+                className="text-foreground underline decoration-white/20 transition-colors hover:text-accent"
               >
                 voluntary donation
               </a>{' '}
@@ -313,56 +313,56 @@ export default function MembershipPage() {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               How long is the membership valid?
             </h4>
-            <p className="text-muted text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-muted">
               It depends on the active Enrollment Tranche. Fall enrollments are
               valid until the following September. Winter enrollments are valid
               until the following January.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               Are the membership fees refundable?
             </h4>
-            <p className="text-muted text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-muted">
               No. The membership fee is considered an annual associative
               contribution used entirely to fund PMDS activities and is strictly
               non-refundable and non-fractionable.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               When does a membership expire?
             </h4>
-            <p className="text-muted text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-muted">
               Membership is automatically revoked if you fail to renew it at the
               natural expiration of your tranche, if you lose your PoliMi
               student status, or in case of disciplinary expulsion.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               How do I get my welcome gadget?
             </h4>
-            <p className="text-muted text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-muted">
               If you join as a Premium or Active member, you can pick up your
               complimentary PMDS gadget at any of our in-person events or during
               our designated pick-up days on campus.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
-            <h4 className="text-foreground font-medium text-base mb-2">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <h4 className="mb-2 text-base font-medium text-foreground">
               Can I switch tiers later?
             </h4>
-            <div className="text-muted text-sm leading-relaxed">
-              <ul className="list-disc pl-4 space-y-1">
+            <div className="text-sm leading-relaxed text-muted">
+              <ul className="list-disc space-y-1 pl-4">
                 <li>
                   Switching between Supporter and Active (in either direction)
                   is <strong>not permitted</strong>.
@@ -384,18 +384,18 @@ export default function MembershipPage() {
 
       {/* Checkout Modal */}
       {checkoutTier && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-          <div className="bg-[#0a0a0a] border border-white/10 p-8 rounded-3xl w-full max-w-md shadow-[0_0_80px_rgba(75,111,254,0.15)] relative">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-md rounded-3xl border border-white/10 bg-[#0a0a0a] p-8 shadow-[0_0_80px_rgba(75,111,254,0.15)]">
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 text-muted hover:text-foreground transition-colors p-2 text-xl"
+              className="absolute top-4 right-4 p-2 text-xl text-muted transition-colors hover:text-foreground"
             >
               ✕
             </button>
-            <h3 className="text-2xl font-bold text-foreground mb-2 tracking-tight">
+            <h3 className="mb-2 text-2xl font-bold tracking-tight text-foreground">
               Verify Student Status
             </h3>
-            <p className="text-muted text-sm mb-6">
+            <p className="mb-6 text-sm text-muted">
               Enter your official PoliMi email to proceed. This ensures only
               eligible students can join the association.
             </p>
@@ -406,17 +406,17 @@ export default function MembershipPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="mario.rossi@mail.polimi.it"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-foreground placeholder-muted focus:outline-none focus:border-accent transition-colors"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-foreground placeholder-muted transition-colors focus:border-accent focus:outline-none"
                   required
                 />
                 {errorMsg && (
-                  <p className="text-red-400 text-xs mt-2">{errorMsg}</p>
+                  <p className="mt-2 text-xs text-red-400">{errorMsg}</p>
                 )}
               </div>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-accent text-foreground font-semibold py-3 rounded-xl transition-all hover:bg-accent-secondary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3 font-semibold text-foreground transition-all hover:bg-accent-secondary disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isLoading ? (
                   <span className="animate-pulse">

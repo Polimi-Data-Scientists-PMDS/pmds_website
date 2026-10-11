@@ -10,20 +10,20 @@ export default async function ProjectsPage() {
   const projects = await getProjects();
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-200px)] pt-20 relative z-10 w-full max-w-[1100px] mx-auto px-6 mb-24">
+    <div className="relative z-10 mx-auto mb-24 flex min-h-[calc(100vh-200px)] w-full max-w-[1100px] flex-col px-6 pt-20">
       {/* Header */}
-      <div className="mb-16 mt-10">
-        <h1 className="text-6xl font-bold text-foreground leading-snug">
+      <div className="mt-10 mb-16">
+        <h1 className="text-6xl leading-snug font-bold text-foreground">
           Projects
         </h1>
-        <p className="text-base text-muted max-w-[600px] mt-4 leading-relaxed">
+        <p className="mt-4 max-w-[600px] text-base leading-relaxed text-muted">
           Discover the hands-on initiatives driven by Polimi Data Scientists.
           From active research to completed projects.
         </p>
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+      <div className="relative grid grid-cols-1 gap-8 md:grid-cols-2">
         {projects.map((project, index) => (
           <ProjectCard
             key={project.id}

@@ -6,7 +6,8 @@ export type NotionProperty = NotionPage['properties'][string] | undefined;
 // Utility to get text from Rich Text or Title properties
 export const getText = (prop: NotionProperty): string => {
   if (!prop) return '';
-  if (prop.type === 'title') return prop.title.map((t) => t.plain_text).join('');
+  if (prop.type === 'title')
+    return prop.title.map((t) => t.plain_text).join('');
   if (prop.type === 'rich_text')
     return prop.rich_text.map((t) => t.plain_text).join('');
   return '';

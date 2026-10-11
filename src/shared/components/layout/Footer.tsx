@@ -20,10 +20,10 @@ export default function Footer() {
   if (isBioPage) return null;
 
   return (
-    <footer className="w-full border-t bg-background pt-20 pb-10 mt-24">
-      <div className="w-full max-w-[1100px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
+    <footer className="mt-24 w-full border-t bg-background pt-20 pb-10">
+      <div className="mx-auto flex w-full max-w-[1100px] flex-col items-start justify-between gap-12 px-6 md:flex-row">
         <div className="flex flex-col gap-6 md:w-1/3">
-          <Link href="/" className="relative block w-[200px] h-[55px]">
+          <Link href="/" className="relative block h-[55px] w-[200px]">
             <Image
               src="/assets/logo.svg"
               alt="PMDS Logo"
@@ -31,16 +31,16 @@ export default function Footer() {
               className="object-contain object-left"
             />
           </Link>
-          <p className="text-muted text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed text-muted">
             Student-led association at Politecnico di Milano dedicated to
             exploring the latest in Data Science.
           </p>
-          <div className="flex gap-5 mt-2">
+          <div className="mt-2 flex gap-5">
             <a
               href="https://www.instagram.com/polimidatascientists/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors text-2xl"
+              className="text-2xl text-muted transition-colors hover:text-foreground"
             >
               <FaInstagram />
             </a>
@@ -48,7 +48,7 @@ export default function Footer() {
               href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors text-2xl"
+              className="text-2xl text-muted transition-colors hover:text-foreground"
             >
               <FaTelegramPlane />
             </a>
@@ -56,7 +56,7 @@ export default function Footer() {
               href="https://www.linkedin.com/company/polimi-data-scientists/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors text-2xl"
+              className="text-2xl text-muted transition-colors hover:text-foreground"
             >
               <FaLinkedinIn />
             </a>
@@ -95,11 +95,11 @@ export default function Footer() {
         />
       </div>
 
-      <div className="w-full max-w-[1100px] mx-auto px-6 mt-16 pt-8 border-t flex flex-col md:flex-row justify-between items-center md:items-start text-muted text-xs gap-6">
+      <div className="mx-auto mt-16 flex w-full max-w-[1100px] flex-col items-center justify-between gap-6 border-t px-6 pt-8 text-xs text-muted md:flex-row md:items-start">
         <p className="shrink-0">
           &copy; 2026 Polimi Data Scientists. All rights reserved.
         </p>
-        <p className="text-center md:text-right max-w-[500px] leading-relaxed">
+        <p className="max-w-[500px] text-center leading-relaxed md:text-right">
           Polimi Data Scientists is an independent student association
           recognized by Politecnico di Milano. This website is independently
           managed and is not an official publication of the university.

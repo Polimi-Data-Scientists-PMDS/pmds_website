@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -79,6 +79,5 @@
 
 @theme {
   --inset-shadow-left:
-    inset -20px 0 10px var(--background),
-    inset 20px 0 10px var(--background);
+    inset -20px 0 10px var(--background), inset 20px 0 10px var(--background);
 }

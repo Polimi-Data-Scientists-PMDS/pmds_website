@@ -9,34 +9,34 @@ interface FeatureCardProps {
 
 function FeatureCard({ title, details, icon }: FeatureCardProps) {
   return (
-    <div className="bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 p-6 rounded-3xl transition-colors">
-      <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-4">
+    <div className="rounded-3xl border border-white/5 bg-surface/80 p-6 backdrop-blur-sm transition-colors hover:border-white/10">
+      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
         {icon}
       </div>
-      <h3 className="text-foreground font-bold mb-2">{title}</h3>
-      <p className="text-muted text-sm leading-relaxed">{details}</p>
+      <h3 className="mb-2 font-bold text-foreground">{title}</h3>
+      <p className="text-sm leading-relaxed text-muted">{details}</p>
     </div>
   );
 }
 
 export default function AboutSection() {
   return (
-    <section className="w-full max-w-[1100px] mx-auto px-6 mt-10 mb-16 md:mb-24">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+    <section className="mx-auto mt-10 mb-16 w-full max-w-[1100px] px-6 md:mb-24">
+      <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-20">
         {/* Left: Text Content */}
         <div className="flex flex-col">
-          <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-accent text-xs font-bold tracking-wider uppercase mb-6 w-fit">
+          <div className="mb-6 inline-block w-fit rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-bold tracking-wider text-accent uppercase">
             Since 2019
           </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight leading-tight mb-6">
+          <h2 className="mb-6 text-3xl leading-tight font-extrabold tracking-tight text-foreground md:text-4xl">
             Empowering the next generation of Data Scientists.
           </h2>
-          <p className="text-muted text-base leading-relaxed mb-6">
+          <p className="mb-6 text-base leading-relaxed text-muted">
             Born within the walls of Politecnico di Milano, we are the
             university's premier student-led association for AI, Machine
             Learning, and Data Science.
           </p>
-          <p className="text-muted text-base leading-relaxed">
+          <p className="text-base leading-relaxed text-muted">
             Our mission is to bridge the gap between academic theory and
             real-world application. We gather the brightest minds to learn,
             build, and innovate together.
@@ -44,7 +44,7 @@ export default function AboutSection() {
         </div>
 
         {/* Right: Feature grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <FeatureCard
             title="Workshops"
             details="Hands-on sessions on modern ML frameworks, LLMs, and data engineering."
