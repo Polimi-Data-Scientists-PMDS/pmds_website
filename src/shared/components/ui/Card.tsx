@@ -2,10 +2,8 @@ import { cn } from '@/shared/lib/utils';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
-export interface CardProps {
+interface CardProps {
   title: string;
-  date?: string;
-  details: string;
   imageUrl?: string;
   chips?: ReactNode[];
   priority?: boolean;
@@ -13,10 +11,8 @@ export interface CardProps {
   children?: ReactNode;
 }
 
-export default function Card({
+function Card({
   title,
-  date,
-  details,
   imageUrl,
   chips = [],
   priority = false,
@@ -26,13 +22,16 @@ export default function Card({
   return (
     <div
       className={cn(
-        'group flex h-full flex-col overflow-hidden rounded-3xl border border-white/5 bg-surface/80 backdrop-blur-sm transition-colors duration-300 hover:border-white/10',
+        'group relative z-0 flex h-full flex-col rounded-3xl border border-white/5 bg-surface/80',
+        // Lift card above siblings so overflowing popups (e.g. PeopleGroup) aren't covered
+        'hover:z-30 has-data-[people-open=true]:z-30',
+        'backdrop-blur-sm transition-colors duration-300 hover:border-white/10',
         className,
       )}
     >
       {/* Image with chips overlaid on top */}
       {imageUrl && (
-        <div className="relative aspect-video w-full shrink-0 overflow-hidden border-b border-white/5 bg-zinc-900">
+        <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-t-3xl border-b border-white/5 bg-zinc-900">
           <Image
             src={imageUrl}
             alt={title}
@@ -50,28 +49,68 @@ export default function Card({
         </div>
       )}
 
-      {/* Content */}
-      <div className="flex flex-1 flex-col p-8">
-        {!imageUrl && chips.length > 0 && <div className="mb-4">{chips}</div>}
-
-        {date && (
-          <span className="mb-3 text-xs font-bold tracking-wider text-accent uppercase">
-            {date}
-          </span>
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        {!imageUrl && chips.length > 0 && (
+          <div className="flex flex-row gap-2">{chips}</div>
         )}
 
-        <h3 className="mb-3 text-2xl leading-snug font-bold text-foreground">
-          {title}
-        </h3>
-
-        <p className="mb-8 text-sm leading-relaxed text-muted">{details}</p>
-
         {children && (
-          <div className="mt-auto flex flex-col border-t border-white/5">
-            {children}
-          </div>
+          <div className="flex flex-1 flex-col gap-4">{children}</div>
         )}
       </div>
     </div>
   );
 }
+
+function CardHeader({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<'div'>) {
+  return (
+    <h3
+      className={cn(
+        'text-2xl leading-snug font-bold text-foreground',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </h3>
+  );
+}
+
+function CardSubHeader({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<'div'>) {
+  return (
+    <span
+      className={cn(
+        'text-xs font-bold tracking-wider text-accent uppercase',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </span>
+  );
+}
+
+function CardDetails({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<'div'>) {
+  return (
+    <p
+      className={cn('text-sm leading-relaxed text-muted', className)}
+      {...props}
+    >
+      {children}
+    </p>
+  );
+}
+
+export { Card, CardDetails, CardHeader, CardSubHeader };

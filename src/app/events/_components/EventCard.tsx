@@ -1,4 +1,9 @@
-import Card from '@/shared/components/ui/Card';
+import {
+  Card,
+  CardDetails,
+  CardHeader,
+  CardSubHeader,
+} from '@/shared/components/ui/Card';
 import { cn, formatDate } from '@/shared/lib/utils';
 import { Event } from '@/shared/types';
 import { FaAtom } from 'react-icons/fa6';
@@ -16,9 +21,7 @@ export default function EventCard({
     <Card
       title={event.title}
       priority={priority}
-      details={event.description}
       imageUrl={event.imageUrl}
-      date={formatDate(event.dateStart, event.dateEnd, 'time')}
       chips={[
         <div
           key={2}
@@ -31,7 +34,7 @@ export default function EventCard({
         >
           {event.type}
         </div>,
-        (true || isPmqc) && (
+        isPmqc && (
           <span
             key={1}
             className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/40 bg-cyan-500/20 px-3 py-1 text-xs font-bold tracking-wider text-cyan-300 uppercase shadow-[0_0_15px_rgba(6,182,212,0.25)] backdrop-blur-md"
@@ -41,6 +44,16 @@ export default function EventCard({
           </span>
         ),
       ]}
-    />
+    >
+      <CardHeader>{event.title}</CardHeader>
+
+      <CardSubHeader>
+        {formatDate(event.dateStart, event.dateEnd, 'time')}
+      </CardSubHeader>
+
+      
+
+      <CardDetails>{event.description}</CardDetails>
+    </Card>
   );
 }

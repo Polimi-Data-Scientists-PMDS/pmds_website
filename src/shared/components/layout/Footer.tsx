@@ -38,6 +38,7 @@ export default function Footer() {
           <div className="mt-2 flex gap-5">
             <a
               href="https://www.instagram.com/polimidatascientists/"
+              title="Instagram"
               target="_blank"
               rel="noopener noreferrer"
               className="text-2xl text-muted transition-colors hover:text-foreground"
@@ -46,6 +47,7 @@ export default function Footer() {
             </a>
             <a
               href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw"
+              title="Telegram"
               target="_blank"
               rel="noopener noreferrer"
               className="text-2xl text-muted transition-colors hover:text-foreground"
@@ -54,6 +56,7 @@ export default function Footer() {
             </a>
             <a
               href="https://www.linkedin.com/company/polimi-data-scientists/"
+              title="Linkedin"
               target="_blank"
               rel="noopener noreferrer"
               className="text-2xl text-muted transition-colors hover:text-foreground"

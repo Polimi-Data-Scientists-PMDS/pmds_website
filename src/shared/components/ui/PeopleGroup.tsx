@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { FaChevronDown, FaEnvelope, FaLinkedinIn } from 'react-icons/fa';
 
+const PREVIEWED_PEOPLE_LIMIT = 3;
+
 export default function PeopleGroup({
   people,
   size = 'md',
@@ -42,33 +44,53 @@ export default function PeopleGroup({
   };
 
   return (
-    <div className="relative z-20 flex flex-row gap-2">
+    <div
+      data-people-open={mobile && opened}
+      className="relative z-20 flex flex-row gap-2"
+    >
       <div className={cn(SPACING[size], 'group/people relative flex')}>
-        {people.map((person, i) => (
-          <div
-            key={i}
-            style={{ zIndex: i }}
-            className={cn(
-              SIZING[size],
-              'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-surface-secondary text-sm text-muted',
-            )}
-          >
-            {person.avatar ? (
-              <Image
-                src={person.avatar}
-                alt={person.name}
-                fill
-                sizes="48px"
-                className="object-cover"
-                unoptimized
-              />
-            ) : (
-              <div className="inset-0 flex items-center justify-center">
-                {person.name.charAt(0)}
+        {people.map((person, i) =>
+          i < PREVIEWED_PEOPLE_LIMIT ? (
+            <div
+              key={i}
+              style={{ zIndex: i }}
+              className={cn(
+                SIZING[size],
+                'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-surface-secondary text-sm text-muted',
+              )}
+            >
+              {person.avatar ? (
+                <Image
+                  src={person.avatar}
+                  alt={person.name}
+                  fill
+                  sizes="48px"
+                  className="object-cover"
+                  unoptimized
+                />
+              ) : (
+                <div className="inset-0 flex items-center justify-center">
+                  {person.name.charAt(0)}
+                </div>
+              )}
+            </div>
+          ) : (
+            i == PREVIEWED_PEOPLE_LIMIT && (
+              <div
+                key={i}
+                style={{ zIndex: i }}
+                className={cn(
+                  SIZING[size],
+                  'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-surface-secondary text-sm text-muted',
+                )}
+              >
+                <div className="inset-0 flex items-center justify-center">
+                  ...
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+            )
+          ),
+        )}
 
         <div
           className={cn(
@@ -82,7 +104,7 @@ export default function PeopleGroup({
         >
           <div
             style={{ backgroundColor: '#0d0e12' }}
-            className="flex flex-col items-center gap-2 rounded-2xl border border-white/15 p-3 shadow-2xl shadow-black"
+            className="z-20 flex flex-col items-center gap-2 rounded-2xl border border-white/15 p-3 shadow-2xl shadow-black"
           >
             {people.map((person, i) => (
               <div
