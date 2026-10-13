@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
+import { FaGithub, FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import { FooterSection } from './FooterSection';
 
@@ -74,6 +74,14 @@ export default function Footer() {
               className="text-muted hover:text-foreground transition-colors text-2xl"
             >
               <FaLinkedinIn />
+            </a>
+            <a
+              href="https://github.com/Polimi-Data-Scientists-PMDS"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted hover:text-foreground transition-colors text-2xl"
+            >
+              <FaGithub />
             </a>
           </div>
         </div>
