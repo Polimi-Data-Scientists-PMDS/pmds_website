@@ -4,17 +4,24 @@ import {
   CardHeader,
   CardSubHeader,
 } from '@/shared/components/ui/Card';
-import Chip, { ChipDot } from '@/shared/components/ui/Chip';
-import { formatDate } from '@/shared/lib/utils';
+import Button from '@/shared/components/ui/Button';
+import Chip from '@/shared/components/ui/Chip';
+import { cn, formatDate } from '@/shared/lib/utils';
 import { Event } from '@/shared/types';
 import { FaAtom, FaLocationDot } from 'react-icons/fa6';
 
 export default function EventCard({
   event,
   priority = false,
+  compact = false,
+  onOpenDetails,
 }: {
   event: Event;
   priority?: boolean;
+  /** Smaller card with clamped text, for carousels and dense layouts. */
+  compact?: boolean;
+  /** Shown as a "Read more" link in compact mode, to reveal the full text. */
+  onOpenDetails?: (event: Event) => void;
 }) {
   const isPmqc = event.departments?.some((d) => d.toUpperCase() === 'PMQC');
 
@@ -23,6 +30,7 @@ export default function EventCard({
       title={event.title}
       priority={priority}
       imageUrl={event.imageUrl}
+      compact={compact}
       chips={[
         <Chip key={2} color={event.upcoming ? 'highlight' : 'muted'}>
           {event.type}
@@ -34,20 +42,46 @@ export default function EventCard({
         ),
       ]}
     >
-      <CardHeader>{event.title}</CardHeader>
+      <CardHeader className={cn(compact && 'line-clamp-2 text-lg')}>
+        {event.title}
+      </CardHeader>
 
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div
+        className={cn(
+          'flex flex-col',
+          !compact && 'sm:flex-row sm:items-center sm:justify-between',
+        )}
+      >
         <CardSubHeader>
           {formatDate(event.dateStart, event.dateEnd, 'time')}
         </CardSubHeader>
 
-        <div className="flex items-center gap-2 text-xs text-muted sm:justify-end">
+        <div className="flex w-fit items-center gap-2 text-xs text-muted sm:justify-end">
           <FaLocationDot className="size-4 text-muted" size={16} />
-          <span className="text-foreground">{event.location}</span>
+          <div className="flex flex-col justify-center">
+            {event.location.split(',').map((line, i) => (
+              <span key={i} className="w-fit font-medium text-foreground">
+                {line}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
-      <CardDetails>{event.description}</CardDetails>
+      <CardDetails className={cn(compact && 'line-clamp-3 text-xs')}>
+        {event.description}
+      </CardDetails>
+
+      {compact && onOpenDetails && (
+        <Button
+          onClick={() => onOpenDetails(event)}
+          variant="link"
+          size="sm"
+          className="-mt-2"
+        >
+          Read more &rarr;
+        </Button>
+      )}
 
       <div className="flex-1"></div>
 

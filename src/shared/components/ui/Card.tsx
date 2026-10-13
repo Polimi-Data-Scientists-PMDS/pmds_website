@@ -7,6 +7,8 @@ interface CardProps {
   imageUrl?: string;
   chips?: ReactNode[];
   priority?: boolean;
+  /** Shorter image, for carousels and dense layouts. */
+  compact?: boolean;
   className?: string;
   children?: ReactNode;
 }
@@ -16,6 +18,7 @@ function Card({
   imageUrl,
   chips = [],
   priority = false,
+  compact = false,
   children,
   className,
 }: CardProps) {
@@ -31,12 +34,17 @@ function Card({
     >
       {/* Image with chips overlaid on top */}
       {imageUrl && (
-        <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-t-3xl border-b border-white/5 bg-zinc-900">
+        <div
+          className={cn(
+            'relative w-full shrink-0 overflow-hidden rounded-t-3xl border-b border-white/5 bg-zinc-900',
+            compact ? 'h-32' : 'aspect-video',
+          )}
+        >
           <Image
             src={imageUrl}
             alt={title}
             fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
+            sizes={compact ? '350px' : '(max-width: 1024px) 100vw, 50vw'}
             className="object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
             priority={priority}
           />

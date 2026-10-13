@@ -6,8 +6,10 @@ import {
   CardHeader,
   CardSubHeader,
 } from '@/shared/components/ui/Card';
+import Button from '@/shared/components/ui/Button';
 import Chip, { ChipDot } from '@/shared/components/ui/Chip';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
+import { cn } from '@/shared/lib/utils';
 import { Project } from '@/shared/types';
 import { Fragment } from 'react';
 import {
@@ -18,7 +20,6 @@ import {
   FaHandshake,
   FaUsers,
 } from 'react-icons/fa';
-import { FaAtom } from 'react-icons/fa6';
 
 const STATUS_CHIP = {
   Recruiting: { label: 'Hiring Now', color: 'amber' },
@@ -29,9 +30,15 @@ const STATUS_CHIP = {
 export default function ProjectCard({
   project,
   priority = false,
+  compact = false,
+  onOpenDetails,
 }: {
   project: Project;
   priority?: boolean;
+  /** Smaller card with clamped text, for carousels and dense layouts. */
+  compact?: boolean;
+  /** Shown as a "Read more" link in compact mode, to reveal the full text. */
+  onOpenDetails?: (project: Project) => void;
 }) {
   const isPmqc =
     project.departments?.some((d) => d.toUpperCase() === 'PMQC') ||
@@ -57,6 +64,7 @@ export default function ProjectCard({
       title={project.title}
       imageUrl={project.imageUrl}
       priority={priority}
+      compact={compact}
       chips={[
         isPmqc && (
           <Chip key={1} color="cyan" icon={<FaAtom />}>
@@ -72,7 +80,9 @@ export default function ProjectCard({
         </Chip>,
       ]}
     >
-      <CardHeader>{project.title}</CardHeader>
+      <CardHeader className={cn(compact && 'line-clamp-2 text-lg')}>
+        {project.title}
+      </CardHeader>
 
       <div className="flex flex-row items-center justify-between gap-2">
         <CardSubHeader>{project.date}</CardSubHeader>
@@ -97,7 +107,20 @@ export default function ProjectCard({
         )}
       </div>
 
-      <CardDetails>{project.description}</CardDetails>
+      <CardDetails className={cn(compact && 'line-clamp-3 text-xs')}>
+        {project.description}
+      </CardDetails>
+
+      {compact && onOpenDetails && (
+        <Button
+          onClick={() => onOpenDetails(project)}
+          variant="link"
+          size="sm"
+          className="-mt-2"
+        >
+          Read more &rarr;
+        </Button>
+      )}
 
       <div className="flex-1"></div>
 

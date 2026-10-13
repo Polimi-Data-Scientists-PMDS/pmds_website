@@ -1,12 +1,113 @@
 'use client';
-import { useState } from 'react';
 import Button from '@/shared/components/ui/Button';
 import Chip from '@/shared/components/ui/Chip';
+import { ReactNode, useState } from 'react';
 import { FaCalendarAlt, FaCheck, FaInfoCircle, FaStar } from 'react-icons/fa';
 
 // Developer toggle for the active enrollment window
 const ACTIVE_TRANCHE: 'fall' | 'winter' = 'fall';
 const ACADEMIC_YEAR = '2026/2027';
+
+const FAQ_QUESTIONS: { question: string; answer: ReactNode }[] = [
+  {
+    question: 'What is the difference between Premium and Active?',
+    answer: (
+      <>
+        Both have a €11 membership fee and come with a complimentary PMDS gadget
+        as a welcome gift. However, <strong>Premium</strong> is a Supporter tier
+        (no voting rights), while <strong>Active</strong> grants full voting
+        rights in the Assembly and allows you to run for the Board. Active
+        membership requires formal Board approval and participation in meetings.
+      </>
+    ),
+  },
+  {
+    question: 'What are the responsibilities of an Active Member?',
+    answer:
+      'Active Members must attend the General Assembly (held at least once a year) and participate in bureaucratic duties such as approving the annual budget and deliberating on statutory matters.',
+  },
+  {
+    question: 'Do I need to be approved by the Board?',
+    answer:
+      'Yes. Supporter requests are routinely approved as long as you meet the basic student eligibility criteria. Active Member requests undergo a thorough review process by the Board. In the unlikely event that your application is rejected, your fee will be fully refunded, or (if you applied for Active) you may be downgraded to a Premium membership.',
+  },
+  {
+    question: 'Who can become a member?',
+    answer: (
+      <>
+        Membership is strictly reserved for current{' '}
+        <strong className="text-foreground">
+          BSc, MSc, and PhD students enrolled at Politecnico di Milano
+        </strong>
+        . External professionals cannot officially join the association, but if
+        you&apos;d like to support our initiatives, you can make a{' '}
+        <a
+          href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-foreground underline decoration-white/20 transition-colors hover:text-accent"
+        >
+          voluntary donation
+        </a>{' '}
+        to help us grow!
+      </>
+    ),
+  },
+  {
+    question: 'How long is the membership valid?',
+    answer:
+      'It depends on the active Enrollment Tranche. Fall enrollments are valid until the following September. Winter enrollments are valid until the following January.',
+  },
+  {
+    question: 'Are the membership fees refundable?',
+    answer:
+      'No. The membership fee is considered an annual associative contribution used entirely to fund PMDS activities and is strictly non-refundable and non-fractionable.',
+  },
+  {
+    question: 'When does a membership expire?',
+    answer:
+      'Membership is automatically revoked if you fail to renew it at the natural expiration of your tranche, if you lose your PoliMi student status, or in case of disciplinary expulsion.',
+  },
+  {
+    question: 'How do I get my welcome gadget?',
+    answer:
+      'If you join as a Premium or Active member, you can pick up your complimentary PMDS gadget at any of our in-person events or during our designated pick-up days on campus.',
+  },
+  {
+    question: 'Can I switch tiers later?',
+    answer: (
+      <ul className="list-disc space-y-1 pl-4">
+        <li>
+          Switching between Supporter and Active (in either direction) is{' '}
+          <strong>not permitted</strong>.
+        </li>
+        <li>
+          Downgrading from Premium to Standard is <strong>not permitted</strong>
+          .
+        </li>
+        <li>
+          Upgrading from Standard to Premium <strong>is permitted</strong>.
+          Contact us for further information.
+        </li>
+      </ul>
+    ),
+  },
+];
+
+function FAQCard({
+  question,
+  answer,
+}: {
+  question: string;
+  answer: ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border border-white/5 bg-background p-6">
+      <h4 className="mb-2 text-base font-medium text-foreground">{question}</h4>
+      <div className="text-sm leading-relaxed text-muted">{answer}</div>
+    </div>
+  );
+}
 
 export default function MembershipPage() {
   const [checkoutTier, setCheckoutTier] = useState<string | null>(null);
@@ -254,134 +355,9 @@ export default function MembershipPage() {
         </h2>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              What is the difference between Premium and Active?
-            </h4>
-            <p className="text-sm leading-relaxed text-muted">
-              Both have a €11 membership fee and come with a complimentary PMDS
-              gadget as a welcome gift. However, <strong>Premium</strong> is a
-              Supporter tier (no voting rights), while <strong>Active</strong>{' '}
-              grants full voting rights in the Assembly and allows you to run
-              for the Board. Active membership requires formal Board approval
-              and participation in meetings.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              What are the responsibilities of an Active Member?
-            </h4>
-            <p className="text-sm leading-relaxed text-muted">
-              Active Members must attend the General Assembly (held at least
-              once a year) and participate in bureaucratic duties such as
-              approving the annual budget and deliberating on statutory matters.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              Do I need to be approved by the Board?
-            </h4>
-            <p className="text-sm leading-relaxed text-muted">
-              Yes. Supporter requests are routinely approved as long as you meet
-              the basic student eligibility criteria. Active Member requests
-              undergo a thorough review process by the Board. In the unlikely
-              event that your application is rejected, your fee will be fully
-              refunded, or (if you applied for Active) you may be downgraded to
-              a Premium membership.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              Who can become a member?
-            </h4>
-            <p className="text-sm leading-relaxed text-muted">
-              Membership is strictly reserved for current{' '}
-              <strong className="text-foreground">
-                BSc, MSc, and PhD students enrolled at Politecnico di Milano
-              </strong>
-              . External professionals cannot officially join the association,
-              but if you'd like to support our initiatives, you can make a{' '}
-              <a
-                href="https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground underline decoration-white/20 transition-colors hover:text-accent"
-              >
-                voluntary donation
-              </a>{' '}
-              to help us grow!
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              How long is the membership valid?
-            </h4>
-            <p className="text-sm leading-relaxed text-muted">
-              It depends on the active Enrollment Tranche. Fall enrollments are
-              valid until the following September. Winter enrollments are valid
-              until the following January.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              Are the membership fees refundable?
-            </h4>
-            <p className="text-sm leading-relaxed text-muted">
-              No. The membership fee is considered an annual associative
-              contribution used entirely to fund PMDS activities and is strictly
-              non-refundable and non-fractionable.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              When does a membership expire?
-            </h4>
-            <p className="text-sm leading-relaxed text-muted">
-              Membership is automatically revoked if you fail to renew it at the
-              natural expiration of your tranche, if you lose your PoliMi
-              student status, or in case of disciplinary expulsion.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              How do I get my welcome gadget?
-            </h4>
-            <p className="text-sm leading-relaxed text-muted">
-              If you join as a Premium or Active member, you can pick up your
-              complimentary PMDS gadget at any of our in-person events or during
-              our designated pick-up days on campus.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
-            <h4 className="mb-2 text-base font-medium text-foreground">
-              Can I switch tiers later?
-            </h4>
-            <div className="text-sm leading-relaxed text-muted">
-              <ul className="list-disc space-y-1 pl-4">
-                <li>
-                  Switching between Supporter and Active (in either direction)
-                  is <strong>not permitted</strong>.
-                </li>
-                <li>
-                  Downgrading from Premium to Standard is{' '}
-                  <strong>not permitted</strong>.
-                </li>
-                <li>
-                  Upgrading from Standard to Premium{' '}
-                  <strong>is permitted</strong>. Contact us for further
-                  information.
-                </li>
-              </ul>
-            </div>
-          </div>
+          {FAQ_QUESTIONS.map((faq) => (
+            <FAQCard key={faq.question} {...faq} />
+          ))}
         </div>
       </div>
 

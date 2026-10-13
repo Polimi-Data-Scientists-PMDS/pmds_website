@@ -1,5 +1,7 @@
 'use client';
 
+import Button from '@/shared/components/ui/Button';
+import Chip, { ChipDot } from '@/shared/components/ui/Chip';
 import NewsletterModal from '@/shared/components/ui/NewsletterModal';
 import { useState } from 'react';
 import {
@@ -28,10 +30,9 @@ export default function PmqcQuantumMonthSection() {
 
       {/* Header */}
       <div className="text-left mb-10 sm:mb-14">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-cyan-300 text-xs font-bold tracking-wider uppercase mb-3.5 backdrop-blur-md">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-          <span>QUANTUM MONTH</span>
-        </div>
+        <Chip color="cyan" icon={<ChipDot pulse />} className="mb-3.5">
+          Quantum Month
+        </Chip>
 
         <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-foreground tracking-tight leading-tight">
           November and December are Quantum Month
@@ -58,10 +59,9 @@ export default function PmqcQuantumMonthSection() {
               <div className="w-11 h-11 rounded-2xl bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
                 <FaGraduationCap size={18} />
               </div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/5 border border-white/10 text-muted">
-                <FaCalendarAlt className="text-[10px] text-cyan-400" />
-                <span>4 hands-on lessons</span>
-              </span>
+              <Chip color="muted" icon={<FaCalendarAlt />}>
+                4 hands-on lessons
+              </Chip>
             </div>
 
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 group-hover:text-cyan-300 transition-colors">
@@ -88,9 +88,7 @@ export default function PmqcQuantumMonthSection() {
               <div className="w-11 h-11 rounded-2xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
                 <FaEnvelope size={18} />
               </div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 border border-blue-400/20 text-blue-300">
-                <span>First issue in November</span>
-              </span>
+              <Chip color="blue">First issue in November</Chip>
             </div>
 
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 group-hover:text-blue-300 transition-colors">
@@ -104,22 +102,24 @@ export default function PmqcQuantumMonthSection() {
           </div>
 
           <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs">
-            <button
+            <Button
               onClick={() => setIsNewsletterOpen(true)}
-              className="cursor-pointer inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-semibold transition-colors"
+              variant="link"
+              size="sm"
+              className="gap-1.5 text-blue-400 hover:text-blue-300"
             >
               <span>Subscribe for free</span>
               <FaArrowRight className="text-[10px]" />
-            </button>
-            <a
+            </Button>
+            <Button
               href="https://pmqc.substack.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-muted hover:text-foreground transition-colors"
+              variant="ghost"
+              size="sm"
+              className="gap-1"
             >
               <span>pmqc.substack.com</span>
               <FaExternalLinkAlt className="text-[9px]" />
-            </a>
+            </Button>
           </div>
         </div>
 
@@ -133,10 +133,9 @@ export default function PmqcQuantumMonthSection() {
                 <div className="w-11 h-11 rounded-2xl bg-indigo-500/15 border border-indigo-400/30 flex items-center justify-center text-indigo-300 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
                   <FaRocket size={18} />
                 </div>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/5 border border-white/10 text-muted">
-                  <FaMapMarkerAlt className="text-[10px] text-indigo-400" />
-                  <span>Campus Leonardo</span>
-                </span>
+                <Chip color="muted" icon={<FaMapMarkerAlt />}>
+                  Campus Leonardo
+                </Chip>
               </div>
 
               <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 group-hover:text-indigo-300 transition-colors">

@@ -11,6 +11,9 @@ export const buttonVariants = tv({
         'border border-white/10 bg-white/5 font-semibold text-foreground backdrop-blur-md hover:bg-white/10',
       inverted:
         'bg-foreground font-bold text-background shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:bg-foreground/90',
+      cyan: 'bg-linear-to-r from-cyan-400 to-blue-500 font-extrabold text-black shadow-[0_0_25px_rgba(6,182,212,0.35)] hover:from-cyan-300 hover:to-blue-400 hover:shadow-[0_0_35px_rgba(6,182,212,0.55)]',
+      amber:
+        'bg-linear-to-r from-amber-400 to-orange-500 font-extrabold text-black shadow-[0_0_20px_rgba(251,191,36,0.35)] hover:from-amber-300 hover:to-orange-400 hover:shadow-[0_0_30px_rgba(251,191,36,0.55)]',
       ghost: 'font-medium text-muted hover:text-foreground',
       link: 'font-semibold text-accent hover:text-foreground',
     },

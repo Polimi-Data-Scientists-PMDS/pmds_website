@@ -1,3 +1,4 @@
+import SocialLink from '@/shared/components/ui/SocialLink';
 import { Member } from '@/shared/types';
 import Image from 'next/image';
 import { FaEnvelope, FaLinkedinIn } from 'react-icons/fa';
@@ -11,7 +12,7 @@ export default function MemberCard({
 }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-3xl border border-white/5 bg-surface/80 backdrop-blur-sm transition-colors duration-300 hover:border-white/10">
-      <div className="relative aspect-square w-full shrink-0 bg-[#151a2d]">
+      <div className="relative aspect-[4/3] w-full shrink-0 bg-[#151a2d]">
         {member.imageUrl ? (
           <Image
             src={member.imageUrl}
@@ -28,37 +29,33 @@ export default function MemberCard({
         )}
       </div>
 
-      <div className="relative flex flex-1 flex-col p-3 sm:p-5">
+      <div className="relative flex flex-1 flex-col gap-2 p-4">
         <h3 className="line-clamp-2 text-xs leading-tight font-bold text-foreground sm:text-base">
           {member.name}
         </h3>
         {member.role && (
-          <p className="mt-1 mb-2 line-clamp-2 text-xs font-medium text-accent sm:text-xs">
+          <p className="line-clamp-2 text-xs font-medium text-accent sm:text-xs">
             {member.role}
           </p>
         )}
 
-        <div className="mt-auto flex gap-2 pt-3">
+        <div className="mt-auto flex justify-evenly gap-2 pt-3">
           {member.linkedinUrl && (
-            <a
+            <SocialLink
+              icon={FaLinkedinIn}
+              title="Linkedin"
+              className="flex-1"
               href={member.linkedinUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-muted transition-colors hover:bg-[#0A66C2] hover:text-white"
-              title="LinkedIn"
-            >
-              <FaLinkedinIn size={14} />
-            </a>
+            />
           )}
 
           {member.email && (
-            <a
-              href={`mailto:${member.email}`}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-muted transition-all hover:bg-zinc-700 hover:text-white"
+            <SocialLink
+              icon={FaEnvelope}
               title="Send Email"
-            >
-              <FaEnvelope size={14} />
-            </a>
+              className="flex-1"
+              href={`mailto:${member.email}`}
+            />
           )}
         </div>
       </div>

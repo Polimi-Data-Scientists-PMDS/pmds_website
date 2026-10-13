@@ -1,3 +1,5 @@
+import Button from '@/shared/components/ui/Button';
+import Chip from '@/shared/components/ui/Chip';
 import { getEvents, getProjects } from '@/shared/lib/notion';
 import { Metadata } from 'next';
 import { FaExternalLinkAlt, FaWpforms } from 'react-icons/fa';
@@ -102,25 +104,23 @@ export default async function PMQCPage() {
 
           {/* Quick CTAs: I'm interested · PMQC Substack */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-            <a
+            <Button
               href="https://forms.gle/SJT29NADkTYmPbB97"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-extrabold text-xs sm:text-sm py-3.5 px-7 rounded-full transition-all shadow-[0_0_25px_rgba(6,182,212,0.35)] hover:shadow-[0_0_35px_rgba(6,182,212,0.55)] cursor-pointer"
+              variant="cyan"
+              className="w-full sm:w-fit"
             >
               <FaWpforms className="text-sm" />
               <span>I&apos;m interested</span>
               <FaExternalLinkAlt className="text-[10px] opacity-75" />
-            </a>
-            <a
+            </Button>
+            <Button
               href="https://pmqc.substack.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-foreground text-xs sm:text-sm font-semibold py-3.5 px-6 rounded-full transition-all backdrop-blur-md cursor-pointer"
+              variant="secondary"
+              className="w-full sm:w-fit"
             >
               <span>PMQC Substack</span>
               <FaExternalLinkAlt className="text-[10px] opacity-70" />
-            </a>
+            </Button>
           </div>
         </div>
 
@@ -137,9 +137,9 @@ export default async function PMQCPage() {
       {/* 3. About PMQC Section: Zero Prerequisites + 4 Quantum Visualizers */}
       <section className="w-full max-w-[1100px] mx-auto mt-6 sm:mt-12 mb-24 relative z-10">
         <div id="pmqc-about-anchor" className="text-left mb-12">
-          <div className="inline-block px-3.5 py-1.5 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-cyan-300 text-xs font-bold tracking-wider uppercase mb-3.5 backdrop-blur-md">
-            ABOUT PMQC
-          </div>
+          <Chip color="cyan" className="mb-3.5">
+            About PMQC
+          </Chip>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
             Quantum, from scratch
           </h2>

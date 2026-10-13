@@ -11,6 +11,7 @@ export const chipVariants = tv({
       highlight:
         'border-accent/40 bg-accent/20 text-foreground color-foreground shadow-[0_0_20px_--alpha(var(--color-accent)/30%)]',
       cyan: 'border-cyan-400/40 bg-cyan-500/20 text-cyan-300 color-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]',
+      blue: 'border-blue-400/30 bg-blue-500/15 text-blue-300 color-blue-300',
       amber:
         'border-amber-400/30 bg-amber-500/15 text-amber-400 color-amber-400',
       emerald:

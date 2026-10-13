@@ -1,7 +1,10 @@
 'use client';
 
+import EventCard from '@/app/events/_components/EventCard';
+import ProjectCard from '@/app/projects/_components/ProjectCard';
+import Button from '@/shared/components/ui/Button';
+import Chip from '@/shared/components/ui/Chip';
 import { Event, Project } from '@/shared/types';
-import Link from 'next/link';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
   FaArrowRight,
@@ -10,11 +13,11 @@ import {
   FaChevronRight,
   FaFolderOpen,
 } from 'react-icons/fa';
-import PmqcActivityEventCard from './PmqcActivityEventCard';
 import PmqcActivityModal from './PmqcActivityModal';
-import PmqcActivityProjectCard from './PmqcActivityProjectCard';
 
 const emptySubscribe = () => () => {};
+
+const CAROUSEL_ITEM = 'w-72.5 shrink-0 snap-start sm:w-82.5 md:w-87.5';
 
 interface PmqcActivitiesSectionProps {
   events: Event[];
@@ -78,9 +81,9 @@ export default function PmqcActivitiesSection({
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 pb-4 border-b border-white/10 gap-4">
         <div>
-          <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-cyan-400 text-xs font-bold tracking-wider uppercase mb-2">
-            EVENTS &amp; PROJECTS
-          </div>
+          <Chip color="cyan" className="mb-2">
+            Events &amp; Projects
+          </Chip>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
             What&apos;s on
           </h2>
@@ -149,20 +152,20 @@ export default function PmqcActivitiesSection({
 
                 {upcomingEvents.length > 2 && (
                   <div className="hidden sm:flex items-center gap-2">
-                    <button
+                    <Button
                       onClick={() => scrollCarousel(eventsCarouselRef, 'left')}
-                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/40 text-muted hover:text-cyan-300 transition-all cursor-pointer"
+                      variant="secondary"
+                      size="icon"
+                      className="text-muted hover:border-cyan-500/40 hover:text-cyan-300"
                       aria-label="Scroll left"
-                    >
-                      <FaChevronLeft size={11} />
-                    </button>
-                    <button
+                    >                      <FaChevronLeft size={11} />                    </Button>
+                    <Button
                       onClick={() => scrollCarousel(eventsCarouselRef, 'right')}
-                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/40 text-muted hover:text-cyan-300 transition-all cursor-pointer"
+                      variant="secondary"
+                      size="icon"
+                      className="text-muted hover:border-cyan-500/40 hover:text-cyan-300"
                       aria-label="Scroll right"
-                    >
-                      <FaChevronRight size={11} />
-                    </button>
+                    >                      <FaChevronRight size={11} />                    </Button>
                   </div>
                 )}
               </div>
@@ -174,11 +177,13 @@ export default function PmqcActivitiesSection({
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {upcomingEvents.map((event) => (
-                  <PmqcActivityEventCard
-                    key={event.id}
-                    event={event}
-                    onOpenDetails={(ev) => setSelectedEvent(ev)}
-                  />
+                  <div key={event.id} className={CAROUSEL_ITEM}>
+                    <EventCard
+                      event={event}
+                      compact
+                      onOpenDetails={setSelectedEvent}
+                    />
+                  </div>
                 ))}
               </div>
             </>
@@ -197,13 +202,15 @@ export default function PmqcActivitiesSection({
           {/* Bottom link to view ALL events */}
           <div className="mt-4 pt-3 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
             <span className="text-muted/70">Looking for past events?</span>
-            <Link
+            <Button
               href="/events"
-              className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-semibold transition-colors group"
+              variant="link"
+              size="sm"
+              className="gap-1.5 text-cyan-400 hover:text-cyan-300"
             >
               <span>All PMDS events</span>
               <FaArrowRight className="text-[10px] group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+            </Button>
           </div>
         </div>
       )}
@@ -224,20 +231,20 @@ export default function PmqcActivitiesSection({
 
                 {activeProjects.length > 2 && (
                   <div className="hidden sm:flex items-center gap-2">
-                    <button
+                    <Button
                       onClick={() => scrollCarousel(projectsCarouselRef, 'left')}
-                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/40 text-muted hover:text-blue-300 transition-all cursor-pointer"
+                      variant="secondary"
+                      size="icon"
+                      className="text-muted hover:border-blue-500/40 hover:text-blue-300"
                       aria-label="Scroll left"
-                    >
-                      <FaChevronLeft size={11} />
-                    </button>
-                    <button
+                    >                      <FaChevronLeft size={11} />                    </Button>
+                    <Button
                       onClick={() => scrollCarousel(projectsCarouselRef, 'right')}
-                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/40 text-muted hover:text-blue-300 transition-all cursor-pointer"
+                      variant="secondary"
+                      size="icon"
+                      className="text-muted hover:border-blue-500/40 hover:text-blue-300"
                       aria-label="Scroll right"
-                    >
-                      <FaChevronRight size={11} />
-                    </button>
+                    >                      <FaChevronRight size={11} />                    </Button>
                   </div>
                 )}
               </div>
@@ -249,11 +256,13 @@ export default function PmqcActivitiesSection({
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {activeProjects.map((project) => (
-                  <PmqcActivityProjectCard
-                    key={project.id}
-                    project={project}
-                    onOpenDetails={(proj) => setSelectedProject(proj)}
-                  />
+                  <div key={project.id} className={CAROUSEL_ITEM}>
+                    <ProjectCard
+                      project={project}
+                      compact
+                      onOpenDetails={setSelectedProject}
+                    />
+                  </div>
                 ))}
               </div>
             </>
@@ -267,28 +276,30 @@ export default function PmqcActivitiesSection({
                 Projects start next semester. Fill out the interest form to hear when
                 applications open.
               </p>
-              <a
+              <Button
                 href="https://forms.gle/SJT29NADkTYmPbB97"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-blue-500/15 border border-blue-500/30 hover:bg-blue-500/25 text-blue-300 font-medium text-xs sm:text-sm py-2 px-4 rounded-full transition-all cursor-pointer"
+                variant="secondary"
+                size="sm"
+                className="px-4 py-2 text-blue-300 hover:border-blue-500/40 sm:text-sm"
               >
                 <span>Fill out the interest form</span>
                 <FaArrowRight className="text-[10px]" />
-              </a>
+              </Button>
             </div>
           )}
 
           {/* Bottom link to view ALL projects */}
           <div className="mt-4 pt-3 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
             <span className="text-muted/70">Looking for other projects?</span>
-            <Link
+            <Button
               href="/projects"
-              className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-semibold transition-colors group"
+              variant="link"
+              size="sm"
+              className="gap-1.5 text-blue-400 hover:text-blue-300"
             >
               <span>All PMDS projects</span>
               <FaArrowRight className="text-[10px] group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+            </Button>
           </div>
         </div>
       )}

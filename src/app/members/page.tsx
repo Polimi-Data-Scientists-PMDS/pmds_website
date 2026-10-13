@@ -33,7 +33,7 @@ export default async function MembersPage() {
               {team.email && (
                 <a
                   href={`mailto:${team.email}`}
-                  className="flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent-secondary"
+                  className="flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
                 >
                   <FaEnvelope /> {team.email}
                 </a>
