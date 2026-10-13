@@ -1,4 +1,5 @@
 import Button from '@/shared/components/ui/Button';
+import Chip from '@/shared/components/ui/Chip';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
 import { getPost, getPosts } from '@/shared/lib/notion';
 import 'katex/dist/katex.min.css'; // CSS for math
@@ -80,12 +81,9 @@ export default async function BlogPostPage({
 
         <div className="mb-6 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border bg-surface-secondary px-3 py-1 text-xs font-medium tracking-wider text-accent uppercase"
-            >
+            <Chip key={tag} color="accent">
               {tag}
-            </span>
+            </Chip>
           ))}
         </div>
 

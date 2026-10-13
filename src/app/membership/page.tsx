@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Button from '@/shared/components/ui/Button';
+import Chip from '@/shared/components/ui/Chip';
 import { FaCalendarAlt, FaCheck, FaInfoCircle, FaStar } from 'react-icons/fa';
 
 // Developer toggle for the active enrollment window
@@ -75,20 +76,16 @@ export default function MembershipPage() {
 
       {/* Active Tranche Indicator */}
       <div className="relative z-10 mb-16 flex flex-col items-center">
-        <div className="mb-3 inline-flex items-center gap-3 rounded-full border border-accent/30 bg-accent/10 px-5 py-2.5 text-sm font-semibold text-accent shadow-[0_0_20px_--alpha(var(--color-accent)/15%)]">
-          <FaCalendarAlt size={16} />
+        <Chip color="highlight" icon={<FaCalendarAlt />} className="mb-3">
           {ACTIVE_TRANCHE === 'fall'
             ? `Now Enrolling: Fall Tranche (${ACADEMIC_YEAR})`
             : `Now Enrolling: Winter Tranche (${ACADEMIC_YEAR})`}
-        </div>
-        <div className="flex items-center gap-1.5 rounded-full border bg-background/20 px-3 py-1 text-xs text-muted">
-          <FaInfoCircle />
-          <span>
-            {ACTIVE_TRANCHE === 'fall'
-              ? 'Fall memberships are valid until September 1st.'
-              : 'Winter memberships are valid until January 1st.'}
-          </span>
-        </div>
+        </Chip>
+        <Chip color="muted" icon={<FaInfoCircle />}>
+          {ACTIVE_TRANCHE === 'fall'
+            ? 'Fall memberships are valid until September 1st.'
+            : 'Winter memberships are valid until January 1st.'}
+        </Chip>
       </div>
 
       <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-8 px-6 md:grid-cols-3">
@@ -143,9 +140,9 @@ export default function MembershipPage() {
           <div className="mb-6">
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-bold text-foreground">Premium</h3>
-              <span className="flex items-center gap-1 rounded-full bg-accent/20 px-2 py-0.5 text-xs font-bold tracking-wider text-accent uppercase">
-                <FaStar size={10} /> Popular
-              </span>
+              <Chip color="accent" icon={<FaStar />}>
+                Popular
+              </Chip>
             </div>
             <p className="mt-1 text-sm text-muted">
               For true data science enthusiasts

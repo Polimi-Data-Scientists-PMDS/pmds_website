@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardSubHeader,
 } from '@/shared/components/ui/Card';
+import Chip, { ChipDot } from '@/shared/components/ui/Chip';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
 import { Project } from '@/shared/types';
 import { Fragment } from 'react';
@@ -17,6 +18,12 @@ import {
   FaHandshake,
   FaUsers,
 } from 'react-icons/fa';
+
+const STATUS_CHIP = {
+  Recruiting: { label: 'Hiring Now', color: 'amber' },
+  Ongoing: { label: 'Ongoing', color: 'accent' },
+  Completed: { label: 'Completed', color: 'emerald' },
+} as const;
 
 export default function ProjectCard({
   project,
@@ -51,37 +58,17 @@ export default function ProjectCard({
       priority={priority}
       chips={[
         isPmqc && (
-          <span
-            key={1}
-            className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-cyan-500/20 px-3 py-1 text-xs font-bold tracking-wider text-cyan-300 uppercase shadow-[0_0_15px_rgba(6,182,212,0.25)] backdrop-blur-md"
-          >
-            <FaAtom className="text-xs text-cyan-300" />
-            <span>PMQC</span>
-          </span>
+          <Chip key={1} color="cyan" icon={<FaAtom />}>
+            PMQC
+          </Chip>
         ),
-        <div
+        <Chip
           key={2}
-          className="rounded-full border border-white/10 bg-black/40 px-2 py-1 text-xs font-bold tracking-wider text-foreground uppercase backdrop-blur-md"
+          color={STATUS_CHIP[project.status].color}
+          icon={<ChipDot pulse={project.status !== 'Completed'} />}
         >
-          {project.status === 'Recruiting' && (
-            <span className="flex items-center gap-2 text-amber-400">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-amber-400"></span>
-              Hiring Now
-            </span>
-          )}
-          {project.status === 'Ongoing' && (
-            <span className="flex items-center gap-2 text-accent">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-accent"></span>
-              Ongoing
-            </span>
-          )}
-          {project.status === 'Completed' && (
-            <span className="flex items-center gap-2 text-emerald-400">
-              <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-              Completed
-            </span>
-          )}
-        </div>,
+          {STATUS_CHIP[project.status].label}
+        </Chip>,
       ]}
     >
       <CardHeader>{project.title}</CardHeader>

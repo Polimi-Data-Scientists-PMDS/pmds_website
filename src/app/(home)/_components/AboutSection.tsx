@@ -1,3 +1,4 @@
+import Chip from '@/shared/components/ui/Chip';
 import { ReactNode } from 'react';
 import { FaGraduationCap, FaLaptopCode, FaNetworkWired } from 'react-icons/fa';
 
@@ -22,12 +23,12 @@ function FeatureCard({ title, details, icon }: FeatureCardProps) {
 export default function AboutSection() {
   return (
     <section className="mx-auto mt-10 mb-16 w-full max-w-[1100px] px-6 md:mb-24">
-      <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-20">
+      <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-2 md:gap-20">
         {/* Left: Text Content */}
         <div className="flex flex-col">
-          <div className="mb-6 inline-block w-fit rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-bold tracking-wider text-accent uppercase">
+          <Chip color="accent" className="mb-6">
             Since 2019
-          </div>
+          </Chip>
           <h2 className="mb-6 text-3xl leading-tight font-extrabold tracking-tight text-foreground md:text-4xl">
             Empowering the next generation of Data Scientists.
           </h2>
