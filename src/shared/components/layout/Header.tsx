@@ -69,7 +69,7 @@ export default function Header() {
           <motion.div
             layout
             className={cn(
-              'w-full rounded-3xl md:max-w-75 mx-auto p-4 flex flex-col border border-white/10 bg-background/70 backdrop-blur-xl shadow-2xl',
+              'mx-auto flex w-full flex-col rounded-3xl border border-white/10 bg-background/70 p-4 shadow-2xl backdrop-blur-xl md:max-w-75',
               isOpen && 'md:max-w-125',
               !isScrolled &&
                 'md:max-w-250 md:border-transparent md:bg-transparent md:shadow-none',
@@ -79,8 +79,8 @@ export default function Header() {
               <motion.div
                 layout
                 className={cn(
-                  'relative w-35 h-9.5',
-                  !isScrolled && 'md:w-50 md:h-13.75',
+                  'relative h-9.5 w-35',
+                  !isScrolled && 'md:h-13.75 md:w-50',
                 )}
               >
                 <Link
@@ -110,7 +110,7 @@ export default function Header() {
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     exit={{ opacity: 0, filter: 'blur(4px)' }}
                     transition={{ duration: 0.2 }}
-                    className="hidden md:flex items-center gap-10 text-sm text-muted"
+                    className="hidden items-center gap-10 text-sm text-muted md:flex"
                   >
                     {NAV_LINKS.map((link) => (
                       <HeaderLink key={link.href} {...link} />
@@ -119,7 +119,7 @@ export default function Header() {
                       href={DONATE_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="-ml-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-foreground font-medium transition-colors"
+                      className="-ml-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 font-medium text-foreground transition-colors hover:bg-white/10"
                     >
                       Donate
                     </a>
@@ -131,7 +131,7 @@ export default function Header() {
               <motion.button
                 layout
                 className={cn(
-                  'size-8 flex flex-col justify-center items-center gap-1.5 cursor-pointer',
+                  'flex size-8 cursor-pointer flex-col items-center justify-center gap-1.5',
                   !isScrolled && 'md:hidden',
                 )}
                 onClick={() => setIsOpen(!isOpen)}
@@ -139,13 +139,13 @@ export default function Header() {
                 aria-expanded={isOpen}
               >
                 <span
-                  className={cn(BAR_CLASS, isOpen && 'rotate-45 translate-y-2')}
+                  className={cn(BAR_CLASS, isOpen && 'translate-y-2 rotate-45')}
                 ></span>
                 <span className={cn(BAR_CLASS, isOpen && 'opacity-0')}></span>
                 <span
                   className={cn(
                     BAR_CLASS,
-                    isOpen && '-rotate-45 -translate-y-2',
+                    isOpen && '-translate-y-2 -rotate-45',
                   )}
                 ></span>
               </motion.button>
@@ -170,7 +170,7 @@ export default function Header() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="py-2 hover:text-foreground transition-colors"
+                      className="py-2 transition-colors hover:text-foreground"
                       onClick={() => setIsOpen(false)}
                     >
                       {link.text}
@@ -180,7 +180,7 @@ export default function Header() {
                     href={DONATE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-2 text-accent font-semibold"
+                    className="py-2 font-semibold text-accent"
                     onClick={() => setIsOpen(false)}
                   >
                     Support Us (Donate)
