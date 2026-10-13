@@ -18,6 +18,7 @@ import {
   FaHandshake,
   FaUsers,
 } from 'react-icons/fa';
+import { FaAtom } from 'react-icons/fa6';
 
 const STATUS_CHIP = {
   Recruiting: { label: 'Hiring Now', color: 'amber' },
