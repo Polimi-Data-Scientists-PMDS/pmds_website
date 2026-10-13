@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import SocialLink from '../ui/SocialLink';
 import { FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
 import { FooterSection } from './FooterSection';
 
@@ -35,34 +36,22 @@ export default function Footer() {
             Student-led association at Politecnico di Milano dedicated to
             exploring the latest in Data Science.
           </p>
-          <div className="mt-2 flex gap-5">
-            <a
-              href="https://www.instagram.com/polimidatascientists/"
+          <div className="mt-2 flex gap-3.5">
+            <SocialLink
               title="Instagram"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-muted transition-colors hover:text-foreground"
-            >
-              <FaInstagram />
-            </a>
-            <a
-              href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw"
+              href="https://www.instagram.com/polimidatascientists/"
+              icon={FaInstagram}
+            />
+            <SocialLink
               title="Telegram"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-muted transition-colors hover:text-foreground"
-            >
-              <FaTelegramPlane />
-            </a>
-            <a
+              href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw"
+              icon={FaTelegramPlane}
+            />
+            <SocialLink
+              title="LinkedIn"
               href="https://www.linkedin.com/company/polimi-data-scientists/"
-              title="Linkedin"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-muted transition-colors hover:text-foreground"
-            >
-              <FaLinkedinIn />
-            </a>
+              icon={FaLinkedinIn}
+            />
           </div>
         </div>
 

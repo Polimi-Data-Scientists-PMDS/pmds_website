@@ -1,6 +1,8 @@
 'use client';
 
+import Button from '@/shared/components/ui/Button';
 import NewsletterModal from '@/shared/components/ui/NewsletterModal';
+import SocialLink from '@/shared/components/ui/SocialLink';
 import { formatDate } from '@/shared/lib/utils';
 import { Event, Project } from '@/shared/types';
 import Image from 'next/image';
@@ -15,14 +17,12 @@ import {
   FaExternalLinkAlt,
   FaGithub,
   FaGlobe,
-  FaHandshake,
   FaHeart,
   FaInstagram,
   FaLinkedinIn,
   FaMapMarkerAlt,
   FaTelegramPlane,
   FaUserPlus,
-  FaUsers,
 } from 'react-icons/fa';
 
 interface LinksViewProps {
@@ -79,49 +79,27 @@ export default function LinksView({
             aria-label="Social links"
             className="mt-5 flex items-center gap-3.5"
           >
-            <a
+            <SocialLink
+              title="Instagram"
               href="https://www.instagram.com/polimidatascientists/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="flex size-9.5 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-muted shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-105 hover:border-white/20 hover:bg-white/10 hover:text-foreground active:scale-95"
-            >
-              <FaInstagram size={16} />
-            </a>
-            <a
+              icon={FaInstagram}
+            />
+            <SocialLink
+              title="LinkedIn"
               href="https://www.linkedin.com/company/polimi-data-scientists/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="flex size-9.5 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-muted shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-105 hover:border-white/20 hover:bg-white/10 hover:text-foreground active:scale-95"
-            >
-              <FaLinkedinIn size={15} />
-            </a>
-            <a
+              icon={FaLinkedinIn}
+            />
+            <SocialLink
+              title="Telegram"
               href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Telegram"
-              className="flex size-9.5 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-muted shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-105 hover:border-white/20 hover:bg-white/10 hover:text-foreground active:scale-95"
-            >
-              <FaTelegramPlane size={15} />
-            </a>
-            <a
+              icon={FaTelegramPlane}
+            />
+            <SocialLink
+              title="GitHub"
               href="https://github.com/polimi-data-scientists"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="flex size-9.5 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-muted shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-105 hover:border-white/20 hover:bg-white/10 hover:text-foreground active:scale-95"
-            >
-              <FaGithub size={16} />
-            </a>
-            <Link
-              href="/"
-              aria-label="Official Website"
-              className="flex size-9.5 items-center justify-center rounded-full border border-white/10 bg-surface/80 text-muted shadow-sm backdrop-blur-md transition-all duration-200 hover:scale-105 hover:border-white/20 hover:bg-white/10 hover:text-foreground active:scale-95"
-            >
-              <FaGlobe size={15} />
-            </Link>
+              icon={FaGithub}
+            />
+            <SocialLink title="Official Website" href="/" icon={FaGlobe} />
           </nav>
         </header>
 
@@ -140,10 +118,12 @@ export default function LinksView({
               </span>
             </a>
 
-            <button
+            <Button
               onClick={copyEmail}
               aria-label="Copy email address"
-              className="ml-2 flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-muted transition-all hover:bg-white/10 hover:text-foreground active:scale-95"
+              variant="secondary"
+              size="sm"
+              className="ml-2 shrink-0 gap-1.5 font-medium text-muted hover:text-foreground active:scale-95"
             >
               {copiedEmail ? (
                 <>
@@ -158,7 +138,7 @@ export default function LinksView({
                   <span className="text-[11px]">Copy</span>
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </section>
 

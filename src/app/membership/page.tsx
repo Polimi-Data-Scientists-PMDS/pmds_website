@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Button from '@/shared/components/ui/Button';
 import { FaCalendarAlt, FaCheck, FaInfoCircle, FaStar } from 'react-icons/fa';
 
 // Developer toggle for the active enrollment window
@@ -125,12 +126,14 @@ export default function MembershipPage() {
             </ul>
           </div>
 
-          <button
+          <Button
             onClick={() => setCheckoutTier('standard')}
-            className="mt-auto w-full cursor-pointer rounded-xl border border-white/10 bg-white/5 py-4 font-medium text-foreground transition-colors hover:bg-white/10"
+            variant="secondary"
+            fullWidth
+            className="mt-auto py-4 text-base font-medium"
           >
             Get Supporter
-          </button>
+          </Button>
         </div>
 
         {/* Supporter Premium Tier */}
@@ -179,12 +182,13 @@ export default function MembershipPage() {
             </ul>
           </div>
 
-          <button
+          <Button
             onClick={() => setCheckoutTier('premium')}
-            className="mt-auto w-full cursor-pointer rounded-xl bg-accent py-4 font-semibold text-foreground shadow-[0_0_20px_rgba(75,111,254,0.3)] transition-colors hover:bg-accent-secondary hover:shadow-[0_0_30px_rgba(75,111,254,0.5)]"
+            fullWidth
+            className="mt-auto py-4 text-base font-semibold"
           >
             Go Premium
-          </button>
+          </Button>
         </div>
 
         {/* Active Tier */}
@@ -235,12 +239,14 @@ export default function MembershipPage() {
             </ul>
           </div>
 
-          <button
+          <Button
             onClick={() => setCheckoutTier('active')}
-            className="mt-auto w-full cursor-pointer rounded-xl border border-white/10 bg-white/5 py-4 font-medium text-foreground transition-colors hover:bg-white/10"
+            variant="secondary"
+            fullWidth
+            className="mt-auto py-4 text-base font-medium"
           >
             Apply Now
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -386,12 +392,15 @@ export default function MembershipPage() {
       {checkoutTier && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
           <div className="relative w-full max-w-md rounded-3xl border border-white/10 bg-[#0a0a0a] p-8 shadow-[0_0_80px_rgba(75,111,254,0.15)]">
-            <button
+            <Button
               onClick={closeModal}
-              className="absolute top-4 right-4 p-2 text-xl text-muted transition-colors hover:text-foreground"
+              aria-label="Close modal"
+              variant="ghost"
+              size="icon"
+              className="absolute top-4 right-4 text-xl"
             >
               ✕
-            </button>
+            </Button>
             <h3 className="mb-2 text-2xl font-bold tracking-tight text-foreground">
               Verify Student Status
             </h3>
@@ -413,10 +422,11 @@ export default function MembershipPage() {
                   <p className="mt-2 text-xs text-red-400">{errorMsg}</p>
                 )}
               </div>
-              <button
+              <Button
                 type="submit"
                 disabled={isLoading}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3 font-semibold text-foreground transition-all hover:bg-accent-secondary disabled:cursor-not-allowed disabled:opacity-50"
+                fullWidth
+                className="py-3 text-base font-semibold"
               >
                 {isLoading ? (
                   <span className="animate-pulse">
@@ -425,7 +435,7 @@ export default function MembershipPage() {
                 ) : (
                   'Continue to Payment'
                 )}
-              </button>
+              </Button>
             </form>
           </div>
         </div>

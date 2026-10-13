@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Button from '@/shared/components/ui/Button';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import {
@@ -123,20 +123,23 @@ function SuccessState() {
 
         <div className="flex w-full flex-col gap-4">
           <div className="flex w-full flex-col gap-4 sm:flex-row">
-            <a
+            <Button
               href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 font-bold text-foreground shadow-[0_0_20px_rgba(37,211,102,0.2)] transition-colors hover:bg-[#1EBE5D]"
+              size="md"
+              fullWidth
+              className="flex-1 bg-[#25D366] py-3.5 text-base shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:bg-[#1EBE5D] hover:shadow-[0_0_20px_rgba(37,211,102,0.2)]"
             >
               <FaWhatsapp size={20} /> Join WhatsApp
-            </a>
-            <Link
+            </Button>
+            <Button
               href="/"
-              className="flex flex-1 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3.5 font-semibold text-foreground transition-colors hover:bg-white/10"
+              variant="secondary"
+              size="md"
+              fullWidth
+              className="flex-1 py-3.5 text-base"
             >
               Back to Home
-            </Link>
+            </Button>
           </div>
           <p className="mt-2 text-xs text-muted italic">
             Note: For security reasons, your request to join the group will be
@@ -160,12 +163,9 @@ function ErrorState() {
           We couldn't verify your payment. Please ensure you completed checkout
           or contact us if this is an error.
         </p>
-        <Link
-          href="/membership"
-          className="rounded-full border border-white/10 bg-white/5 px-6 py-3 font-semibold text-foreground transition-colors hover:bg-white/10"
-        >
+        <Button href="/membership" variant="secondary" size="md">
           Return to Membership
-        </Link>
+        </Button>
       </div>
     </div>
   );

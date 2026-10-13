@@ -1,5 +1,5 @@
 import Confetti from '@/shared/components/ui/Confetti';
-import Link from 'next/link';
+import Button from '@/shared/components/ui/Button';
 import { FaHeart } from 'react-icons/fa';
 
 export default function ThankYouPage() {
@@ -25,12 +25,9 @@ export default function ThankYouPage() {
           and events for our community.
         </p>
 
-        <Link
-          href="/"
-          className="rounded-full bg-accent px-8 py-3.5 font-semibold text-foreground shadow-[0_0_20px_rgba(75,111,254,0.3)] transition-colors hover:bg-accent-secondary"
-        >
+        <Button href="/" className="text-base font-semibold">
           Return to Homepage
-        </Link>
+        </Button>
       </div>
     </div>
   );

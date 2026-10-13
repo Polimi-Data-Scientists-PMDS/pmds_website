@@ -1,6 +1,7 @@
 'use client';
 
 import { FaTimes } from 'react-icons/fa';
+import Button from './Button';
 
 interface NewsletterModalProps {
   isOpen: boolean;
@@ -16,13 +17,15 @@ export default function NewsletterModal({
   return (
     <div className="animate-in fade-in fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm duration-200">
       <div className="relative flex w-full max-w-[500px] flex-col items-center rounded-3xl border border-white/10 bg-[#0a0a0a] p-6 shadow-2xl">
-        <button
+        <Button
           onClick={onClose}
           aria-label="Close modal"
-          className="absolute top-4 right-4 cursor-pointer rounded-full bg-white/5 p-2 text-muted transition-colors hover:bg-white/10 hover:text-foreground"
+          variant="ghost"
+          size="icon"
+          className="absolute top-4 right-4 bg-white/5 hover:bg-white/10"
         >
           <FaTimes size={18} />
-        </button>
+        </Button>
 
         <h3 className="mt-4 mb-2 text-center text-2xl font-bold text-foreground">
           Newsletter

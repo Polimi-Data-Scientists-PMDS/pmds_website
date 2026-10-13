@@ -1,6 +1,6 @@
 import EventCard from '@/app/events/_components/EventCard';
 import { Event } from '@/shared/types';
-import Link from 'next/link';
+import Button from '@/shared/components/ui/Button';
 import { FaArrowRight } from 'react-icons/fa';
 
 export default function DynamicHomeSection({
@@ -26,26 +26,31 @@ export default function DynamicHomeSection({
                 Don't miss out on what's happening next.
               </p>
             </div>
-            <Link
+            <Button
               href="/events"
-              className="group hidden items-center gap-2 font-semibold text-accent transition-colors hover:text-foreground sm:flex"
+              variant="link"
+              size="md"
+              className="hidden sm:flex"
             >
               View all{' '}
               <FaArrowRight className="transition-transform group-hover:translate-x-1" />
-            </Link>
+            </Button>
           </div>
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {upcomingEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
-          <Link
+          <Button
             href="/events"
-            className="group mt-6 flex items-center justify-center gap-2 font-semibold text-accent transition-colors hover:text-foreground sm:hidden"
+            variant="link"
+            size="md"
+            fullWidth
+            className="mt-6 flex sm:hidden"
           >
             View all events{' '}
             <FaArrowRight className="transition-transform group-hover:translate-x-1" />
-          </Link>
+          </Button>
         </div>
       )}
     </section>

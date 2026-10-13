@@ -96,7 +96,7 @@ export default function HeaderLink({ text, href }: HeaderLinkProps) {
           focused.current = false;
           requestActive(hovered.current);
         }}
-        aria-hidden={true}
+        aria-hidden
       >
         <motion.span
           className="relative block"

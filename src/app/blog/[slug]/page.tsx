@@ -1,9 +1,9 @@
+import Button from '@/shared/components/ui/Button';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
 import { getPost, getPosts } from '@/shared/lib/notion';
 import 'katex/dist/katex.min.css'; // CSS for math
 import { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
@@ -70,16 +70,13 @@ export default async function BlogPostPage({
   return (
     <div className="relative z-10 mb-24 flex min-h-screen w-full flex-col pt-20">
       <div className="mx-auto mb-12 w-full max-w-[900px] px-6 md:px-8">
-        <Link
-          href="/blog"
-          className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
-        >
+        <Button href="/blog" variant="ghost" className="mb-6">
           <FaArrowLeft
             size={12}
             className="transition-transform group-hover:-translate-x-1"
           />{' '}
           Back to Blog
-        </Link>
+        </Button>
 
         <div className="mb-6 flex flex-wrap gap-2">
           {post.tags.map((tag) => (

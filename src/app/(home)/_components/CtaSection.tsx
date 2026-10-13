@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import { FaArrowRight, FaEnvelope } from 'react-icons/fa';
+import Button from '@/shared/components/ui/Button';
 import NewsletterModal from '@/shared/components/ui/NewsletterModal';
 
 export default function CtaSection() {
@@ -23,19 +23,21 @@ export default function CtaSection() {
         </p>
 
         <div className="relative z-10 mt-8 flex flex-col gap-4 sm:flex-row">
-          <Link
+          <Button
             href="/membership"
-            className="group flex cursor-pointer items-center justify-center gap-2 rounded-full bg-foreground px-8 py-3.5 text-sm font-bold text-background shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all hover:bg-foreground/90"
+            variant="inverted"
+            className="w-full sm:w-fit"
           >
             Become a Member{' '}
             <FaArrowRight className="transition-transform group-hover:translate-x-1" />
-          </Link>
-          <button
+          </Button>
+          <Button
             onClick={() => setIsNewsletterOpen(true)}
-            className="flex cursor-pointer items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-white/10"
+            variant="secondary"
+            className="w-full sm:w-fit"
           >
             <FaEnvelope /> Subscribe to Newsletter
-          </button>
+          </Button>
         </div>
       </div>
 
