@@ -3,8 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaGithub, FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
+import {
+  FaGithub,
+  FaInstagram,
+  FaLinkedinIn,
+  FaTelegramPlane,
+} from 'react-icons/fa';
 import { FaArrowLeftLong } from 'react-icons/fa6';
+import SocialLink from '../ui/SocialLink';
 import { FooterSection } from './FooterSection';
 
 export default function Footer() {
@@ -23,10 +29,13 @@ export default function Footer() {
   if (isBioPage) return null;
 
   return (
-    <footer className="w-full border-t bg-background pt-20 pb-10 mt-24">
-      <div className="w-full max-w-[1100px] mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-12">
+    <footer className="mt-24 w-full border-t bg-background pt-20 pb-10">
+      <div className="mx-auto flex w-full max-w-[1100px] flex-col items-start justify-between gap-12 px-6 md:flex-row">
         <div className="flex flex-col gap-6 md:w-1/3">
-          <Link href={isPmqc ? '/pmqc' : '/'} className="relative block w-[200px] h-[55px]">
+          <Link
+            href={isPmqc ? '/pmqc' : '/'}
+            className="relative block h-[55px] w-[200px]"
+          >
             <Image
               src={isPmqc ? '/assets/pmqc/logo-pmqc.svg' : '/assets/logo.svg'}
               alt={isPmqc ? 'PMQC Logo' : 'PMDS Logo'}
@@ -34,7 +43,7 @@ export default function Footer() {
               className="object-contain object-left"
             />
           </Link>
-          <p className="text-muted text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed text-muted">
             {isPmqc
               ? 'The quantum computing department of PoliMi Data Scientists, at Politecnico di Milano.'
               : 'Student-led association at Politecnico di Milano dedicated to exploring the latest in Data Science.'}
@@ -42,47 +51,35 @@ export default function Footer() {
           {isPmqc && (
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-xs text-cyan-400 hover:text-cyan-300 font-semibold transition-all w-fit -mt-2 group"
+              className="group -mt-2 inline-flex w-fit items-center gap-2 text-xs font-semibold text-cyan-400 transition-all hover:text-cyan-300"
             >
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-cyan-400/15 border border-cyan-400/30 text-cyan-300 group-hover:bg-cyan-400 group-hover:text-black transition-all duration-300">
-                <FaArrowLeftLong className="text-[10px] group-hover:-translate-x-0.5 transition-transform duration-300" />
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-400/15 text-cyan-300 transition-all duration-300 group-hover:bg-cyan-400 group-hover:text-black">
+                <FaArrowLeftLong className="text-[10px] transition-transform duration-300 group-hover:-translate-x-0.5" />
               </span>
               <span>Back to PMDS Home</span>
             </Link>
           )}
-          <div className="flex gap-5 mt-2">
-            <a
+          <div className="mt-2 flex gap-5">
+            <SocialLink
+              title="Instagram"
               href="https://www.instagram.com/polimidatascientists/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors text-2xl"
-            >
-              <FaInstagram />
-            </a>
-            <a
+              icon={FaInstagram}
+            />
+            <SocialLink
+              title="Telegram"
               href="https://t.me/joinchat/A-DRFUb1ovIh2nlH6q55Pw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors text-2xl"
-            >
-              <FaTelegramPlane />
-            </a>
-            <a
+              icon={FaTelegramPlane}
+            />
+            <SocialLink
+              title="LinkedIn"
               href="https://www.linkedin.com/company/polimi-data-scientists/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors text-2xl"
-            >
-              <FaLinkedinIn />
-            </a>
-            <a
+              icon={FaLinkedinIn}
+            />
+            <SocialLink
+              title="GitHub"
               href="https://github.com/Polimi-Data-Scientists-PMDS"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors text-2xl"
-            >
-              <FaGithub />
-            </a>
+              icon={FaGithub}
+            />
           </div>
         </div>
 
@@ -120,11 +117,11 @@ export default function Footer() {
         />
       </div>
 
-      <div className="w-full max-w-[1100px] mx-auto px-6 mt-16 pt-8 border-t flex flex-col md:flex-row justify-between items-center md:items-start text-muted text-xs gap-6">
+      <div className="mx-auto mt-16 flex w-full max-w-[1100px] flex-col items-center justify-between gap-6 border-t px-6 pt-8 text-xs text-muted md:flex-row md:items-start">
         <p className="shrink-0">
           &copy; 2026 Polimi Data Scientists. All rights reserved.
         </p>
-        <p className="text-center md:text-right max-w-[500px] leading-relaxed">
+        <p className="max-w-[500px] text-center leading-relaxed md:text-right">
           Polimi Data Scientists is an independent student association
           recognized by Politecnico di Milano. This website is independently
           managed and is not an official publication of the university.

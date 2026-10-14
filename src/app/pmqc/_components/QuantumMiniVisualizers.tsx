@@ -61,7 +61,8 @@ export function SuperpositionWaveMini() {
       for (let x = 4; x <= size - 4; x += 2) {
         const normX = (x - size / 2) / (size / 2);
         const envelope = Math.exp(-normX * normX * 3);
-        const y = cy + Math.sin(normX * 8 + time * 2.5 + Math.PI) * 9 * envelope;
+        const y =
+          cy + Math.sin(normX * 8 + time * 2.5 + Math.PI) * 9 * envelope;
         if (x === 4) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
@@ -112,7 +113,7 @@ export function SuperpositionWaveMini() {
   }, []);
 
   return (
-    <div className="w-14 h-14 rounded-2xl bg-[#080808] border border-cyan-500/30 flex items-center justify-center relative overflow-hidden shrink-0 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-cyan-500/30 bg-[#080808] shadow-[0_0_15px_rgba(6,182,212,0.15)]">
       <canvas ref={canvasRef} style={{ width: 56, height: 56 }} />
     </div>
   );
@@ -234,7 +235,7 @@ export function QmlLandscapeMini() {
   }, []);
 
   return (
-    <div className="w-14 h-14 rounded-2xl bg-[#080808] border border-blue-500/30 flex items-center justify-center relative overflow-hidden shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.15)]">
+    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-blue-500/30 bg-[#080808] shadow-[0_0_15px_rgba(59,130,246,0.15)]">
       <canvas ref={canvasRef} style={{ width: 56, height: 56 }} />
     </div>
   );
@@ -335,7 +336,7 @@ export function TransmonQubitMini() {
   }, []);
 
   return (
-    <div className="w-14 h-14 rounded-2xl bg-[#080808] border border-indigo-500/30 flex items-center justify-center relative overflow-hidden shrink-0 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-indigo-500/30 bg-[#080808] shadow-[0_0_15px_rgba(99,102,241,0.15)]">
       <canvas ref={canvasRef} style={{ width: 56, height: 56 }} />
     </div>
   );
@@ -444,7 +445,7 @@ export function EntangledPairMini() {
   }, []);
 
   return (
-    <div className="w-14 h-14 rounded-2xl bg-[#080808] border border-purple-500/30 flex items-center justify-center relative overflow-hidden shrink-0 shadow-[0_0_15px_rgba(168,85,247,0.15)]">
+    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-purple-500/30 bg-[#080808] shadow-[0_0_15px_rgba(168,85,247,0.15)]">
       <canvas ref={canvasRef} style={{ width: 56, height: 56 }} />
     </div>
   );

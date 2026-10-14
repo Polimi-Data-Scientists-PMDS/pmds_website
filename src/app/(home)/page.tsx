@@ -12,8 +12,8 @@ export default async function Home() {
   const upcomingEvents = events.filter((e) => e.upcoming).slice(0, 2);
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-200px)] relative z-10">
-      <main className="flex-1 flex flex-col items-center text-left w-full">
+    <div className="relative z-10 flex min-h-[calc(100vh-200px)] flex-col">
+      <main className="flex w-full flex-1 flex-col items-center text-left">
         <Hero />
         <Stats />
         <AboutSection />

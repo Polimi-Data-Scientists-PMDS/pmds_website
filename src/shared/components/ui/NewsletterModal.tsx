@@ -3,6 +3,7 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { FaTimes } from 'react-icons/fa';
+import Button from './Button';
 
 const emptySubscribe = () => () => {};
 
@@ -21,7 +22,11 @@ export default function NewsletterModal({
   description = 'Get our latest insights straight to your inbox.',
   embedUrl = 'https://pmds.substack.com/embed?transparent=1&light=1',
 }: NewsletterModalProps) {
-  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     if (!isOpen) return;
@@ -38,29 +43,28 @@ export default function NewsletterModal({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="animate-in fade-in fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md duration-200"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-[500px] bg-[#0e0e12] border border-white/10 rounded-3xl p-6 relative flex flex-col items-center shadow-2xl"
+        className="relative flex w-full max-w-[500px] flex-col items-center rounded-3xl border border-white/10 bg-[#0e0e12] p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
+        <Button
           onClick={onClose}
           aria-label="Close modal"
-          className="cursor-pointer absolute top-4 right-4 text-muted hover:text-foreground transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full"
+          variant="ghost"
+          size="icon"
         >
           <FaTimes size={16} />
-        </button>
+        </Button>
 
-        <h3 className="text-2xl font-bold text-foreground mb-2 mt-4 text-center">
+        <h3 className="mt-4 mb-2 text-center text-2xl font-bold text-foreground">
           {title}
         </h3>
-        <p className="text-muted text-sm mb-6 text-center">
-          {description}
-        </p>
+        <p className="mb-6 text-center text-sm text-muted">{description}</p>
 
-        <div className="w-full flex justify-center">
+        <div className="flex w-full justify-center">
           <iframe
             src={embedUrl}
             width="100%"

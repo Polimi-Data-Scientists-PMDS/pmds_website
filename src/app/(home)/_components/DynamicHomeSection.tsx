@@ -1,6 +1,6 @@
 import EventCard from '@/app/events/_components/EventCard';
 import { Event } from '@/shared/types';
-import Link from 'next/link';
+import Button from '@/shared/components/ui/Button';
 import { FaArrowRight } from 'react-icons/fa';
 
 export default function DynamicHomeSection({
@@ -13,39 +13,44 @@ export default function DynamicHomeSection({
   }
 
   return (
-    <section className="w-full max-w-[1100px] mx-auto px-6 mt-16 md:mt-20 flex flex-col gap-24">
+    <section className="mx-auto mt-16 flex w-full max-w-[1100px] flex-col gap-24 px-6 md:mt-20">
       {/* Upcoming Events */}
       {upcomingEvents.length > 0 && (
         <div>
-          <div className="flex items-end justify-between mb-8 border-b pb-4">
+          <div className="mb-8 flex items-end justify-between border-b pb-4">
             <div>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
+              <h2 className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
                 Upcoming Events
               </h2>
-              <p className="text-muted mt-2">
+              <p className="mt-2 text-muted">
                 Don't miss out on what's happening next.
               </p>
             </div>
-            <Link
+            <Button
               href="/events"
-              className="hidden sm:flex items-center gap-2 text-accent font-semibold hover:text-foreground transition-colors group"
+              variant="link"
+              size="md"
+              className="hidden sm:flex"
             >
               View all{' '}
-              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+              <FaArrowRight className="transition-transform group-hover:translate-x-1" />
+            </Button>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {upcomingEvents.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
-          <Link
+          <Button
             href="/events"
-            className="sm:hidden mt-6 flex items-center justify-center gap-2 text-accent font-semibold hover:text-foreground transition-colors group"
+            variant="link"
+            size="md"
+            fullWidth
+            className="mt-6 flex sm:hidden"
           >
             View all events{' '}
-            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-          </Link>
+            <FaArrowRight className="transition-transform group-hover:translate-x-1" />
+          </Button>
         </div>
       )}
     </section>

@@ -62,7 +62,11 @@ export default function QuantumVisualizer() {
       const ctaEl = document.getElementById('pmqc-cta-anchor');
 
       // Helper to get center of element in viewport coordinates
-      const getCenter = (el: HTMLElement | null, fallbackX: number, fallbackY: number) => {
+      const getCenter = (
+        el: HTMLElement | null,
+        fallbackX: number,
+        fallbackY: number,
+      ) => {
         if (!el) return { x: fallbackX, y: fallbackY, top: fallbackY };
         const rect = el.getBoundingClientRect();
         return {
@@ -72,7 +76,11 @@ export default function QuantumVisualizer() {
         };
       };
 
-      const heroPos = getCenter(heroEl, isMobile ? w * 0.5 : w * 0.72, h * 0.42);
+      const heroPos = getCenter(
+        heroEl,
+        isMobile ? w * 0.5 : w * 0.72,
+        h * 0.42,
+      );
 
       // Quantum Month section anchor (positioned on the right side next to header)
       const qmRect = qmEl ? qmEl.getBoundingClientRect() : null;
@@ -83,13 +91,15 @@ export default function QuantumVisualizer() {
           }
         : { x: w * 0.72, y: heroPos.y + 700 };
 
-      const aboutPos = getCenter(aboutEl, isMobile ? w * 0.5 : w * 0.72, h * 1.4);
+      const aboutPos = getCenter(
+        aboutEl,
+        isMobile ? w * 0.5 : w * 0.72,
+        h * 1.4,
+      );
       const ctaPos = getCenter(ctaEl, w * 0.5, h * 2.8);
 
       const hasAct = !!actEl;
-      const actPos = hasAct
-        ? getCenter(actEl, w * 0.5, h * 2.1)
-        : null;
+      const actPos = hasAct ? getCenter(actEl, w * 0.5, h * 2.1) : null;
 
       const scrollY = window.scrollY || window.pageYOffset || 0;
 
@@ -140,7 +150,7 @@ export default function QuantumVisualizer() {
         destR = Math.min(Math.min(w, h) * 0.22, 190) * (1 - t * 0.05);
         destMorph = t * 0.6; // 0.0 -> 0.6: starts breathing into harmonic superposition
         destRotX = 0.32 + t * 0.16;
-        destRotY = 0.45 + t * 0.50;
+        destRotY = 0.45 + t * 0.5;
         destAlpha = 1.0 * (1 - t) + 0.85 * t; // prominent & crisp in Quantum Month!
       } else if (p <= 2.0) {
         // 1 -> 2: Quantum Month -> About PMQC
@@ -161,8 +171,8 @@ export default function QuantumVisualizer() {
         destY = aboutPos.y + (nextY - aboutPos.y) * t;
         destR = Math.min(Math.min(w, h) * 0.23, 195);
         destMorph = 1.2 + t * 0.8; // 1.2 -> 2.0 (Dual Torus)
-        destRotX = 0.67 + t * 0.40;
-        destRotY = 1.40 + t * 1.00;
+        destRotX = 0.67 + t * 0.4;
+        destRotY = 1.4 + t * 1.0;
         destAlpha = 0.35 * (1 - t) + 0.32 * t;
       } else {
         // 3 -> 4: Activities -> CTA
@@ -174,7 +184,7 @@ export default function QuantumVisualizer() {
         destR = Math.min(Math.min(w, h) * 0.23, 195) * (1.0 + t * 0.2);
         destMorph = 2.0 + t * 1.0; // 2.0 -> 3.0 (Portal)
         destRotX = 1.07 + t * 0.28;
-        destRotY = 2.40 + t * 1.00;
+        destRotY = 2.4 + t * 1.0;
         destAlpha = 0.32 * (1 - t) + 0.45 * t;
       }
 
@@ -190,7 +200,10 @@ export default function QuantumVisualizer() {
     };
 
     const resize = () => {
-      const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1;
+      const dpr =
+        typeof window !== 'undefined'
+          ? Math.min(window.devicePixelRatio || 1, 2)
+          : 1;
       const w = window.innerWidth;
       const h = window.innerHeight;
       canvas.width = Math.round(w * dpr);
@@ -372,7 +385,9 @@ export default function QuantumVisualizer() {
           const y3 = Math.sin(a) * 1.15;
           const z3 = Math.sin(a * 3 + time * 1.8) * 0.15;
 
-          let x = x0, y = y0, z = z0;
+          let x = x0,
+            y = y0,
+            z = z0;
           if (morph <= 1) {
             const t = morph;
             x = x0 + (x1 - x0) * t;
@@ -416,7 +431,9 @@ export default function QuantumVisualizer() {
           const y3 = Math.sin(a) * 0.9;
           const z3 = Math.cos(a) * 0.9 * cos45;
 
-          let x = x0, y = y0, z = z0;
+          let x = x0,
+            y = y0,
+            z = z0;
           if (morph <= 1) {
             const t = morph;
             x = x0 + (x1 - x0) * t;
@@ -460,7 +477,9 @@ export default function QuantumVisualizer() {
           const y3 = 0;
           const z3 = Math.cos(a + time * 0.8) * 0.65;
 
-          let x = x0, y = y0, z = z0;
+          let x = x0,
+            y = y0,
+            z = z0;
           if (morph <= 1) {
             const t = morph;
             x = x0 + (x1 - x0) * t;
@@ -508,7 +527,8 @@ export default function QuantumVisualizer() {
 
       // 5. Dynamic State Vector |Psi> (Desktop only in initial Bloch state)
       if (!isMobileScreen && morph < 0.9) {
-        const curTheta = Math.PI * 0.35 + morph * 0.5 + Math.sin(time * 0.8) * 0.08;
+        const curTheta =
+          Math.PI * 0.35 + morph * 0.5 + Math.sin(time * 0.8) * 0.08;
         const curPhi = morph * 1.4 + time * 0.25;
         const vx = Math.sin(curTheta) * Math.cos(curPhi);
         const vy = Math.sin(curTheta) * Math.sin(curPhi);
@@ -565,9 +585,17 @@ export default function QuantumVisualizer() {
 
       sortedParticles.forEach((part) => {
         const isFront = part.depth > 0;
-        const partAlpha = isFront ? 0.7 + part.depth * 0.3 : 0.2 + (1 + part.depth) * 0.2;
+        const partAlpha = isFront
+          ? 0.7 + part.depth * 0.3
+          : 0.2 + (1 + part.depth) * 0.2;
         ctx.beginPath();
-        ctx.arc(part.px, part.py, part.size * (isFront ? 1.2 : 0.7), 0, Math.PI * 2);
+        ctx.arc(
+          part.px,
+          part.py,
+          part.size * (isFront ? 1.2 : 0.7),
+          0,
+          Math.PI * 2,
+        );
         ctx.fillStyle = isFront
           ? `rgba(56, 189, 248, ${partAlpha})`
           : `rgba(99, 102, 241, ${partAlpha * 0.6})`;
@@ -595,11 +623,11 @@ export default function QuantumVisualizer() {
   return (
     <div
       aria-hidden="true"
-      className="hidden lg:block fixed inset-0 w-screen h-screen pointer-events-none z-0 overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 hidden h-screen w-screen overflow-hidden lg:block"
     >
       <canvas
         ref={canvasRef}
-        className="w-full h-full"
+        className="h-full w-full"
         style={{ display: 'block', width: '100vw', height: '100vh' }}
       />
     </div>

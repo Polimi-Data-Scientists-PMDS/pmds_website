@@ -1,123 +1,102 @@
 'use client';
 
+import {
+  Card,
+  CardDetails,
+  CardHeader,
+  CardSubHeader,
+} from '@/shared/components/ui/Card';
+import Button from '@/shared/components/ui/Button';
+import Chip, { ChipDot } from '@/shared/components/ui/Chip';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
 import { cn } from '@/shared/lib/utils';
 import { Project } from '@/shared/types';
-import Image from 'next/image';
+import { Fragment } from 'react';
 import {
+  FaAtom,
   FaExternalLinkAlt,
   FaFilePdf,
   FaGithub,
   FaHandshake,
   FaUsers,
 } from 'react-icons/fa';
-import { FaAtom } from 'react-icons/fa6';
+
+const STATUS_CHIP = {
+  Recruiting: { label: 'Hiring Now', color: 'amber' },
+  Ongoing: { label: 'Ongoing', color: 'accent' },
+  Completed: { label: 'Completed', color: 'emerald' },
+} as const;
 
 export default function ProjectCard({
   project,
   priority = false,
+  compact = false,
+  onOpenDetails,
 }: {
   project: Project;
   priority?: boolean;
+  /** Smaller card with clamped text, for carousels and dense layouts. */
+  compact?: boolean;
+  /** Shown as a "Read more" link in compact mode, to reveal the full text. */
+  onOpenDetails?: (project: Project) => void;
 }) {
   const isPmqc =
     project.departments?.some((d) => d.toUpperCase() === 'PMQC') ||
     project.tags?.some((t) => t.toUpperCase() === 'PMQC');
 
+  const links = [
+    {
+      url: project.githubUrl,
+      label: 'Repository',
+      icon: <FaGithub size={14} />,
+      title: 'View Source on GitHub',
+    },
+    { url: project.paperUrl, label: 'Paper', icon: <FaFilePdf size={14} /> },
+    {
+      url: project.reportUrl,
+      label: 'Report',
+      icon: <FaExternalLinkAlt size={14} />,
+    },
+  ].filter((link) => link.url);
+
   return (
-    <div className="group flex flex-col bg-surface/80 backdrop-blur-sm border border-white/5 hover:border-white/10 rounded-3xl transition-colors duration-300 relative card-hover-elevate">
-      {/* Image Container */}
-      <div
-        className={cn(
-          'w-full h-[240px] relative overflow-hidden rounded-t-[1.4rem]',
-          !project.imageUrl &&
-            'bg-gradient-to-br from-[#151a2d] to-[#0a0a0a] flex items-center justify-center',
-        )}
-      >
-        {project.imageUrl ? (
-          <Image
-            src={project.imageUrl}
-            alt={project.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
-            priority={priority}
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#151a2d] to-[#0a0a0a] flex items-center justify-center">
-            <span className="text-foreground/30 font-bold text-4xl tracking-widest">
-              PMDS
-            </span>
-          </div>
-        )}
+    <Card
+      title={project.title}
+      imageUrl={project.imageUrl}
+      priority={priority}
+      compact={compact}
+      chips={[
+        isPmqc && (
+          <Chip key={1} color="cyan" icon={<FaAtom />}>
+            PMQC
+          </Chip>
+        ),
+        <Chip
+          key={2}
+          color={STATUS_CHIP[project.status].color}
+          icon={<ChipDot pulse={project.status !== 'Completed'} />}
+        >
+          {STATUS_CHIP[project.status].label}
+        </Chip>,
+      ]}
+    >
+      <CardHeader className={cn(compact && 'line-clamp-2 text-lg')}>
+        {project.title}
+      </CardHeader>
 
-        {/* PMQC Badge */}
-        {isPmqc && (
-          <div className="absolute top-4 left-4 z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 backdrop-blur-md shadow-[0_0_15px_rgba(6,182,212,0.25)]">
-              <FaAtom className="text-cyan-300 text-xs" />
-              <span>PMQC</span>
-            </span>
-          </div>
-        )}
+      <div className="flex flex-row items-center justify-between gap-2">
+        <CardSubHeader>{project.date}</CardSubHeader>
 
-        {/* Status Badge */}
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md bg-black/40 border border-white/10 text-foreground">
-          {project.status === 'Recruiting' && (
-            <span className="flex items-center gap-2 text-amber-400">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-              Hiring Now
-            </span>
-          )}
-          {project.status === 'Ongoing' && (
-            <span className="flex items-center gap-2 text-accent">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              Ongoing
-            </span>
-          )}
-          {project.status === 'Completed' && (
-            <span className="flex items-center gap-2 text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              Completed
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Content Container */}
-      <div className="p-8 flex flex-col flex-1 relative">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-accent text-xs font-bold uppercase tracking-wider">
-            {project.date}
-          </span>
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-foreground transition-colors"
-              title="View Source on GitHub"
-            >
-              <FaGithub size={18} />
-            </a>
-          )}
-        </div>
-
-        <h3 className="text-foreground text-2xl font-bold mb-2">
-          {project.title}
-        </h3>
-
-        {/* Partner Info */}
         {project.partner && (
-          <div className="flex items-center gap-2 text-muted text-xs font-medium mb-4">
+          <div className="flex items-center gap-2 text-xs text-muted">
             <FaHandshake className="text-muted" />
-            In collaboration with:
+            Collaborating with:
             {project.partner.url ? (
               <a
                 href={project.partner.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:text-accent transition-colors underline decoration-white/20 underline-offset-2"
+                className="text-foreground underline decoration-white/20 underline-offset-2 transition-colors hover:text-accent"
               >
                 {project.partner.name}
               </a>
@@ -126,79 +105,74 @@ export default function ProjectCard({
             )}
           </div>
         )}
+      </div>
 
-        <p className="text-muted text-sm leading-relaxed mb-6">
-          {project.description}
-        </p>
+      <CardDetails className={cn(compact && 'line-clamp-3 text-xs')}>
+        {project.description}
+      </CardDetails>
 
-        {/* Tags and Team */}
-        <div className="flex flex-col gap-5 mt-auto mb-8">
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {project.tags?.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-muted text-xs font-medium"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+      {compact && onOpenDetails && (
+        <Button
+          onClick={() => onOpenDetails(project)}
+          variant="link"
+          size="sm"
+          className="-mt-2"
+        >
+          Read more &rarr;
+        </Button>
+      )}
 
-          {/* Team Section */}
-          {project.team && project.team.length > 0 && (
-            <PeopleGroup size="sm" people={project.team} />
-          )}
-        </div>
+      <div className="flex-1"></div>
 
-        {/* Conditional Action Buttons */}
-        <div className="flex flex-wrap gap-4 mt-auto border-t border-white/5 pt-6">
-          {/* Recruiting State */}
+      <div className="flex flex-row items-end justify-between gap-2">
+        {project.team && project.team.length > 0 && (
+          <PeopleGroup size="sm" people={project.team} />
+        )}
+
+        <span className="text-xs text-muted uppercase">
+          {project.tags?.join(' | ')}
+        </span>
+      </div>
+
+      {(project.status !== 'Completed' || links.length > 0) && (
+        <div className="flex w-full flex-wrap gap-4 border-t border-white/5 pt-4">
           {project.status === 'Recruiting' && project.applyUrl && (
             <a
               href={project.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-amber-500/10 text-amber-500 border border-amber-500/20 px-4 py-2 rounded-xl font-medium hover:bg-amber-500/20 transition-colors w-full justify-center"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-2 font-medium text-amber-500 transition-colors hover:bg-amber-500/20"
             >
               <FaUsers size={16} /> Apply for this Project
             </a>
           )}
 
-          {/* Completed State */}
-          {project.status === 'Completed' && (
-            <div className="flex gap-4 w-full">
-              {project.paperUrl && (
-                <a
-                  href={project.paperUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors py-2 text-sm"
-                >
-                  <FaFilePdf size={14} /> Paper
-                </a>
-              )}
-              {project.reportUrl && (
-                <a
-                  href={project.reportUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors py-2 text-sm"
-                >
-                  <FaExternalLinkAlt size={12} /> Report
-                </a>
-              )}
-            </div>
-          )}
-
-          {/* Ongoing State */}
           {project.status === 'Ongoing' && (
-            <span className="text-muted text-xs italic flex items-center py-2">
+            <span className="w-full py-2 text-center text-sm text-muted italic">
               Currently in development. Check back later for updates.
             </span>
           )}
+
+          {links.length > 0 && (
+            <div className="flex w-full items-center justify-evenly gap-2">
+              {links.map((link, i) => (
+                <Fragment key={link.label}>
+                  {i > 0 && <span className="text-sm text-muted">|</span>}
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 py-2 text-sm text-muted transition-colors hover:text-foreground"
+                    title={link.title}
+                  >
+                    {link.icon} {link.label}
+                  </a>
+                </Fragment>
+              ))}
+            </div>
+          )}
         </div>
-      </div>
-    </div>
+      )}
+    </Card>
   );
 }

@@ -9,7 +9,7 @@ interface FooterSectionProps {
 export function FooterSection({ title, links }: FooterSectionProps) {
   return (
     <div className="flex flex-col gap-4 md:w-1/3 md:pl-16">
-      <h4 className="text-foreground text-sm font-semibold mb-2 tracking-wide">
+      <h4 className="mb-2 text-sm font-semibold tracking-wide text-foreground">
         {title}
       </h4>
       {links.map((link, index) => (
@@ -17,9 +17,9 @@ export function FooterSection({ title, links }: FooterSectionProps) {
           key={index}
           href={link.href}
           className={cn(
-            'hover:underline underline-offset-2 text-sm transition-colors text-nowrap',
+            'text-sm text-nowrap underline-offset-2 transition-colors hover:underline',
             link.accent
-              ? 'text-accent hover:text-accent-secondary font-medium'
+              ? 'font-medium text-accent hover:text-accent-secondary'
               : 'text-muted hover:text-foreground',
           )}
         >

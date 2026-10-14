@@ -1,9 +1,10 @@
+import Button from '@/shared/components/ui/Button';
+import Chip from '@/shared/components/ui/Chip';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
 import { getPost, getPosts } from '@/shared/lib/notion';
 import 'katex/dist/katex.min.css'; // CSS for math
 import { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
@@ -68,49 +69,43 @@ export default async function BlogPostPage({
   }
 
   return (
-    <div className="flex flex-col min-h-screen pt-20 relative z-10 w-full mb-24">
-      <div className="max-w-[900px] mx-auto px-6 md:px-8 w-full mb-12">
-        <Link
-          href="/blog"
-          className="group inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors text-sm font-medium mb-6"
-        >
+    <div className="relative z-10 mb-24 flex min-h-screen w-full flex-col pt-20">
+      <div className="mx-auto mb-12 w-full max-w-[900px] px-6 md:px-8">
+        <Button href="/blog" variant="ghost" className="mb-6">
           <FaArrowLeft
             size={12}
-            className="group-hover:-translate-x-1 transition-transform"
+            className="transition-transform group-hover:-translate-x-1"
           />{' '}
           Back to Blog
-        </Link>
+        </Button>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="mb-6 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 rounded-full bg-surface-secondary border text-accent text-xs font-medium uppercase tracking-wider"
-            >
+            <Chip key={tag} color="accent">
               {tag}
-            </span>
+            </Chip>
           ))}
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight mb-8">
+        <h1 className="mb-8 text-4xl leading-tight font-bold text-foreground md:text-6xl">
           {post.title}
         </h1>
 
-        <div className="flex items-center py-6 border-y border-white/5 gap-4 relative z-20">
+        <div className="relative z-20 flex items-center gap-4 border-y border-white/5 py-6">
           <PeopleGroup people={post.authors} />
           <div className="flex flex-col">
-            <span className="text-foreground font-medium text-sm">
+            <span className="text-sm font-medium text-foreground">
               {post.authors.map((a) => a.name).join(', ')}
             </span>
-            <span className="text-muted text-xs">{post.date}</span>
+            <span className="text-xs text-muted">{post.date}</span>
           </div>
         </div>
       </div>
 
       {/* Hero Image */}
       {post.imageUrl && post.imageUrl !== '/placeholder.jpg' && (
-        <div className="w-full max-w-[900px] mx-auto px-6 md:px-8 mb-16">
-          <div className="w-full aspect-[21/9] relative rounded-3xl overflow-hidden border shadow-2xl">
+        <div className="mx-auto mb-16 w-full max-w-[900px] px-6 md:px-8">
+          <div className="relative aspect-[21/9] w-full overflow-hidden rounded-3xl border shadow-2xl">
             <Image
               src={post.imageUrl}
               alt={post.title}
@@ -124,7 +119,7 @@ export default async function BlogPostPage({
       )}
 
       {/* Article Content */}
-      <article className="max-w-[900px] mx-auto px-6 md:px-8 w-full prose prose-invert prose-lg prose-a:text-accent hover:prose-a:text-foreground prose-pre:bg-surface prose-pre:border prose-img:rounded-xl prose-code:before:content-none prose-code:after:content-none prose-code:bg-surface-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-normal">
+      <article className="mx-auto prose prose-lg w-full max-w-[900px] px-6 prose-invert md:px-8 prose-a:text-accent hover:prose-a:text-foreground prose-code:rounded prose-code:bg-surface-secondary prose-code:px-1.5 prose-code:py-0.5 prose-code:font-normal prose-code:before:content-none prose-code:after:content-none prose-pre:border prose-pre:bg-surface prose-img:rounded-xl">
         {post.content ? (
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkMath]}
@@ -133,12 +128,12 @@ export default async function BlogPostPage({
               img: (props: any) => {
                 const isNotion = props.src?.includes('amazonaws');
                 return (
-                  <span className="block relative w-full aspect-video my-8">
+                  <span className="relative my-8 block aspect-video w-full">
                     <Image
                       src={props.src || ''}
                       alt={props.alt || ''}
                       fill
-                      className="object-cover rounded-xl"
+                      className="rounded-xl object-cover"
                       unoptimized={!isNotion}
                     />
                   </span>

@@ -64,7 +64,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'antialiased text-foreground overflow-x-clip',
+          'overflow-x-clip text-foreground antialiased',
           inter.className,
         )}
       >

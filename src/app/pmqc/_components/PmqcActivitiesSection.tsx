@@ -1,7 +1,10 @@
 'use client';
 
+import EventCard from '@/app/events/_components/EventCard';
+import ProjectCard from '@/app/projects/_components/ProjectCard';
+import Button from '@/shared/components/ui/Button';
+import Chip from '@/shared/components/ui/Chip';
 import { Event, Project } from '@/shared/types';
-import Link from 'next/link';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
   FaArrowRight,
@@ -10,11 +13,11 @@ import {
   FaChevronRight,
   FaFolderOpen,
 } from 'react-icons/fa';
-import PmqcActivityEventCard from './PmqcActivityEventCard';
 import PmqcActivityModal from './PmqcActivityModal';
-import PmqcActivityProjectCard from './PmqcActivityProjectCard';
 
 const emptySubscribe = () => () => {};
+
+const CAROUSEL_ITEM = 'w-72.5 shrink-0 snap-start sm:w-82.5 md:w-87.5';
 
 interface PmqcActivitiesSectionProps {
   events: Event[];
@@ -36,7 +39,11 @@ export default function PmqcActivitiesSection({
   // Modal details state
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 
   // Close modal on Escape key
   useEffect(() => {
@@ -73,39 +80,41 @@ export default function PmqcActivitiesSection({
   return (
     <section
       id="pmqc-activities-anchor"
-      className="w-full max-w-[1200px] mx-auto relative px-2 sm:px-4"
+      className="relative mx-auto w-full max-w-[1200px] px-2 sm:px-4"
     >
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 pb-4 border-b border-white/10 gap-4">
+      <div className="mb-6 flex flex-col justify-between gap-4 border-b border-white/10 pb-4 md:flex-row md:items-end">
         <div>
-          <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-cyan-400 text-xs font-bold tracking-wider uppercase mb-2">
-            EVENTS &amp; PROJECTS
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
+          <Chip color="cyan" className="mb-2">
+            Events &amp; Projects
+          </Chip>
+          <h2 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl md:text-4xl">
             What&apos;s on
           </h2>
-          <p className="text-muted mt-1.5 text-xs sm:text-sm max-w-[620px] leading-relaxed">
+          <p className="mt-1.5 max-w-[620px] text-xs leading-relaxed text-muted sm:text-sm">
             Lessons, talks and projects run by PMQC.
           </p>
         </div>
 
         {/* Tabs switcher */}
-        <div className="flex items-center p-1 pmqc-card rounded-2xl self-start md:self-auto shadow-sm">
+        <div className="flex items-center self-start rounded-2xl pmqc-card p-1 shadow-sm md:self-auto">
           <button
             onClick={() => setActiveTab('events')}
-            className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+            className={`flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all sm:text-sm ${
               activeTab === 'events'
-                ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
-                : 'text-muted hover:text-foreground hover:bg-white/5 border border-transparent'
+                ? 'border border-cyan-500/30 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
+                : 'border border-transparent text-muted hover:bg-white/5 hover:text-foreground'
             }`}
           >
             <FaCalendarAlt
               size={12}
-              className={activeTab === 'events' ? 'text-cyan-400' : 'text-muted'}
+              className={
+                activeTab === 'events' ? 'text-cyan-400' : 'text-muted'
+              }
             />
             <span>Upcoming events</span>
             {upcomingEvents.length > 0 && (
-              <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-cyan-500/20 text-cyan-300 font-bold">
+              <span className="py-0.2 ml-1 rounded-full bg-cyan-500/20 px-1.5 text-[10px] font-bold text-cyan-300">
                 {upcomingEvents.length}
               </span>
             )}
@@ -113,10 +122,10 @@ export default function PmqcActivitiesSection({
 
           <button
             onClick={() => setActiveTab('projects')}
-            className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+            className={`flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all sm:text-sm ${
               activeTab === 'projects'
-                ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-300 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.15)]'
-                : 'text-muted hover:text-foreground hover:bg-white/5 border border-transparent'
+                ? 'border border-blue-500/30 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.15)]'
+                : 'border border-transparent text-muted hover:bg-white/5 hover:text-foreground'
             }`}
           >
             <FaFolderOpen
@@ -127,7 +136,7 @@ export default function PmqcActivitiesSection({
             />
             <span>Active projects</span>
             {activeProjects.length > 0 && (
-              <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-blue-500/20 text-blue-300 font-bold">
+              <span className="py-0.2 ml-1 rounded-full bg-blue-500/20 px-1.5 text-[10px] font-bold text-blue-300">
                 {activeProjects.length}
               </span>
             )}
@@ -141,28 +150,36 @@ export default function PmqcActivitiesSection({
           {upcomingEvents.length > 0 ? (
             <>
               {/* Subheader with carousel controls */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2 text-xs font-semibold text-foreground/90 uppercase tracking-wider">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                  <span>Upcoming Quantum Sessions ({upcomingEvents.length})</span>
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-foreground/90 uppercase">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-400" />
+                  <span>
+                    Upcoming Quantum Sessions ({upcomingEvents.length})
+                  </span>
                 </div>
 
                 {upcomingEvents.length > 2 && (
-                  <div className="hidden sm:flex items-center gap-2">
-                    <button
+                  <div className="hidden items-center gap-2 sm:flex">
+                    <Button
                       onClick={() => scrollCarousel(eventsCarouselRef, 'left')}
-                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/40 text-muted hover:text-cyan-300 transition-all cursor-pointer"
+                      variant="secondary"
+                      size="icon"
+                      className="text-muted hover:border-cyan-500/40 hover:text-cyan-300"
                       aria-label="Scroll left"
                     >
-                      <FaChevronLeft size={11} />
-                    </button>
-                    <button
+                      {' '}
+                      <FaChevronLeft size={11} />{' '}
+                    </Button>
+                    <Button
                       onClick={() => scrollCarousel(eventsCarouselRef, 'right')}
-                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-cyan-500/40 text-muted hover:text-cyan-300 transition-all cursor-pointer"
+                      variant="secondary"
+                      size="icon"
+                      className="text-muted hover:border-cyan-500/40 hover:text-cyan-300"
                       aria-label="Scroll right"
                     >
-                      <FaChevronRight size={11} />
-                    </button>
+                      {' '}
+                      <FaChevronRight size={11} />{' '}
+                    </Button>
                   </div>
                 )}
               </div>
@@ -170,40 +187,44 @@ export default function PmqcActivitiesSection({
               {/* Cards Carousel Container */}
               <div
                 ref={eventsCarouselRef}
-                className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 px-1 scrollbar-none snap-x snap-mandatory"
+                className="flex snap-x snap-mandatory scrollbar-none gap-4 overflow-x-auto px-1 pt-1 pb-4 sm:gap-5"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {upcomingEvents.map((event) => (
-                  <PmqcActivityEventCard
-                    key={event.id}
-                    event={event}
-                    onOpenDetails={(ev) => setSelectedEvent(ev)}
-                  />
+                  <div key={event.id} className={CAROUSEL_ITEM}>
+                    <EventCard
+                      event={event}
+                      compact
+                      onOpenDetails={setSelectedEvent}
+                    />
+                  </div>
                 ))}
               </div>
             </>
           ) : (
             /* Empty State */
-            <div className="w-full pmqc-card rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center justify-center my-2">
-              <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4">
+            <div className="my-2 flex w-full flex-col items-center justify-center rounded-3xl pmqc-card p-8 text-center sm:p-12">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-500/20 bg-cyan-500/10 text-cyan-400">
                 <FaCalendarAlt size={18} />
               </div>
-              <p className="text-foreground/90 font-medium text-sm sm:text-base max-w-[460px] leading-relaxed">
+              <p className="max-w-[460px] text-sm leading-relaxed font-medium text-foreground/90 sm:text-base">
                 Nothing scheduled yet. Our first events are coming in November.
               </p>
             </div>
           )}
 
           {/* Bottom link to view ALL events */}
-          <div className="mt-4 pt-3 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
+          <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-white/5 pt-3 text-xs text-muted sm:flex-row">
             <span className="text-muted/70">Looking for past events?</span>
-            <Link
+            <Button
               href="/events"
-              className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-semibold transition-colors group"
+              variant="link"
+              size="sm"
+              className="gap-1.5 text-cyan-400 hover:text-cyan-300"
             >
               <span>All PMDS events</span>
-              <FaArrowRight className="text-[10px] group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+              <FaArrowRight className="text-[10px] transition-transform group-hover:translate-x-0.5" />
+            </Button>
           </div>
         </div>
       )}
@@ -214,30 +235,41 @@ export default function PmqcActivitiesSection({
           {activeProjects.length > 0 ? (
             <>
               {/* Subheader with carousel controls */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2 text-xs font-semibold text-foreground/90 uppercase tracking-wider">
-                  <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-foreground/90 uppercase">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-blue-400" />
                   <span>
-                    Active &amp; Recruiting Initiatives ({activeProjects.length})
+                    Active &amp; Recruiting Initiatives ({activeProjects.length}
+                    )
                   </span>
                 </div>
 
                 {activeProjects.length > 2 && (
-                  <div className="hidden sm:flex items-center gap-2">
-                    <button
-                      onClick={() => scrollCarousel(projectsCarouselRef, 'left')}
-                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/40 text-muted hover:text-blue-300 transition-all cursor-pointer"
+                  <div className="hidden items-center gap-2 sm:flex">
+                    <Button
+                      onClick={() =>
+                        scrollCarousel(projectsCarouselRef, 'left')
+                      }
+                      variant="secondary"
+                      size="icon"
+                      className="text-muted hover:border-blue-500/40 hover:text-blue-300"
                       aria-label="Scroll left"
                     >
-                      <FaChevronLeft size={11} />
-                    </button>
-                    <button
-                      onClick={() => scrollCarousel(projectsCarouselRef, 'right')}
-                      className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/40 text-muted hover:text-blue-300 transition-all cursor-pointer"
+                      {' '}
+                      <FaChevronLeft size={11} />{' '}
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        scrollCarousel(projectsCarouselRef, 'right')
+                      }
+                      variant="secondary"
+                      size="icon"
+                      className="text-muted hover:border-blue-500/40 hover:text-blue-300"
                       aria-label="Scroll right"
                     >
-                      <FaChevronRight size={11} />
-                    </button>
+                      {' '}
+                      <FaChevronRight size={11} />{' '}
+                    </Button>
                   </div>
                 )}
               </div>
@@ -245,50 +277,54 @@ export default function PmqcActivitiesSection({
               {/* Cards Carousel Container */}
               <div
                 ref={projectsCarouselRef}
-                className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 px-1 scrollbar-none snap-x snap-mandatory"
+                className="flex snap-x snap-mandatory scrollbar-none gap-4 overflow-x-auto px-1 pt-1 pb-4 sm:gap-5"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {activeProjects.map((project) => (
-                  <PmqcActivityProjectCard
-                    key={project.id}
-                    project={project}
-                    onOpenDetails={(proj) => setSelectedProject(proj)}
-                  />
+                  <div key={project.id} className={CAROUSEL_ITEM}>
+                    <ProjectCard
+                      project={project}
+                      compact
+                      onOpenDetails={setSelectedProject}
+                    />
+                  </div>
                 ))}
               </div>
             </>
           ) : (
             /* Empty State for Projects */
-            <div className="w-full pmqc-card rounded-3xl p-8 sm:p-12 text-center flex flex-col items-center justify-center my-2">
-              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
+            <div className="my-2 flex w-full flex-col items-center justify-center rounded-3xl pmqc-card p-8 text-center sm:p-12">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 text-blue-400">
                 <FaFolderOpen size={18} />
               </div>
-              <p className="text-foreground/90 font-medium text-sm sm:text-base max-w-[500px] mb-4 leading-relaxed">
-                Projects start next semester. Fill out the interest form to hear when
-                applications open.
+              <p className="mb-4 max-w-[500px] text-sm leading-relaxed font-medium text-foreground/90 sm:text-base">
+                Projects start next semester. Fill out the interest form to hear
+                when applications open.
               </p>
-              <a
+              <Button
                 href="https://forms.gle/SJT29NADkTYmPbB97"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-blue-500/15 border border-blue-500/30 hover:bg-blue-500/25 text-blue-300 font-medium text-xs sm:text-sm py-2 px-4 rounded-full transition-all cursor-pointer"
+                variant="secondary"
+                size="sm"
+                className="px-4 py-2 text-blue-300 hover:border-blue-500/40 sm:text-sm"
               >
                 <span>Fill out the interest form</span>
                 <FaArrowRight className="text-[10px]" />
-              </a>
+              </Button>
             </div>
           )}
 
           {/* Bottom link to view ALL projects */}
-          <div className="mt-4 pt-3 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted">
+          <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-white/5 pt-3 text-xs text-muted sm:flex-row">
             <span className="text-muted/70">Looking for other projects?</span>
-            <Link
+            <Button
               href="/projects"
-              className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-semibold transition-colors group"
+              variant="link"
+              size="sm"
+              className="gap-1.5 text-blue-400 hover:text-blue-300"
             >
               <span>All PMDS projects</span>
-              <FaArrowRight className="text-[10px] group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+              <FaArrowRight className="text-[10px] transition-transform group-hover:translate-x-0.5" />
+            </Button>
           </div>
         </div>
       )}

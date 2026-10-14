@@ -1,5 +1,7 @@
 'use client';
 
+import Button from '@/shared/components/ui/Button';
+import Chip from '@/shared/components/ui/Chip';
 import NewsletterModal from '@/shared/components/ui/NewsletterModal';
 import { useState } from 'react';
 import { FaEnvelope, FaExternalLinkAlt, FaWpforms } from 'react-icons/fa';
@@ -8,55 +10,61 @@ export default function PmqcCtaSection() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
 
   return (
-    <div id="pmqc-cta-anchor" className="w-full max-w-[850px] mx-auto px-2 sm:px-4 relative z-10">
-      <div id="pmqc-cta-card" className="w-full pmqc-card rounded-3xl sm:rounded-[40px] px-5 sm:px-8 py-8 sm:py-12 md:py-14 flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_80px_rgba(17,9,255,0.12)]">
+    <div
+      id="pmqc-cta-anchor"
+      className="relative z-10 mx-auto w-full max-w-[850px] px-2 sm:px-4"
+    >
+      <div
+        id="pmqc-cta-card"
+        className="relative flex w-full flex-col items-center overflow-hidden rounded-3xl pmqc-card px-5 py-8 text-center shadow-[0_0_80px_rgba(17,9,255,0.12)] sm:rounded-[40px] sm:px-8 sm:py-12 md:py-14"
+      >
         {/* Quantum Glow behind the CTA */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] bg-gradient-to-tr from-[#1109FF]/20 via-cyan-500/20 to-indigo-500/15 blur-[100px] rounded-full pointer-events-none" />
+        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-[#1109FF]/20 via-cyan-500/20 to-indigo-500/15 blur-[100px]" />
 
         {/* Division pill */}
-        <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-cyan-400 text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-4 sm:mb-6 relative z-10">
-          GET INVOLVED
-        </div>
+        <Chip color="cyan" className="relative z-10 mb-4 sm:mb-6">
+          Get involved
+        </Chip>
 
-        <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-foreground via-slate-100 to-muted tracking-tight leading-tight relative z-10">
+        <h2 className="relative z-10 bg-gradient-to-r from-foreground via-slate-100 to-muted bg-clip-text text-2xl leading-tight font-extrabold tracking-tight text-transparent sm:text-3xl md:text-5xl">
           Be part of it from the start
         </h2>
-        <p className="text-muted mt-3 sm:mt-4 max-w-[540px] text-xs sm:text-sm md:text-base relative z-10 leading-relaxed">
+        <p className="relative z-10 mt-3 max-w-[540px] text-xs leading-relaxed text-muted sm:mt-4 sm:text-sm md:text-base">
           Tell us what you&apos;d like to learn, pitch a project idea, or just
           sign up to hear when registrations open. It takes two minutes.
         </p>
 
         {/* Main Actions */}
-        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 relative z-10 w-full sm:w-auto">
-          <a
+        <div className="relative z-10 mt-6 flex w-full flex-col gap-3 sm:mt-8 sm:w-auto sm:flex-row sm:gap-4">
+          <Button
             href="https://forms.gle/SJT29NADkTYmPbB97"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cursor-pointer flex items-center justify-center gap-2.5 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-extrabold text-xs sm:text-sm py-3.5 px-7 rounded-full transition-all shadow-[0_0_25px_rgba(6,182,212,0.35)] hover:shadow-[0_0_35px_rgba(6,182,212,0.55)]"
+            variant="cyan"
+            className="w-full sm:w-fit"
           >
             <FaWpforms className="text-sm" />
             <span>Fill out the form</span>
             <FaExternalLinkAlt className="text-xs opacity-75" />
-          </a>
+          </Button>
 
-          <button
+          <Button
             onClick={() => setIsNewsletterOpen(true)}
-            className="cursor-pointer flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-foreground text-xs sm:text-sm font-semibold py-3.5 px-6 rounded-full transition-all"
+            variant="secondary"
+            className="w-full sm:w-fit"
           >
             <FaEnvelope className="text-cyan-400" />
             <span>Subscribe to the newsletter</span>
-          </button>
+          </Button>
         </div>
 
-        <a
+        <Button
           href="https://pmqc.substack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-5 text-xs text-muted hover:text-cyan-300 transition-colors flex items-center gap-1.5 relative z-10"
+          variant="ghost"
+          size="sm"
+          className="relative z-10 mt-5 gap-1.5 hover:text-cyan-300"
         >
           <span>Or read us on pmqc.substack.com</span>
           <FaExternalLinkAlt className="text-[10px]" />
-        </a>
+        </Button>
       </div>
 
       {/* Substack Newsletter Modal configured for PMQC */}

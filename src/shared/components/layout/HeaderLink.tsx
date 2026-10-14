@@ -75,11 +75,11 @@ export default function HeaderLink({ text, href }: HeaderLinkProps) {
   return (
     <DynamicLink
       href={href}
-      className="flex items-center justify-center w-fit"
+      className="flex w-fit items-center justify-center"
       aria-label={text}
     >
       <motion.div
-        className="block relative whitespace-nowrap overflow-hidden h-fit"
+        className="relative block h-fit overflow-hidden whitespace-nowrap"
         onHoverStart={() => {
           hovered.current = true;
           requestActive(true);
@@ -96,10 +96,10 @@ export default function HeaderLink({ text, href }: HeaderLinkProps) {
           focused.current = false;
           requestActive(hovered.current);
         }}
-        aria-hidden={true}
+        aria-hidden
       >
         <motion.span
-          className="block relative"
+          className="relative block"
           variants={outgoingVariants}
           initial="rest"
           animate={active ? 'active' : 'rest'}
@@ -109,7 +109,7 @@ export default function HeaderLink({ text, href }: HeaderLinkProps) {
           {text}
         </motion.span>
         <motion.span
-          className="block whitespace-nowrap absolute top-0"
+          className="absolute top-0 block whitespace-nowrap"
           variants={incomingVariants}
           initial="rest"
           animate={active ? 'active' : 'rest'}
