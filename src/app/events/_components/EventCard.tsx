@@ -1,10 +1,10 @@
+import Button from '@/shared/components/ui/Button';
 import {
   Card,
   CardDetails,
   CardHeader,
   CardSubHeader,
 } from '@/shared/components/ui/Card';
-import Button from '@/shared/components/ui/Button';
 import Chip from '@/shared/components/ui/Chip';
 import { cn, formatDate } from '@/shared/lib/utils';
 import { Event } from '@/shared/types';
@@ -48,7 +48,7 @@ export default function EventCard({
 
       <div
         className={cn(
-          'flex flex-col',
+          'flex flex-col gap-1',
           !compact && 'sm:flex-row sm:items-center sm:justify-between',
         )}
       >
@@ -83,7 +83,7 @@ export default function EventCard({
         </Button>
       )}
 
-      <div className="flex-1"></div>
+      <div className="flex-0 grow"></div>
 
       {((event.upcoming && event.registrationUrl) || event.resourcesUrl) && (
         <div className="flex w-full flex-col gap-4 border-t border-white/5 pt-4">
@@ -97,7 +97,7 @@ export default function EventCard({
               Register Now
             </a>
           )}
-          {event.resourcesUrl && (
+          {!compact && event.resourcesUrl && (
             <a
               href={event.resourcesUrl}
               target="_blank"
