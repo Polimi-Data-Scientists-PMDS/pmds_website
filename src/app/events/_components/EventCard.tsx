@@ -42,7 +42,7 @@ export default function EventCard({
         ),
       ]}
     >
-      <CardHeader className={cn(compact && 'line-clamp-2 text-lg')}>
+      <CardHeader className={cn(compact && 'line-clamp-2')}>
         {event.title}
       </CardHeader>
 
@@ -56,11 +56,11 @@ export default function EventCard({
           {formatDate(event.dateStart, event.dateEnd, 'time')}
         </CardSubHeader>
 
-        <div className="flex w-fit items-center gap-2 text-xs text-muted sm:justify-end">
-          <FaLocationDot className="size-4 text-muted" size={16} />
+        <div className="flex w-fit items-center gap-2 type-label text-foreground-secondary sm:justify-end">
+          <FaLocationDot className="size-4 text-accent" size={16} />
           <div className="flex flex-col justify-center">
             {event.location.split(',').map((line, i) => (
-              <span key={i} className="w-fit font-medium text-foreground">
+              <span key={i} className="w-fit text-foreground">
                 {line}
               </span>
             ))}
@@ -68,31 +68,28 @@ export default function EventCard({
         </div>
       </div>
 
-      <CardDetails className={cn(compact && 'line-clamp-3 text-xs')}>
-        {event.description}
-      </CardDetails>
+      <div className="flex flex-col gap-2">
+        <CardDetails className={cn(compact && 'line-clamp-3')}>
+          {event.description}
+        </CardDetails>
 
-      {compact && onOpenDetails && (
-        <Button
-          onClick={() => onOpenDetails(event)}
-          variant="link"
-          size="sm"
-          className="-mt-2"
-        >
-          Read more &rarr;
-        </Button>
-      )}
+        {compact && onOpenDetails && (
+          <Button onClick={() => onOpenDetails(event)} variant="link" size="sm">
+            Read more &rarr;
+          </Button>
+        )}
+      </div>
 
       <div className="flex-0 grow"></div>
 
       {((event.upcoming && event.registrationUrl) || event.resourcesUrl) && (
-        <div className="flex w-full flex-col gap-4 border-t border-white/5 pt-4">
+        <div className="flex w-full flex-col gap-4 border-t pt-4">
           {event.upcoming && event.registrationUrl && (
             <a
               href={event.registrationUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2 font-medium text-foreground transition-all hover:bg-accent-secondary"
+              className="inline-flex w-full items-center justify-center gap-2 bg-accent px-4 py-3 type-label text-white transition-colors hover:bg-accent-dark"
             >
               Register Now
             </a>
@@ -102,7 +99,7 @@ export default function EventCard({
               href={event.resourcesUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-sm font-semibold text-foreground transition-all hover:bg-white/10"
+              className="flex-1 border px-4 py-3 text-center type-label text-foreground transition-colors hover:border-accent"
             >
               View Resources
             </a>

@@ -1,10 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap');
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
+@theme inline {
+  --font-sans: 'Manrope', sans-serif;
+  --font-display: 'Newsreader', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --color-background: #020202;
+  --color-background-secondary: #08090e;
+  --color-border: #292d3d;
+  --color-foreground: #f9f9fb;
+  --color-foreground-secondary: #52597a;
+  --color-accent-dark: #0029cc;
+  --color-accent: #4d70ff;
+  --color-accent-light: #8fa5ff;
+  --inset-shadow-left:
+    inset -20px 0 10px var(--background), inset 20px 0 10px var(--background);
+}
+
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: var(--background);
+/*@theme inline {
+  /*--color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-link: var(--link);
@@ -15,7 +32,7 @@
   --color-accent: var(--accent);
   --color-accent-secondary: var(--accent-secondary);
 
-  /* PMQC Design Tokens */
+  PMQC Design Tokens 
   --color-pmqc-surface: var(--pmqc-surface);
   --color-pmqc-surface-solid: var(--pmqc-surface-solid);
   --color-pmqc-border: var(--pmqc-border);
@@ -23,7 +40,7 @@
   --color-pmqc-cyan: var(--pmqc-cyan);
   --color-pmqc-cyan-light: var(--pmqc-cyan-light);
   --color-pmqc-blue: var(--pmqc-blue);
-}
+}*/
 
 :root {
   --background: #020202;
@@ -90,6 +107,37 @@
   box-shadow: 0 0 30px var(--pmqc-blue-glow);
 }
 
+/* Shared max width for page content and the header */
+@utility page-container {
+  @apply mx-auto w-full max-w-320;
+}
+
+/* Typography scale: size, weight, tracking and leading only, color stays at the call site */
+/* Hero numbers and page titles */
+@utility type-display {
+  @apply font-display text-6xl leading-none font-normal tracking-[-0.03em] sm:text-8xl;
+}
+
+/* Section headings */
+@utility type-heading {
+  @apply font-display text-4xl leading-tight font-normal tracking-[-0.02em] md:text-5xl;
+}
+
+/* Card titles, sub-headings, emphasized links */
+@utility type-title {
+  @apply font-sans text-lg leading-snug font-semibold tracking-[-0.02em];
+}
+
+/* Running text */
+@utility type-body {
+  @apply font-sans text-sm leading-6 sm:text-base sm:leading-7;
+}
+
+/* Eyebrows, metadata, chips, small UI text */
+@utility type-label {
+  @apply font-mono text-xs leading-5 tracking-[0.16em] uppercase;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -98,7 +146,7 @@
   }
 
   * {
-    border-color: var(--border);
+    border-color: var(--color-border);
   }
 
   .card-hover-elevate {
@@ -126,7 +174,23 @@
   }
 }
 
-@theme {
-  --inset-shadow-left:
-    inset -20px 0 10px var(--background), inset 20px 0 10px var(--background);
+@keyframes neural-signal {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -364;
+  }
+}
+
+@keyframes node-pulse {
+  0%,
+  100% {
+    fill: var(--color-background-secondary);
+  }
+
+  50% {
+    fill: var(--color-accent-dark);
+  }
 }

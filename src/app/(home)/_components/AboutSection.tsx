@@ -1,69 +1,72 @@
-import Chip from '@/shared/components/ui/Chip';
-import { ReactNode } from 'react';
 import { FaGraduationCap, FaLaptopCode, FaNetworkWired } from 'react-icons/fa';
+import SectionHeader from './SectionHeader';
 
-interface FeatureCardProps {
-  title: string;
-  details?: string;
-  icon: ReactNode;
-}
-
-function FeatureCard({ title, details, icon }: FeatureCardProps) {
-  return (
-    <div className="rounded-3xl border border-white/5 bg-surface/80 p-6 backdrop-blur-sm transition-colors hover:border-white/10">
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
-        {icon}
-      </div>
-      <h3 className="mb-2 font-bold text-foreground">{title}</h3>
-      <p className="text-sm leading-relaxed text-muted">{details}</p>
-    </div>
-  );
-}
+const FEATURES = [
+  {
+    title: 'Workshops',
+    details:
+      'Hands-on sessions on modern ML frameworks, LLMs, and data engineering.',
+    icon: FaGraduationCap,
+  },
+  {
+    title: 'Projects',
+    details:
+      'Extracurricular open-source projects to build a solid technical portfolio.',
+    icon: FaLaptopCode,
+  },
+  {
+    title: 'Networking',
+    details: 'Connect with top-tier companies, alumni, and passionate peers.',
+    icon: FaNetworkWired,
+  },
+];
 
 export default function AboutSection() {
   return (
-    <section className="mx-auto mt-10 mb-16 w-full max-w-[1100px] px-6 md:mb-24">
-      <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-2 md:gap-20">
-        {/* Left: Text Content */}
-        <div className="flex flex-col">
-          <Chip color="accent" className="mb-6">
-            Since 2019
-          </Chip>
-          <h2 className="mb-6 text-3xl leading-tight font-extrabold tracking-tight text-foreground md:text-4xl">
-            Empowering the next generation of Data Scientists.
-          </h2>
-          <p className="mb-6 text-base leading-relaxed text-muted">
-            Born within the walls of Politecnico di Milano, we are the
-            university's premier student-led association for AI, Machine
-            Learning, and Data Science.
-          </p>
-          <p className="text-base leading-relaxed text-muted">
-            Our mission is to bridge the gap between academic theory and
-            real-world application. We gather the brightest minds to learn,
-            build, and innovate together.
-          </p>
-        </div>
+    <section
+      id="what-we-do"
+      className="flex w-full scroll-mt-24 flex-col gap-12 px-8 lg:px-10"
+    >
+      <SectionHeader
+        index="002"
+        label="What we do"
+        title="Empowering the next generation of Data Scientists."
+        description={
+          <>
+            <p>
+              Born within the walls of Politecnico di Milano, we are the
+              university&apos;s premier student-led association for AI, Machine
+              Learning, and Data Science.
+            </p>
+            <p>
+              Our mission is to bridge the gap between academic theory and
+              real-world application. We gather the brightest minds to learn,
+              build, and innovate together.
+            </p>
+          </>
+        }
+      />
 
-        {/* Right: Feature grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <FeatureCard
-            title="Workshops"
-            details="Hands-on sessions on modern ML frameworks, LLMs, and data engineering."
-            icon={<FaGraduationCap size={20} />}
-          />
-          <FeatureCard
-            title="Projects"
-            details="Extracurricular open-source projects to build a solid technical portfolio."
-            icon={<FaLaptopCode size={20} />}
-          />
-          <FeatureCard
-            title="Networking"
-            details="Connect with top-tier companies, alumni, and passionate peers."
-            icon={<FaNetworkWired size={20} />}
-          />
-
-          <div className="hidden"></div>
-        </div>
+      <div className="flex flex-col border-b">
+        {FEATURES.map(({ title, details, icon: Icon }, i) => (
+          <div
+            key={title}
+            className="group grid gap-6 border-t py-8 md:grid-cols-[160px_1fr_1fr] md:items-center md:gap-8"
+          >
+            <div className="flex items-center gap-4">
+              <span className="grid size-11 place-items-center border text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+                <Icon size={18} />
+              </span>
+              <span className="type-label text-foreground-secondary">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            </div>
+            <h3 className="type-heading text-foreground">{title}</h3>
+            <p className="max-w-[450px] type-body text-foreground-secondary">
+              {details}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );

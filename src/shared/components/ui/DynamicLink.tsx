@@ -9,7 +9,7 @@ export default function DynamicLink({
   children,
   ...props
 }: DynamicLinkProps & React.HTMLAttributes<HTMLAnchorElement>) {
-  const isInternal = href.startsWith('/');
+  const isInternal = href.startsWith('/') || href.startsWith('#');
 
   const LinkWrapper = isInternal ? Link : 'a';
   const wrapperProps = isInternal

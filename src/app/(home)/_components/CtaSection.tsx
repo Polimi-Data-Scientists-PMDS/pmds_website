@@ -1,47 +1,44 @@
 'use client';
 
 import { useState } from 'react';
-import { FaArrowRight, FaEnvelope } from 'react-icons/fa';
+import { FaEnvelope } from 'react-icons/fa';
 import Button from '@/shared/components/ui/Button';
 import NewsletterModal from '@/shared/components/ui/NewsletterModal';
+import ArrowLink from './ArrowLink';
 
 export default function CtaSection() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
 
   return (
-    <section className="mx-auto mt-20 mb-20 w-full max-w-[850px] px-6">
-      <div className="relative flex w-full flex-col items-center overflow-hidden rounded-[40px] border border-white/5 bg-[#0a0a0a]/90 px-8 py-12 text-center shadow-[0_0_80px_rgba(75,111,254,0.05)] backdrop-blur-sm md:py-16">
-        {/* Glow behind the CTA */}
-        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/20 blur-[100px]"></div>
+    <section className="flex w-full flex-col px-8 lg:px-10">
+      <div className="grid border md:grid-cols-2">
+        <div className="flex flex-col justify-between gap-12 p-6 lg:p-8">
+          <p className="type-label text-accent">005 — Join us</p>
+          <h2 className="type-display text-foreground">
+            <span className="block">Ready to dive</span>
+            <span className="block text-accent italic">in?</span>
+          </h2>
+        </div>
 
-        <h2 className="relative z-10 bg-gradient-to-r from-foreground to-muted bg-clip-text text-3xl leading-tight font-extrabold tracking-tight text-transparent md:text-5xl">
-          Ready to dive into Data Science?
-        </h2>
-        <p className="relative z-10 mt-4 max-w-[450px] text-sm text-muted md:text-base">
-          Join a community of students passionate about AI, Machine Learning,
-          and everything data.
-        </p>
+        <div className="flex flex-col justify-between gap-12 border-t p-6 md:border-t-0 md:border-l lg:p-8">
+          <p className="max-w-[450px] border-l border-accent pl-5 type-body text-foreground-secondary">
+            Join a community of students passionate about AI, Machine Learning,
+            and everything data.
+          </p>
 
-        <div className="relative z-10 mt-8 flex flex-col gap-4 sm:flex-row">
-          <Button
-            href="/membership"
-            variant="inverted"
-            className="w-full sm:w-fit"
-          >
-            Become a Member{' '}
-            <FaArrowRight className="transition-transform group-hover:translate-x-1" />
-          </Button>
-          <Button
-            onClick={() => setIsNewsletterOpen(true)}
-            variant="secondary"
-            className="w-full sm:w-fit"
-          >
-            <FaEnvelope /> Subscribe to Newsletter
-          </Button>
+          <div className="flex flex-col gap-6 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <ArrowLink href="/membership">Become a member</ArrowLink>
+            <Button
+              onClick={() => setIsNewsletterOpen(true)}
+              variant="ghost"
+              size="md"
+            >
+              <FaEnvelope /> Newsletter
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Newsletter Modal */}
       <NewsletterModal
         isOpen={isNewsletterOpen}
         onClose={() => setIsNewsletterOpen(false)}

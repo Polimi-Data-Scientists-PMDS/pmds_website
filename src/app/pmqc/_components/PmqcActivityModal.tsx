@@ -44,7 +44,7 @@ export default function PmqcActivityModal({
           onClick={onClose}
           variant="secondary"
           size="icon"
-          className="absolute top-5 right-5 text-muted hover:text-foreground"
+          className="absolute top-5 right-5 text-foreground-secondary hover:text-foreground"
           aria-label="Close modal"
         >
           <FaTimes size={14} />
@@ -52,37 +52,39 @@ export default function PmqcActivityModal({
 
         {/* EVENT MODAL CONTENT */}
         {event && (
-          <>
-            <div className="mb-3 flex items-center gap-2">
-              <Chip color="cyan">{event.type}</Chip>
-              <span className="text-xs font-medium text-muted">
-                {formatDate(event.dateStart, event.dateEnd, 'time')}
-              </span>
-            </div>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <Chip color="cyan">{event.type}</Chip>
+                  <span className="type-label text-foreground-secondary">
+                    {formatDate(event.dateStart, event.dateEnd, 'time')}
+                  </span>
+                </div>
 
-            <h3 className="mb-3 text-xl leading-snug font-bold text-foreground sm:text-2xl">
-              {event.title}
-            </h3>
-
-            {event.imageUrl && (
-              <div className="relative mb-4 h-[180px] w-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-900">
-                <Image
-                  src={event.imageUrl}
-                  alt={event.title}
-                  fill
-                  className="object-cover"
-                />
+                <h3 className="type-title text-foreground">{event.title}</h3>
               </div>
-            )}
 
-            <div className="mb-4 flex items-center gap-2 border-b border-white/10 pb-3 text-xs text-muted">
-              <FaMapMarkerAlt className="text-cyan-400" />
-              <span>{event.location}</span>
+              {event.imageUrl && (
+                <div className="relative h-[180px] w-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-900">
+                  <Image
+                    src={event.imageUrl}
+                    alt={event.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+
+              <div className="flex items-center gap-2 border-b border-white/10 pb-3 type-label text-foreground-secondary">
+                <FaMapMarkerAlt className="text-cyan-400" />
+                <span>{event.location}</span>
+              </div>
+
+              <p className="type-body whitespace-pre-line text-foreground/90">
+                {event.description}
+              </p>
             </div>
-
-            <p className="mb-6 text-sm leading-relaxed whitespace-pre-line text-foreground/90">
-              {event.description}
-            </p>
 
             <div className="flex items-center justify-end gap-3 border-t border-white/10 pt-3">
               <Button onClick={onClose} variant="ghost" size="sm">
@@ -100,58 +102,62 @@ export default function PmqcActivityModal({
                 </Button>
               )}
             </div>
-          </>
+          </div>
         )}
 
         {/* PROJECT MODAL CONTENT */}
         {project && (
-          <>
-            <div className="mb-3 flex items-center gap-2">
-              <Chip color={project.status === 'Recruiting' ? 'amber' : 'blue'}>
-                {project.status === 'Recruiting' ? 'Hiring Now' : 'Ongoing'}
-              </Chip>
-              {project.date && (
-                <span className="text-xs font-medium text-muted">
-                  {project.date}
-                </span>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <Chip
+                    color={project.status === 'Recruiting' ? 'amber' : 'blue'}
+                  >
+                    {project.status === 'Recruiting' ? 'Hiring Now' : 'Ongoing'}
+                  </Chip>
+                  {project.date && (
+                    <span className="type-label text-foreground-secondary">
+                      {project.date}
+                    </span>
+                  )}
+                </div>
+
+                <h3 className="type-title text-foreground">{project.title}</h3>
+              </div>
+
+              {project.imageUrl && (
+                <div className="relative h-[180px] w-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-900">
+                  <Image
+                    src={project.imageUrl}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+
+              {project.partner && (
+                <div className="flex items-center gap-2 border-b border-white/10 pb-3 type-label text-foreground-secondary">
+                  <FaHandshake className="text-blue-400" />
+                  <span>Partner: {project.partner.name}</span>
+                </div>
+              )}
+
+              <p className="type-body whitespace-pre-line text-foreground/90">
+                {project.description}
+              </p>
+
+              {project.tags && project.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <Chip key={tag} color="muted">
+                      {tag}
+                    </Chip>
+                  ))}
+                </div>
               )}
             </div>
-
-            <h3 className="mb-3 text-xl leading-snug font-bold text-foreground sm:text-2xl">
-              {project.title}
-            </h3>
-
-            {project.imageUrl && (
-              <div className="relative mb-4 h-[180px] w-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-900">
-                <Image
-                  src={project.imageUrl}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-
-            {project.partner && (
-              <div className="mb-4 flex items-center gap-2 border-b border-white/10 pb-3 text-xs text-muted">
-                <FaHandshake className="text-blue-400" />
-                <span>Partner: {project.partner.name}</span>
-              </div>
-            )}
-
-            <p className="mb-4 text-sm leading-relaxed whitespace-pre-line text-foreground/90">
-              {project.description}
-            </p>
-
-            {project.tags && project.tags.length > 0 && (
-              <div className="mb-6 flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <Chip key={tag} color="muted">
-                    {tag}
-                  </Chip>
-                ))}
-              </div>
-            )}
 
             <div className="flex items-center justify-end gap-3 border-t border-white/10 pt-3">
               <Button onClick={onClose} variant="ghost" size="sm">
@@ -180,7 +186,7 @@ export default function PmqcActivityModal({
                 </Button>
               )}
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>,

@@ -13,7 +13,7 @@ export default async function Home() {
 
   return (
     <div className="relative z-10 flex min-h-[calc(100vh-200px)] flex-col">
-      <main className="flex w-full flex-1 flex-col items-center text-left">
+      <main className="page-container flex flex-1 flex-col gap-24 pt-6 text-left md:gap-32">
         <Hero />
         <Stats />
         <AboutSection />

@@ -56,7 +56,7 @@ export default function PeopleGroup({
               style={{ zIndex: i }}
               className={cn(
                 SIZING[size],
-                'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-surface-secondary text-sm text-muted',
+                'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-background-secondary text-sm text-foreground-secondary',
               )}
             >
               {person.avatar ? (
@@ -81,7 +81,7 @@ export default function PeopleGroup({
                 style={{ zIndex: i }}
                 className={cn(
                   SIZING[size],
-                  'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-surface-secondary text-sm text-muted',
+                  'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-background bg-background-secondary text-sm text-foreground-secondary',
                 )}
               >
                 <div className="inset-0 flex items-center justify-center">
@@ -123,12 +123,12 @@ export default function PeopleGroup({
                         unoptimized
                       />
                     ) : (
-                      <span className="flex h-full w-full items-center justify-center text-xs text-muted">
+                      <span className="flex h-full w-full items-center justify-center text-xs text-foreground-secondary">
                         {person.name.charAt(0)}
                       </span>
                     )}
                   </div>
-                  <p className="text-sm font-medium whitespace-nowrap text-foreground">
+                  <p className="type-body whitespace-nowrap text-foreground">
                     {person.name}
                   </p>
                 </div>
@@ -136,7 +136,7 @@ export default function PeopleGroup({
                   {person.email && (
                     <a
                       href={`mailto:${person.email}`}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/5 bg-white/5 text-muted transition-colors hover:bg-white/10 hover:text-foreground"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/5 bg-white/5 text-foreground-secondary transition-colors hover:bg-white/10 hover:text-foreground"
                       title={`Email ${person.name}`}
                     >
                       <FaEnvelope size={14} />
@@ -147,7 +147,7 @@ export default function PeopleGroup({
                       href={person.linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/5 bg-white/5 text-muted transition-colors hover:bg-[#0A66C2] hover:text-foreground"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/5 bg-white/5 text-foreground-secondary transition-colors hover:bg-[#0A66C2] hover:text-foreground"
                       title={`LinkedIn ${person.name}`}
                     >
                       <FaLinkedinIn size={14} />
@@ -163,7 +163,7 @@ export default function PeopleGroup({
         <div
           className={cn(
             SIZING[size],
-            'relative flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-background bg-white/5 text-sm text-muted transition-all',
+            'relative flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-background bg-white/5 text-sm text-foreground-secondary transition-all',
             opened ? 'rotate-180' : 'rotate-0',
           )}
           onClick={() => {

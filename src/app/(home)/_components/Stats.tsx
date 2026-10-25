@@ -1,42 +1,46 @@
 import CountingNumber from './CountingNumber';
+import SectionHeader from './SectionHeader';
+
+const STATS = [
+  { value: 1000, label: 'Members' },
+  { value: 20, label: 'Yearly events' },
+  { value: 10, label: 'Partners' },
+];
 
 export default function Stats() {
   return (
-    <section className="relative z-10 mx-auto mt-16 mb-10 w-full max-w-[1100px] px-6 md:mt-24">
-      <div className="relative grid grid-cols-2 gap-x-4 gap-y-12 overflow-hidden rounded-[32px] border border-white/5 bg-white/[0.02] px-6 py-12 shadow-[0_0_50px_rgba(75,111,254,0.05)] backdrop-blur-md sm:px-10 md:grid-cols-3 md:gap-12">
-        {/* Subtle inner glow */}
-        <div className="absolute top-0 left-1/2 h-[1px] w-[80%] -translate-x-1/2 bg-gradient-to-r from-transparent via-accent/50 to-transparent"></div>
+    <section className="flex w-full flex-col gap-12 px-8 lg:px-10">
+      <SectionHeader
+        index="001"
+        label="Numbers"
+        title="A community that keeps growing."
+        description={
+          <p>
+            Every year more students join us to learn, build and connect. Here
+            is where we stand today.
+          </p>
+        }
+      />
 
-        <div className="flex w-full flex-col items-center text-center md:items-start md:text-left">
-          <CountingNumber
-            className="text-5xl leading-none font-extrabold tracking-tight text-foreground sm:text-6xl"
-            value={1000}
-            includePlus
-          />
-          <span className="mt-3 text-base font-semibold tracking-wider text-muted uppercase sm:text-lg">
-            Members
-          </span>
-        </div>
-        <div className="flex w-full flex-col items-center text-center md:items-start md:text-left">
-          <CountingNumber
-            className="text-5xl leading-none font-extrabold tracking-tight text-foreground sm:text-6xl"
-            value={20}
-            includePlus
-          />
-          <span className="mt-3 text-base font-semibold tracking-wider text-muted uppercase sm:text-lg">
-            Yearly Events
-          </span>
-        </div>
-        <div className="col-span-2 flex w-full flex-col items-center text-center md:col-span-1 md:items-start md:text-left">
-          <CountingNumber
-            className="text-5xl leading-none font-extrabold tracking-tight text-foreground sm:text-6xl"
-            value={10}
-            includePlus
-          />
-          <span className="mt-3 text-base font-semibold tracking-wider text-muted uppercase sm:text-lg">
-            Partners
-          </span>
-        </div>
+      <div className="grid border sm:grid-cols-3">
+        {STATS.map((stat, i) => (
+          <div
+            key={stat.label}
+            className="flex flex-col gap-12 border-t p-6 first:border-t-0 sm:border-t-0 sm:border-l sm:first:border-l-0 lg:p-8"
+          >
+            <p className="type-label text-foreground-secondary">
+              {String(i + 1).padStart(2, '0')}
+            </p>
+            <div className="flex flex-col gap-3">
+              <CountingNumber
+                className="type-display text-foreground"
+                value={stat.value}
+                includePlus
+              />
+              <p className="type-label text-accent">{stat.label}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

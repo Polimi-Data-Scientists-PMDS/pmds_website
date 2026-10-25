@@ -11,7 +11,7 @@ export default function MemberCard({
   priority?: boolean;
 }) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-3xl border border-white/5 bg-surface/80 backdrop-blur-sm transition-colors duration-300 hover:border-white/10">
+    <div className="group flex flex-col overflow-hidden rounded-3xl border border-white/5 bg-background-secondary backdrop-blur-sm transition-colors duration-300 hover:border-white/10">
       <div className="relative aspect-[4/3] w-full shrink-0 bg-[#151a2d]">
         {member.imageUrl ? (
           <Image
@@ -23,23 +23,21 @@ export default function MemberCard({
             priority={priority}
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-muted uppercase">
+          <div className="absolute inset-0 flex items-center justify-center type-heading text-foreground-secondary uppercase">
             {member.name.charAt(0)}
           </div>
         )}
       </div>
 
       <div className="relative flex flex-1 flex-col gap-2 p-4">
-        <h3 className="line-clamp-2 text-xs leading-tight font-bold text-foreground sm:text-base">
+        <h3 className="line-clamp-2 type-title text-foreground">
           {member.name}
         </h3>
         {member.role && (
-          <p className="line-clamp-2 text-xs font-medium text-accent sm:text-xs">
-            {member.role}
-          </p>
+          <p className="line-clamp-2 type-label text-accent">{member.role}</p>
         )}
 
-        <div className="mt-auto flex justify-evenly gap-2 pt-3">
+        <div className="flex flex-1 items-end justify-evenly gap-2 pt-3">
           {member.linkedinUrl && (
             <SocialLink
               icon={FaLinkedinIn}

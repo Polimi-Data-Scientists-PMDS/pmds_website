@@ -80,7 +80,7 @@ export default function ProjectCard({
         </Chip>,
       ]}
     >
-      <CardHeader className={cn(compact && 'line-clamp-2 text-lg')}>
+      <CardHeader className={cn(compact && 'line-clamp-2')}>
         {project.title}
       </CardHeader>
 
@@ -93,8 +93,11 @@ export default function ProjectCard({
         <CardSubHeader>{project.date}</CardSubHeader>
 
         {project.partner && (
-          <div className="flex w-fit items-center gap-2 text-xs text-muted sm:justify-end">
-            <FaHandshake className="size-4 text-muted" size={16} />
+          <div className="flex w-fit items-center gap-2 type-label text-foreground-secondary sm:justify-end">
+            <FaHandshake
+              className="size-4 text-foreground-secondary"
+              size={16}
+            />
             Collaborating with:
             {project.partner.url ? (
               <a
@@ -112,20 +115,21 @@ export default function ProjectCard({
         )}
       </div>
 
-      <CardDetails className={cn(compact && 'line-clamp-3 text-xs')}>
-        {project.description}
-      </CardDetails>
+      <div className="flex flex-col gap-2">
+        <CardDetails className={cn(compact && 'line-clamp-3')}>
+          {project.description}
+        </CardDetails>
 
-      {compact && onOpenDetails && (
-        <Button
-          onClick={() => onOpenDetails(project)}
-          variant="link"
-          size="sm"
-          className="-mt-2"
-        >
-          Read more &rarr;
-        </Button>
-      )}
+        {compact && onOpenDetails && (
+          <Button
+            onClick={() => onOpenDetails(project)}
+            variant="link"
+            size="sm"
+          >
+            Read more &rarr;
+          </Button>
+        )}
+      </div>
 
       <div className="flex-0 grow"></div>
 
@@ -134,7 +138,7 @@ export default function ProjectCard({
           <PeopleGroup size="sm" people={project.team} />
         )}
 
-        <span className="text-xs text-muted uppercase">
+        <span className="type-label text-foreground-secondary">
           {project.tags?.join(' | ')}
         </span>
       </div>
@@ -146,14 +150,14 @@ export default function ProjectCard({
               href={project.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-2 font-medium text-amber-500 transition-colors hover:bg-amber-500/20"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-2 type-label text-amber-500 transition-colors hover:bg-amber-500/20"
             >
               <FaUsers size={16} /> Apply for this Project
             </a>
           )}
 
           {project.status === 'Ongoing' && (
-            <span className="w-full py-2 text-center text-sm text-muted italic">
+            <span className="w-full py-2 text-center type-body text-foreground-secondary italic">
               Currently in development. Check back later for updates.
             </span>
           )}
@@ -162,12 +166,16 @@ export default function ProjectCard({
             <div className="flex w-full items-center justify-evenly gap-2">
               {links.map((link, i) => (
                 <Fragment key={link.label}>
-                  {i > 0 && <span className="text-sm text-muted">|</span>}
+                  {i > 0 && (
+                    <span className="type-label text-foreground-secondary">
+                      |
+                    </span>
+                  )}
                   <a
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 py-2 text-sm text-muted transition-colors hover:text-foreground"
+                    className="inline-flex items-center gap-2 py-2 type-label text-foreground-secondary transition-colors hover:text-foreground"
                     title={link.title}
                   >
                     {link.icon} {link.label}

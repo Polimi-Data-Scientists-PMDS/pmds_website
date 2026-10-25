@@ -10,12 +10,18 @@ export interface HeaderLinkProps {
 }
 
 const outgoingVariants = {
-  rest: { transform: 'translateY(0%)', color: 'var(--color-muted)' },
+  rest: {
+    transform: 'translateY(0%)',
+    color: 'var(--color-foreground-secondary)',
+  },
   active: { transform: 'translateY(100%)', color: 'var(--color-foreground)' },
 };
 
 const incomingVariants = {
-  rest: { transform: 'translateY(-100%)', color: 'var(--color-muted)' },
+  rest: {
+    transform: 'translateY(-100%)',
+    color: 'var(--color-foreground-secondary)',
+  },
   active: { transform: 'translateY(0%)', color: 'var(--color-foreground)' },
 };
 

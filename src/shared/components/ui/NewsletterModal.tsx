@@ -47,7 +47,7 @@ export default function NewsletterModal({
       onClick={onClose}
     >
       <div
-        className="relative flex w-full max-w-[500px] flex-col items-center rounded-3xl border border-white/10 bg-[#0e0e12] p-6 shadow-2xl"
+        className="relative flex w-full max-w-[500px] flex-col items-center gap-4 rounded-3xl border border-white/10 bg-[#0e0e12] p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <Button
@@ -59,10 +59,12 @@ export default function NewsletterModal({
           <FaTimes size={16} />
         </Button>
 
-        <h3 className="mt-4 mb-2 text-center text-2xl font-bold text-foreground">
-          {title}
-        </h3>
-        <p className="mb-6 text-center text-sm text-muted">{description}</p>
+        <div className="flex flex-col gap-2 pb-2">
+          <h3 className="text-center type-title text-foreground">{title}</h3>
+          <p className="text-center type-body text-foreground-secondary">
+            {description}
+          </p>
+        </div>
 
         <div className="flex w-full justify-center">
           <iframe

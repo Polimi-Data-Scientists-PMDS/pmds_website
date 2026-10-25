@@ -80,24 +80,28 @@ function SuccessState() {
 
       <Confetti />
 
-      <div className="relative z-10 flex w-full max-w-[600px] flex-col items-center rounded-[32px] border border-white/10 bg-surface/80 p-10 text-center shadow-[0_0_80px_rgba(75,111,254,0.15)] backdrop-blur-xl md:p-16">
-        {/* Animated Checkmark Background (Checkmark is static) */}
-        <div className="relative mb-6">
-          <div className="absolute inset-0 animate-pulse rounded-full bg-accent opacity-40 blur-[20px]"></div>
-          <FaCheckCircle className="relative z-10 text-7xl text-accent" />
+      <div className="relative z-10 flex w-full max-w-[600px] flex-col items-center gap-8 rounded-[32px] border border-white/10 bg-background-secondary p-10 text-center shadow-[0_0_80px_rgba(75,111,254,0.15)] backdrop-blur-xl md:p-16">
+        <div className="flex flex-col items-center gap-6">
+          {/* Animated Checkmark Background (Checkmark is static) */}
+          <div className="relative">
+            <div className="absolute inset-0 animate-pulse rounded-full bg-accent opacity-40 blur-[20px]"></div>
+            <FaCheckCircle className="relative z-10 text-7xl text-accent" />
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h1 className="bg-gradient-to-r from-foreground to-foreground-secondary bg-clip-text type-heading text-transparent">
+              Welcome to the Club!
+            </h1>
+            <p className="type-body text-foreground-secondary">
+              Your membership payment was successfully processed. We're
+              incredibly excited to have you on board as an official member.
+            </p>
+          </div>
         </div>
 
-        <h1 className="mb-4 bg-gradient-to-r from-foreground to-muted bg-clip-text text-3xl font-extrabold tracking-tight text-transparent md:text-4xl">
-          Welcome to the Club!
-        </h1>
-        <p className="mb-8 text-base leading-relaxed text-muted">
-          Your membership payment was successfully processed. We're incredibly
-          excited to have you on board as an official member.
-        </p>
-
-        <div className="mb-8 w-full rounded-2xl border border-white/10 bg-white/5 p-6 text-left">
-          <h3 className="mb-3 font-semibold text-foreground">Next Steps:</h3>
-          <ul className="space-y-3 text-sm text-muted">
+        <div className="flex w-full flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-6 text-left">
+          <h3 className="type-title text-foreground">Next Steps:</h3>
+          <ul className="flex flex-col gap-3 type-body text-foreground-secondary">
             <li className="flex gap-2">
               <span className="text-accent">1.</span>
               <span>
@@ -121,13 +125,13 @@ function SuccessState() {
           </ul>
         </div>
 
-        <div className="flex w-full flex-col gap-4">
+        <div className="flex w-full flex-col gap-6">
           <div className="flex w-full flex-col gap-4 sm:flex-row">
             <Button
               href={whatsappLink}
               size="md"
               fullWidth
-              className="flex-1 bg-[#25D366] py-3.5 text-base shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:bg-[#1EBE5D] hover:shadow-[0_0_20px_rgba(37,211,102,0.2)]"
+              className="flex-1 bg-[#25D366] py-3.5 shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:bg-[#1EBE5D] hover:shadow-[0_0_20px_rgba(37,211,102,0.2)]"
             >
               <FaWhatsapp size={20} /> Join WhatsApp
             </Button>
@@ -136,12 +140,12 @@ function SuccessState() {
               variant="secondary"
               size="md"
               fullWidth
-              className="flex-1 py-3.5 text-base"
+              className="flex-1 py-3.5"
             >
               Back to Home
             </Button>
           </div>
-          <p className="mt-2 text-xs text-muted italic">
+          <p className="type-body text-foreground-secondary italic">
             Note: For security reasons, your request to join the group will be
             manually approved by our admins.
           </p>
@@ -154,15 +158,17 @@ function SuccessState() {
 function ErrorState() {
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 pt-20">
-      <div className="flex w-full max-w-[600px] flex-col items-center rounded-[32px] border border-red-500/20 bg-surface/80 p-10 text-center backdrop-blur-xl">
-        <FaExclamationTriangle className="mb-6 text-5xl text-red-500" />
-        <h1 className="mb-4 text-2xl font-bold text-foreground md:text-3xl">
-          Invalid Session
-        </h1>
-        <p className="mb-8 text-muted">
-          We couldn't verify your payment. Please ensure you completed checkout
-          or contact us if this is an error.
-        </p>
+      <div className="flex w-full max-w-[600px] flex-col items-center gap-8 rounded-[32px] border border-red-500/20 bg-background-secondary p-10 text-center backdrop-blur-xl">
+        <div className="flex flex-col items-center gap-6">
+          <FaExclamationTriangle className="text-5xl text-red-500" />
+          <div className="flex flex-col gap-4">
+            <h1 className="type-heading text-foreground">Invalid Session</h1>
+            <p className="type-body text-foreground-secondary">
+              We couldn't verify your payment. Please ensure you completed
+              checkout or contact us if this is an error.
+            </p>
+          </div>
+        </div>
         <Button href="/membership" variant="secondary" size="md">
           Return to Membership
         </Button>

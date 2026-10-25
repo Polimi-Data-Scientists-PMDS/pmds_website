@@ -25,10 +25,10 @@ function Card({
   return (
     <div
       className={cn(
-        'group relative z-0 flex h-full flex-col rounded-3xl border border-white/5 bg-surface/80',
+        'group relative z-0 flex h-full flex-col border bg-background-secondary',
         // Lift card above siblings so overflowing popups (e.g. PeopleGroup) aren't covered
         'hover:z-30 has-data-[people-open=true]:z-30',
-        'backdrop-blur-sm transition-colors duration-300 hover:border-white/10',
+        'transition-colors duration-300 hover:border-accent',
         className,
       )}
     >
@@ -36,7 +36,7 @@ function Card({
       {imageUrl && (
         <div
           className={cn(
-            'relative w-full shrink-0 overflow-hidden rounded-t-3xl border-b border-white/5 bg-zinc-900',
+            'relative w-full shrink-0 overflow-hidden border-b bg-background-secondary',
             compact ? 'h-32' : 'aspect-video',
           )}
         >
@@ -48,7 +48,6 @@ function Card({
             className="object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
             priority={priority}
           />
-          <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] to-transparent opacity-80" />
           {chips.length > 0 && (
             <div className="absolute top-4 right-4 left-4 z-10 flex flex-1 flex-row-reverse justify-between">
               {chips}
@@ -76,13 +75,7 @@ function CardHeader({
   ...props
 }: React.ComponentProps<'div'>) {
   return (
-    <h3
-      className={cn(
-        'text-2xl leading-snug font-bold text-foreground',
-        className,
-      )}
-      {...props}
-    >
+    <h3 className={cn('type-title text-foreground', className)} {...props}>
       {children}
     </h3>
   );
@@ -94,13 +87,7 @@ function CardSubHeader({
   ...props
 }: React.ComponentProps<'div'>) {
   return (
-    <span
-      className={cn(
-        'text-xs font-bold tracking-wider text-accent uppercase',
-        className,
-      )}
-      {...props}
-    >
+    <span className={cn('type-label text-accent', className)} {...props}>
       {children}
     </span>
   );
@@ -113,7 +100,7 @@ function CardDetails({
 }: React.ComponentProps<'div'>) {
   return (
     <p
-      className={cn('text-sm leading-relaxed text-muted', className)}
+      className={cn('type-body text-foreground-secondary', className)}
       {...props}
     >
       {children}

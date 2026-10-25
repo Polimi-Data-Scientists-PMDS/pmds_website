@@ -26,7 +26,7 @@ export default function AnnouncementBar({
 
   return (
     <div className="relative z-50 flex w-full items-center justify-center bg-gradient-to-r from-accent to-indigo-600 px-4 py-2 shadow-md">
-      <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+      <div className="flex items-center gap-2 type-label text-foreground">
         <FaRocket className="text-foreground/80" />
         <span>{title}</span>
         {link && (

@@ -1,8 +1,8 @@
 'use client';
 
 import { cn } from '@/shared/lib/utils';
-import { motion, useSpring, useTransform } from 'motion/react';
-import { useEffect } from 'react';
+import { motion, useInView, useSpring, useTransform } from 'motion/react';
+import { useEffect, useRef } from 'react';
 
 interface CountingNumberProps {
   value: number;
@@ -24,12 +24,16 @@ export default function CountingNumber({
     Math.round(current).toString(),
   );
 
+  // Count up only once the number scrolls into view
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+
   useEffect(() => {
-    spring.set(value);
-  }, [spring, value]);
+    if (inView) spring.set(value);
+  }, [inView, spring, value]);
 
   return (
-    <span className={cn('tabular-nums', className)} {...props}>
+    <span ref={ref} className={cn('tabular-nums', className)} {...props}>
       <motion.span>{display}</motion.span>
       {includePlus && <span className="text-accent">+</span>}
     </span>

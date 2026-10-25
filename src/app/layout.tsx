@@ -70,8 +70,10 @@ export default function RootLayout({
       >
         <Announcements />
         <Header />
-        {children}
-        <Footer />
+        <div className="flex flex-col gap-24">
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );

@@ -38,7 +38,7 @@ export default function BlogCard({
       <div className="flex-1"></div>
 
       <div className="flex flex-row-reverse items-end justify-between gap-2">
-        <span className="text-xs text-muted uppercase">
+        <span className="type-label text-foreground-secondary">
           {post.tags?.join(' | ')}
         </span>
 
