@@ -1,12 +1,12 @@
 'use client';
 
+import Button from '@/shared/components/ui/Button';
 import {
   Card,
   CardDetails,
   CardHeader,
   CardSubHeader,
 } from '@/shared/components/ui/Card';
-import Button from '@/shared/components/ui/Button';
 import Chip, { ChipDot } from '@/shared/components/ui/Chip';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
 import { cn } from '@/shared/lib/utils';
@@ -84,12 +84,17 @@ export default function ProjectCard({
         {project.title}
       </CardHeader>
 
-      <div className="flex flex-row items-center justify-between gap-2">
+      <div
+        className={cn(
+          'flex flex-col gap-1',
+          !compact && 'sm:flex-row sm:items-center sm:justify-between',
+        )}
+      >
         <CardSubHeader>{project.date}</CardSubHeader>
 
         {project.partner && (
-          <div className="flex items-center gap-2 text-xs text-muted">
-            <FaHandshake className="text-muted" />
+          <div className="flex w-fit items-center gap-2 text-xs text-muted sm:justify-end">
+            <FaHandshake className="size-4 text-muted" size={16} />
             Collaborating with:
             {project.partner.url ? (
               <a
@@ -122,7 +127,7 @@ export default function ProjectCard({
         </Button>
       )}
 
-      <div className="flex-1"></div>
+      <div className="flex-0 grow"></div>
 
       <div className="flex flex-row items-end justify-between gap-2">
         {project.team && project.team.length > 0 && (
