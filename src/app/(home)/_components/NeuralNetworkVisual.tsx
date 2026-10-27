@@ -22,7 +22,7 @@ export default function NeuralNetworkVisual() {
 
   return (
     <div
-      className="relative min-h-[500px] overflow-hidden border before:pointer-events-none before:absolute before:top-1/2 before:left-1/2 before:aspect-square before:w-[70%] before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:bg-accent/10 before:blur-[70px] lg:min-h-[640px]"
+      className="relative h-full min-h-[500px] overflow-hidden border bg-background before:pointer-events-none before:absolute before:top-1/2 before:left-1/2 before:aspect-square before:w-[70%] before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:bg-accent/10 before:blur-[70px] lg:min-h-[640px]"
       aria-hidden="true"
     >
       <div className="absolute top-4 right-4 z-10 flex items-center gap-2 lg:top-6 lg:right-6">

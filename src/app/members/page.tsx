@@ -1,3 +1,4 @@
+import { PageHeading } from '@/shared/components/ui/PageHeading';
 import { getTeams } from '@/shared/lib/notion';
 import { Metadata } from 'next';
 import { FaEnvelope } from 'react-icons/fa';
@@ -13,12 +14,11 @@ export default async function MembersPage() {
   return (
     <div className="relative z-10 mx-auto flex min-h-[calc(100vh-200px)] w-full max-w-[1100px] flex-col gap-16 px-6 pt-30">
       {/* Header */}
-      <div className="flex flex-col gap-4">
-        <h1 className="type-heading text-foreground">Members</h1>
-        <p className="max-w-[600px] type-body text-foreground-secondary">
-          Meet the minds behind Polimi Data Scientists.
-        </p>
-      </div>
+      <PageHeading
+        text="Our"
+        highlightedText="Members."
+        description="Meet the minds behind Polimi Data Scientists."
+      />
 
       {/* Teams Container */}
       <div className="flex flex-col gap-16">

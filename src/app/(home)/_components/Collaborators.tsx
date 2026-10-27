@@ -10,7 +10,6 @@ export default function Collaborators() {
   return (
     <section className="flex w-full flex-col gap-12 px-8 lg:px-10">
       <SectionHeader
-        index="004"
         label="Partners"
         title="Past collaborators."
         description={
@@ -21,7 +20,7 @@ export default function Collaborators() {
         }
       />
 
-      <div className="relative flex flex-row overflow-hidden border-y py-8">
+      <div className="relative flex flex-row overflow-hidden py-8">
         <div className="pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-10 inset-shadow-left"></div>
         <motion.div
           initial={{ x: 0 }}

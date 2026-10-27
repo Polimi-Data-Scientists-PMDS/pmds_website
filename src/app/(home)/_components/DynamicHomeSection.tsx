@@ -11,7 +11,6 @@ export default function DynamicHomeSection({
   return (
     <section className="flex w-full flex-col gap-12 px-8 lg:px-10">
       <SectionHeader
-        index="003"
         label="Upcoming events"
         title="What's happening next."
         description={
@@ -25,7 +24,7 @@ export default function DynamicHomeSection({
       {upcomingEvents.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {upcomingEvents.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard compact key={event.id} event={event} />
           ))}
         </div>
       ) : (

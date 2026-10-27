@@ -1,3 +1,4 @@
+import { PageHeading } from '@/shared/components/ui/PageHeading';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,15 +12,11 @@ export default function LegalPage() {
     <div className="relative z-10 flex min-h-screen w-full flex-col pt-24">
       <div className="mx-auto flex w-full max-w-[800px] flex-col gap-16 px-6">
         <div className="flex flex-col gap-12">
-          <div className="flex flex-col gap-4">
-            <h1 className="type-heading text-foreground">Legal & Privacy</h1>
-            <p className="type-body text-foreground-secondary">
-              Last updated: September 2026. This page outlines the terms and
-              conditions of association membership, fee policies, and how we
-              handle your personal data in accordance with our Statute, Internal
-              Regulation, and the EU General Data Protection Regulation (GDPR).
-            </p>
-          </div>
+          <PageHeading
+            text="Legal &"
+            highlightedText="Privacy."
+            description="Last updated: September 2026. This page outlines the terms and conditions of association membership, fee policies, and how we handle your personal data in accordance with our Statute, Internal Regulation, and the EU General Data Protection Regulation (GDPR)."
+          />
 
           {/* Association Details */}
           <div className="flex flex-col gap-1 rounded-xl border bg-background-secondary p-5 type-body text-foreground-secondary">
