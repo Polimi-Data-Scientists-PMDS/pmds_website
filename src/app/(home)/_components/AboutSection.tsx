@@ -87,12 +87,12 @@ export default function AboutSection() {
           <motion.div
             key={title}
             variants={itemVariants}
-            className="group flex flex-row items-center justify-between gap-4 border-t py-8"
+            className="group flex flex-row items-center gap-4 border-t py-8"
           >
             <span className="grid size-11 place-items-center border text-accent transition-colors group-hover:bg-accent group-hover:text-white">
               <Icon size={18} />
             </span>
-            <div className="flex flex-col gap-4 md:flex-row md:justify-between">
+            <div className="flex w-full flex-col items-center gap-4 md:flex-row md:justify-between">
               <h3 className="type-heading text-foreground">{title}</h3>
               <p className="type-body text-foreground-secondary md:max-w-[50%]">
                 {details}

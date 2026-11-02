@@ -12,13 +12,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { FaGlobe, FaRobot } from 'react-icons/fa';
 import HeaderLink from './HeaderLink';
 
 const NAV_LINKS = [
   { text: 'Blog', href: '/blog' },
   { text: 'Projects', href: '/projects' },
   { text: 'Events', href: '/events' },
-  { text: 'PMQC', href: '/pmqc' },
   { text: 'Become a Member', href: '/membership' },
   { text: 'Members', href: '/members' },
 ];
@@ -68,6 +68,23 @@ function NavBar({ compact, isPmqc, isOpen, setIsOpen }: NavBarProps) {
           {NAV_LINKS.map((link) => (
             <HeaderLink key={link.href} {...link} />
           ))}
+          {isPmqc ? (
+            <Link
+              href="/"
+              className="flex flex-row items-center gap-2 border border-accent bg-background px-4 py-2 text-accent transition-colors hover:border-accent-dark hover:text-accent-dark"
+            >
+              <FaRobot />
+              PMDS
+            </Link>
+          ) : (
+            <Link
+              href="/pmqc"
+              className="flex flex-row items-center gap-2 border border-accent bg-background px-4 py-2 text-accent transition-colors hover:border-accent-dark hover:text-accent-dark"
+            >
+              <FaGlobe />
+              PMQC
+            </Link>
+          )}
           <a
             href={DONATE_URL}
             target="_blank"
@@ -115,6 +132,23 @@ function NavBar({ compact, isPmqc, isOpen, setIsOpen }: NavBarProps) {
                   {link.text}
                 </Link>
               ))}
+              {isPmqc ? (
+                <Link
+                  href="/"
+                  className="flex flex-row items-center gap-2 py-2 text-accent transition-colors"
+                >
+                  <FaRobot />
+                  PMDS
+                </Link>
+              ) : (
+                <Link
+                  href="/pmqc"
+                  className="flex flex-row items-center gap-2 py-2 text-accent transition-colors"
+                >
+                  <FaGlobe />
+                  PMQC
+                </Link>
+              )}
               <a
                 href={DONATE_URL}
                 target="_blank"

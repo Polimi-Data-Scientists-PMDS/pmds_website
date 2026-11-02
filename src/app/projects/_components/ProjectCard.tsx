@@ -84,32 +84,24 @@ export default function ProjectCard({
         {project.title}
       </CardHeader>
 
-      <div
-        className={cn(
-          'flex flex-col gap-1',
-          !compact && 'sm:flex-row sm:items-center sm:justify-between',
-        )}
-      >
+      <div className="flex flex-col gap-1">
         <CardSubHeader>{project.date}</CardSubHeader>
 
         {project.partner && (
-          <div className="flex w-fit items-center gap-2 type-label text-foreground-secondary sm:justify-end">
-            <FaHandshake
-              className="size-4 text-foreground-secondary"
-              size={16}
-            />
+          <div className="flex w-fit items-center gap-2 type-label text-foreground">
+            <FaHandshake className="size-4 text-foreground" size={16} />
             Collaborating with:
             {project.partner.url ? (
               <a
                 href={project.partner.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground underline decoration-white/20 underline-offset-2 transition-colors hover:text-accent"
+                className="text-accent decoration-accent underline-offset-2 transition-colors hover:text-accent-dark hover:underline hover:decoration-accent-dark"
               >
                 {project.partner.name}
               </a>
             ) : (
-              <span className="text-foreground">{project.partner.name}</span>
+              <span className="text-accent">{project.partner.name}</span>
             )}
           </div>
         )}
