@@ -142,7 +142,7 @@ export default function PmqcQuantumMonthSection() {
               </div>
 
               <h3 className="mb-3 text-xl font-bold text-foreground transition-colors group-hover:text-indigo-300 sm:text-2xl">
-                PMQC Launch - 12 December.
+                Thematic Day Quantum - 12 December.
               </h3>
 
               <p className="text-sm leading-relaxed text-muted sm:text-base">
