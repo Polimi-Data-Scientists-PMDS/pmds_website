@@ -13,12 +13,12 @@ import {
   FaMapMarkerAlt,
   FaRocket,
 } from 'react-icons/fa';
+import { cn } from 'tailwind-variants';
 
 export default function PmqcQuantumMonthSection() {
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
 
-  // Set to true once the event is approved by Politecnico di Milano
-  const SHOW_LAUNCH_EVENT = false;
+  const SHOW_LAUNCH_EVENT = true;
 
   return (
     <section
@@ -46,9 +46,10 @@ export default function PmqcQuantumMonthSection() {
 
       {/* Cards Grid */}
       <div
-        className={`grid grid-cols-1 ${
-          SHOW_LAUNCH_EVENT ? 'md:grid-cols-3' : 'md:grid-cols-2'
-        } gap-6 sm:gap-8`}
+        className={cn(
+          'grid grid-cols-1 gap-6 sm:gap-8',
+          SHOW_LAUNCH_EVENT ? 'md:grid-cols-3' : 'md:grid-cols-2',
+        )}
       >
         {/* Card 1: Quantum Error Correction Course */}
         <div className="group relative z-10 flex flex-col justify-between overflow-hidden rounded-3xl pmqc-card p-7 transition-all duration-300 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] sm:p-9">
@@ -153,7 +154,15 @@ export default function PmqcQuantumMonthSection() {
               <span className="font-medium text-indigo-400/90">
                 12 December 2026
               </span>
-              <span>Details soon</span>
+              <Button
+              href="https://forms.cloud.microsoft/e/xtNC5w97rK"
+              variant="ghost"
+              size="sm"
+              className="gap-1"
+            >
+              <span>sign up</span>
+              <FaExternalLinkAlt className="text-[9px]" />
+            </Button>
             </div>
           </div>
         )}
