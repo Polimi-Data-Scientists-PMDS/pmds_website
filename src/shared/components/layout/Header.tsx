@@ -52,7 +52,6 @@ export default function Header() {
       reducedMotion="user"
       transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
     >
-      {/* In-flow spacer keeps page layout stable while the bar is fixed */}
       <header className="relative z-50 h-22 md:h-30">
         <div
           className={cn(
@@ -60,16 +59,10 @@ export default function Header() {
             isScrolled ? 'fixed' : 'absolute',
           )}
         >
-          {/*
-           * Pill on mobile, and on desktop once scrolled. On desktop at the top
-           * of the page the md: overrides turn it back into the full nav bar
-           * (no background or border, so the radius is invisible there).
-           * Spacing: gutter p-4 mobile / p-6 desktop, pill padding px-4 py-2.
-           */}
           <motion.div
             layout
             className={cn(
-              'mx-auto flex w-full flex-col rounded-3xl border border-white/10 bg-background/70 p-4 shadow-2xl backdrop-blur-xl md:max-w-75',
+              'mx-auto flex w-full flex-col rounded-3xl border border-white/10 bg-background p-4 shadow-2xl md:max-w-75',
               isOpen && 'md:max-w-125',
               !isScrolled &&
                 'md:max-w-250 md:border-transparent md:bg-transparent md:shadow-none',

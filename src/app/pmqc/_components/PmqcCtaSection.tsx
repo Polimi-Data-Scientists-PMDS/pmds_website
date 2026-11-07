@@ -19,7 +19,7 @@ export default function PmqcCtaSection() {
         className="relative flex w-full flex-col items-center overflow-hidden rounded-3xl pmqc-card px-5 py-8 text-center shadow-[0_0_80px_rgba(17,9,255,0.12)] sm:rounded-[40px] sm:px-8 sm:py-12 md:py-14"
       >
         {/* Quantum Glow behind the CTA */}
-        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-[#1109FF]/20 via-cyan-500/20 to-indigo-500/15 blur-[100px]" />
+        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[740px] w-[740px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(17,9,255,0.15),rgba(6,182,212,0.08)_55%,transparent)]" />
 
         {/* Division pill */}
         <Chip color="cyan" className="relative z-10 mb-4 sm:mb-6">

@@ -52,7 +52,6 @@ export default function QuantumVisualizer() {
     const updateAnchorTargets = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const isMobile = w < 1024 || h < 550;
 
       // Locate real DOM layout anchors
       const heroEl = document.getElementById('pmqc-hero-anchor');
@@ -78,7 +77,7 @@ export default function QuantumVisualizer() {
 
       const heroPos = getCenter(
         heroEl,
-        isMobile ? w * 0.5 : w * 0.72,
+        w * 0.72,
         h * 0.42,
       );
 
@@ -93,7 +92,7 @@ export default function QuantumVisualizer() {
 
       const aboutPos = getCenter(
         aboutEl,
-        isMobile ? w * 0.5 : w * 0.72,
+        w * 0.72,
         h * 1.4,
       );
       const ctaPos = getCenter(ctaEl, w * 0.5, h * 2.8);
@@ -505,8 +504,7 @@ export default function QuantumVisualizer() {
       );
 
       // 4. Polar Axis (Desktop only in initial Bloch state)
-      const isMobileScreen = w < 1024 || h < 550;
-      const axisAlpha = isMobileScreen ? 0 : Math.max(0, 1 - morph * 1.2);
+      const axisAlpha =  Math.max(0, 1 - morph * 1.2);
       if (axisAlpha > 0.05) {
         const pTop = project(0, 0, 1.25);
         const pBottom = project(0, 0, -1.25);
@@ -526,7 +524,7 @@ export default function QuantumVisualizer() {
       }
 
       // 5. Dynamic State Vector |Psi> (Desktop only in initial Bloch state)
-      if (!isMobileScreen && morph < 0.9) {
+      if (morph < 0.9) {
         const curTheta =
           Math.PI * 0.35 + morph * 0.5 + Math.sin(time * 0.8) * 0.08;
         const curPhi = morph * 1.4 + time * 0.25;

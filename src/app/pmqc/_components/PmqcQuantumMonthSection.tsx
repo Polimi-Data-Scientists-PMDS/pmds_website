@@ -26,7 +26,7 @@ export default function PmqcQuantumMonthSection() {
       className="relative z-10 mx-auto mt-8 mb-24 w-full max-w-[1100px] scroll-mt-28 sm:mt-16"
     >
       {/* Ambient background glow for Quantum Month */}
-      <div className="pointer-events-none absolute -top-10 left-1/4 -z-10 h-[300px] w-[400px] rounded-full bg-gradient-to-tr from-cyan-500/10 via-blue-500/10 to-indigo-500/10 blur-[110px]" />
+      <div className="pointer-events-none absolute top-[-260px] left-[calc(25%-220px)] -z-10 h-[740px] w-[840px] bg-[radial-gradient(closest-side,rgba(59,130,246,0.07),transparent)]" />
 
       {/* Header */}
       <div className="mb-10 text-left sm:mb-14">

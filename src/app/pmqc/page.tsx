@@ -39,7 +39,7 @@ export default async function PMQCPage() {
   return (
     <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1100px] flex-col px-6 pt-4 pb-16 md:pt-8">
       {/* Top Ambient Glow Overlays */}
-      <div className="pointer-events-none absolute top-[2%] left-1/2 -z-10 h-[400px] w-[85vw] max-w-[850px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-cyan-500/10 via-[#1109FF]/15 to-indigo-500/10 blur-[140px]" />
+      <div className="pointer-events-none absolute top-[calc(2%-250px)] left-1/2 -z-10 h-[900px] w-screen max-w-[1400px] -translate-x-1/2 bg-[radial-gradient(closest-side,rgba(17,9,255,0.1),rgba(6,182,212,0.05)_55%,transparent)]" />
 
       {/* Reactive 3D Quantum Canvas smoothly reacting to page scroll (Desktop Only) */}
       <QuantumVisualizer />
@@ -59,8 +59,10 @@ export default async function PMQCPage() {
           90%  { transform: translate(-20px, 10px) scale(0.9); }
           100% { transform: translate(0, 0) scale(1); }
         }
-        .pmqc-animate-glow {
-          animation: float-glow 20s ease-in-out infinite;
+        @media (min-width: 48rem) {
+          .pmqc-animate-glow {
+            animation: float-glow 20s ease-in-out infinite;
+          }
         }
       `}</style>
 
@@ -68,9 +70,9 @@ export default async function PMQCPage() {
       <section className="relative z-10 mt-4 mb-16 flex w-full flex-col items-center justify-between gap-12 sm:mb-24 md:mt-8 lg:flex-row">
         <div className="relative z-10 flex w-full flex-col text-left lg:w-[54%]">
           {/* Spotlight ombre colorate (solo mobile/tablet: su desktop c'è la Quantum Sphere e zero cropping) */}
-          <div className="pmqc-animate-glow pointer-events-none absolute top-[-10px] left-[0px] -z-10 h-[220px] w-[220px] rounded-full bg-cyan-500/20 blur-[80px] sm:h-[320px] sm:w-[320px] lg:hidden" />
+          <div className="pmqc-animate-glow pointer-events-none absolute top-[-130px] left-[-120px] -z-10 h-[460px] w-[460px] bg-[radial-gradient(closest-side,rgba(6,182,212,0.12),transparent)] sm:h-[560px] sm:w-[560px] lg:hidden" />
           <div
-            className="pmqc-animate-glow pointer-events-none absolute top-[40px] left-[30px] -z-10 h-[200px] w-[200px] rounded-full bg-[#1109FF]/15 blur-[85px] sm:h-[280px] sm:w-[280px] lg:hidden"
+            className="pmqc-animate-glow pointer-events-none absolute top-[-90px] left-[-100px] -z-10 h-[460px] w-[460px] bg-[radial-gradient(closest-side,rgba(17,9,255,0.08),transparent)] sm:h-[560px] sm:w-[560px] lg:hidden"
             style={{ animationDelay: '-5s' }}
           />
 
