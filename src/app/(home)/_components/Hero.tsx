@@ -1,4 +1,3 @@
-import Button from '@/shared/components/ui/Button';
 import ArrowLink from './ArrowLink';
 import NeuralNetworkVisual from './NeuralNetworkVisual';
 
@@ -25,7 +24,7 @@ export default function Hero() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-6 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-6 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <ArrowLink href="#what-we-do">Discover what we do</ArrowLink>
         </div>
       </div>

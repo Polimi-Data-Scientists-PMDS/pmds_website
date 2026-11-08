@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/shared/lib/utils';
+import { Announcement } from '@/shared/models';
 import {
   AnimatePresence,
   MotionConfig,
@@ -13,6 +14,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { FaGlobe, FaRobot } from 'react-icons/fa';
+import AnnouncementBar from './AnnouncementBar';
 import HeaderLink from './HeaderLink';
 
 const NAV_LINKS = [
@@ -166,7 +168,11 @@ function NavBar({ compact, isPmqc, isOpen, setIsOpen }: NavBarProps) {
   );
 }
 
-export default function Header() {
+interface HeaderProps {
+  announcement?: Announcement;
+}
+
+export default function Header({ announcement }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPastHeader, setIsPastHeader] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -198,7 +204,8 @@ export default function Header() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <header ref={headerRef} className="relative z-40 border-b">
+      <header ref={headerRef} className="relative z-40 border-b bg-background">
+        {announcement && <AnnouncementBar announcement={announcement} />}
         <NavBar
           compact={false}
           isPmqc={isPmqc}
@@ -217,6 +224,9 @@ export default function Header() {
             transition={{ duration: 0.3, ease: [0.338, 0.015, 0.395, 0.959] }}
             className="fixed inset-x-0 top-0 z-50 border-b bg-background"
           >
+            {announcement && (
+              <AnnouncementBar announcement={announcement} compact />
+            )}
             <NavBar
               compact
               isPmqc={isPmqc}

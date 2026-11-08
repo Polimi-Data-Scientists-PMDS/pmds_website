@@ -7,7 +7,6 @@ const inter = Inter({
   subsets: ['latin'],
 });
 
-import AnnouncementBar from '@/shared/components/layout/AnnouncementBar';
 import Footer from '@/shared/components/layout/Footer';
 import Header from '@/shared/components/layout/Header';
 import { getAnnouncements } from '@/shared/lib/notion';
@@ -47,12 +46,10 @@ export const metadata: Metadata = {
   },
 };
 
-async function Announcements() {
-  const announcements = await getAnnouncements();
+async function HeaderWithAnnouncement() {
+  const [announcement] = await getAnnouncements();
 
-  const firstAnnouncement = announcements[0];
-
-  return firstAnnouncement && <AnnouncementBar {...firstAnnouncement} />;
+  return <Header announcement={announcement} />;
 }
 
 export default function RootLayout({
@@ -68,8 +65,7 @@ export default function RootLayout({
           inter.className,
         )}
       >
-        <Announcements />
-        <Header />
+        <HeaderWithAnnouncement />
         <div className="flex flex-col gap-24">
           {children}
           <Footer />

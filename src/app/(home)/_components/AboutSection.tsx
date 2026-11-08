@@ -81,13 +81,13 @@ export default function AboutSection() {
         variants={containerVariants}
         initial="hidden"
         animate={inView ? 'visible' : 'hidden'}
-        className="flex flex-col border-b"
+        className="flex flex-col gap-12"
       >
         {FEATURES.map(({ title, details, icon: Icon }) => (
           <motion.div
             key={title}
             variants={itemVariants}
-            className="group flex flex-row items-center gap-4 border-t py-8"
+            className="group flex flex-row items-center gap-4"
           >
             <span className="grid size-11 place-items-center border text-accent transition-colors group-hover:bg-accent group-hover:text-white">
               <Icon size={18} />

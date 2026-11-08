@@ -297,14 +297,13 @@ export async function getAnnouncements(): Promise<Announcement[]> {
             {
               property: ANNOUNCEMENT_KEYS.displayedFrom,
               date: {
-                is_not_empty: true,
-                on_or_before: 'today',
+                is_empty: true,
               },
             },
             {
               property: ANNOUNCEMENT_KEYS.displayedFrom,
               date: {
-                is_empty: true,
+                on_or_before: 'today',
               },
             },
           ],
@@ -312,7 +311,6 @@ export async function getAnnouncements(): Promise<Announcement[]> {
         {
           property: ANNOUNCEMENT_KEYS.displayedTo,
           date: {
-            is_not_empty: true,
             on_or_after: 'today',
           },
         },

@@ -103,7 +103,7 @@ export default function NeuralNetworkVisual() {
         ))}
       </svg>
 
-      <div className="absolute inset-x-4 bottom-4 flex items-end justify-between border-t pt-4 lg:inset-x-6 lg:bottom-6 lg:pt-6">
+      <div className="absolute inset-x-4 bottom-4 flex items-end justify-between pt-4 lg:inset-x-6 lg:bottom-6 lg:pt-6">
         <div className="text-center type-label text-foreground-secondary">
           Input
           <br />
