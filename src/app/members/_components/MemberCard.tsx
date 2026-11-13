@@ -12,7 +12,7 @@ export default function MemberCard({
 }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-3xl border border-white/5 bg-surface/80 backdrop-blur-sm transition-colors duration-300 hover:border-white/10">
-      <div className="relative aspect-[4/3] w-full shrink-0 bg-[#151a2d]">
+      <div className="relative aspect-square w-full shrink-0 bg-[#151a2d]">
         {member.imageUrl ? (
           <Image
             src={member.imageUrl}
