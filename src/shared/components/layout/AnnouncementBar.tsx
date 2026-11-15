@@ -1,45 +1,45 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { cn } from '@/shared/lib/utils';
+import { motion } from 'motion/react';
 import { FaRocket } from 'react-icons/fa';
 
 export default function AnnouncementBar({
   title,
   linkText,
   link,
+  docked = false,
 }: {
   title: string;
   linkText?: string;
   link?: string;
+  docked?: boolean;
 }) {
-  const pathname = usePathname();
-
-  const isBioPage =
-    pathname === '/l' ||
-    pathname === '/tree' ||
-    pathname === '/links' ||
-    pathname?.startsWith('/l/') ||
-    pathname?.startsWith('/tree/') ||
-    pathname?.startsWith('/links/');
-
-  if (isBioPage) return null;
-
   return (
-    <div className="relative z-50 flex w-full items-center justify-center bg-gradient-to-r from-accent to-indigo-600 px-4 py-2 shadow-md">
-      <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-        <FaRocket className="text-foreground/80" />
-        <span>{title}</span>
+    <motion.div
+      layout
+      className={cn(
+        'relative z-50 flex w-full items-center justify-center rounded-t-3xl bg-gradient-to-r from-accent to-indigo-600 px-4 py-2 shadow-md',
+        !docked && 'md:rounded-full',
+      )}
+    >
+      <motion.div
+        layout="position"
+        className="flex min-w-0 items-center justify-center gap-2 text-sm font-semibold text-foreground"
+      >
+        <FaRocket className="shrink-0 text-foreground/80" />
+        <span className="min-w-0 wrap-anywhere">{title}</span>
         {link && (
           <a
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 underline underline-offset-2 transition-colors hover:text-foreground/80"
+            className="ml-2 shrink-0 whitespace-nowrap underline underline-offset-2 transition-colors hover:text-foreground/80"
           >
             {linkText}
           </a>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
