@@ -92,12 +92,12 @@ export default function Footer() {
             { text: 'Events', href: '/events' },
             ...(isPmqc ? [] : [{ text: 'PMQC', href: '/pmqc' }]),
             { text: 'Become a Member', href: '/membership' },
+            { text: 'Members', href: '/members' },
             {
               text: 'Support Us (Donate)',
               href: 'https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00',
               accent: true,
             },
-            { text: 'Members', href: '/members' },
           ]}
         />
 
