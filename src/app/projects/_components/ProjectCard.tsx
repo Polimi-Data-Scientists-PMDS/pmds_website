@@ -63,6 +63,7 @@ export default function ProjectCard({
     <Card
       title={project.title}
       imageUrl={project.imageUrl}
+      blurDataUrl={project.blurDataUrl}
       priority={priority}
       compact={compact}
       chips={[

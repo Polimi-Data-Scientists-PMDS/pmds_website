@@ -3,7 +3,7 @@ import type { PageObjectResponse } from '@notionhq/client';
 export type NotionPage = PageObjectResponse;
 export type NotionProperty = NotionPage['properties'][string] | undefined;
 
-// Utility to get text from Rich Text or Title properties
+
 export const getText = (prop: NotionProperty): string => {
   if (!prop) return '';
   if (prop.type === 'title')
@@ -50,6 +50,25 @@ export const getDepartments = (prop: NotionProperty): string[] => {
     return [prop.select.name.trim()];
   }
   return [];
+};
+
+export const getFileUrl = (page: NotionPage, propName: string): string | null => {
+  const prop = page.properties[propName];
+  if (prop?.type !== 'files' || prop.files.length === 0) return null;
+  const file = prop.files[0];
+  return file.type === 'external' ? file.external.url : file.file.url;
+};
+
+export const imageSourceMap = (
+  pages: NotionPage[],
+  propName: string,
+): Map<string, string> => {
+  const map = new Map<string, string>();
+  for (const page of pages) {
+    const url = getFileUrl(page, propName);
+    if (url) map.set(page.id, url);
+  }
+  return map;
 };
 
 /**

@@ -39,6 +39,7 @@ export interface Project {
   title: string;
   description: string;
   imageUrl?: string;
+  blurDataUrl?: string;
   tags: string[];
   status: ProjectStatus;
   date: string;
@@ -60,10 +61,17 @@ export function parseProject(
   const partnerName = getText(props[PROJECT_KEYS.partnerName]);
   const partnerUrl = formatUrlString(getText(props[PROJECT_KEYS.partnerUrl]));
 
+  // Keep blurDataUrl here: dropping it silently removes the blur placeholder
+  // from every avatar rendered by <PeopleGroup />.
   const team = resolvePeople(
     getRelationIds(props[PROJECT_KEYS.members]),
     membersMap,
-  ).map(({ name, avatar, linkedinUrl }) => ({ name, avatar, linkedinUrl }));
+  ).map(({ name, avatar, blurDataUrl, linkedinUrl }) => ({
+    name,
+    avatar,
+    blurDataUrl,
+    linkedinUrl,
+  }));
 
   return {
     id: page.id,

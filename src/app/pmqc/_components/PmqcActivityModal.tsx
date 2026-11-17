@@ -2,9 +2,9 @@
 
 import Button from '@/shared/components/ui/Button';
 import Chip from '@/shared/components/ui/Chip';
+import ResponsiveImage from '@/shared/components/ui/ResponsiveImage';
 import { formatDate } from '@/shared/lib/utils';
 import { Event, Project } from '@/shared/types';
-import Image from 'next/image';
 import { createPortal } from 'react-dom';
 import {
   FaExternalLinkAlt,
@@ -66,10 +66,14 @@ export default function PmqcActivityModal({
 
             {event.imageUrl && (
               <div className="relative mb-4 h-[180px] w-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-900">
-                <Image
+                <ResponsiveImage
                   src={event.imageUrl}
+                  blurDataUrl={event.blurDataUrl}
                   alt={event.title}
                   fill
+                  sizes="(max-width: 640px) 100vw, 576px"
+                  maxSize="sm"
+                  fallbackSize="sm"
                   className="object-cover"
                 />
               </div>
@@ -123,10 +127,14 @@ export default function PmqcActivityModal({
 
             {project.imageUrl && (
               <div className="relative mb-4 h-[180px] w-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-900">
-                <Image
+                <ResponsiveImage
                   src={project.imageUrl}
+                  blurDataUrl={project.blurDataUrl}
                   alt={project.title}
                   fill
+                  sizes="(max-width: 640px) 100vw, 576px"
+                  maxSize="sm"
+                  fallbackSize="sm"
                   className="object-cover"
                 />
               </div>

@@ -21,7 +21,7 @@ export default function BlogCard({
     : { href: `/blog/${post.slug}` };
 
   return (
-    <Card imageUrl={post.imageUrl} title={post.title} priority={priority}>
+    <Card imageUrl={post.imageUrl} blurDataUrl={post.blurDataUrl} title={post.title} priority={priority}>
       <CardHeader>
         <LinkWrapper
           {...wrapperProps}

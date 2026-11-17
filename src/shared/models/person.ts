@@ -3,6 +3,7 @@ import type { Member } from './member';
 export interface Person {
   name: string;
   avatar?: string;
+  blurDataUrl?: string;
   linkedinUrl?: string;
   email?: string;
 }
@@ -19,6 +20,7 @@ export function resolvePeople(
           {
             name: member.name,
             avatar: member.imageUrl,
+            blurDataUrl: member.blurDataUrl,
             linkedinUrl: member.linkedinUrl,
             email: member.email,
           },

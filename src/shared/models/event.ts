@@ -31,6 +31,7 @@ export interface Event {
   type: string;
   description: string;
   imageUrl?: string;
+  blurDataUrl?: string;
   registrationUrl?: string;
   resourcesUrl?: string;
   upcoming: boolean;
