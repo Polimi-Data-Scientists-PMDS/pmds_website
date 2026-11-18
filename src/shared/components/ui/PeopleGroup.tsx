@@ -67,7 +67,6 @@ export default function PeopleGroup({
                   fill
                   sizes="48px"
                   maxSize="sm"
-                  fallbackSize="sm"
                   className="object-cover"
                 />
               ) : (
@@ -123,7 +122,6 @@ export default function PeopleGroup({
                         fill
                         sizes="48px"
                         maxSize="sm"
-                        fallbackSize="sm"
                         className="object-cover"
                       />
                     ) : (

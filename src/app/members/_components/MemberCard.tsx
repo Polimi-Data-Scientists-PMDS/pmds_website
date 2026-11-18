@@ -21,7 +21,6 @@ export default function MemberCard({
               fill
               sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 15vw"
               maxSize="sm"
-              fallbackSize="sm"
               className="object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
               priority={priority}
             />

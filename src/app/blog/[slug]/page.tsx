@@ -114,7 +114,6 @@ export default async function BlogPostPage({
               fill
               sizes="(max-width: 900px) 100vw, 900px"
               maxSize="lg"
-              fallbackSize="md"
               className="object-cover"
               priority
             />

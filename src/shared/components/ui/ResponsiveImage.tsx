@@ -1,69 +1,80 @@
-'use client';
-
 import {
   capImageSize,
-  imageSizeForDevice,
+  DEFAULT_IMAGE_SIZE,
+  imageSrcSet,
+  isProxyImage,
   withImageSize,
   type ImageSize,
 } from '@/shared/lib/image';
 import Image, { type ImageProps } from 'next/image';
-import { useSyncExternalStore } from 'react';
-
-
-let deviceSize: ImageSize | null = null;
-const listeners = new Set<() => void>();
-let listening = false;
-
-function refresh() {
-  const next = imageSizeForDevice(window.innerWidth, window.devicePixelRatio || 1);
-  if (next === deviceSize) return;
-  deviceSize = next;
-  listeners.forEach((listener) => listener());
-}
-
-function subscribe(listener: () => void) {
-  listeners.add(listener);
-  if (!listening) {
-    listening = true;
-    refresh();
-    window.addEventListener('resize', refresh, { passive: true });
-    window.addEventListener('orientationchange', refresh);
-  }
-  return () => {
-    listeners.delete(listener);
-  };
-}
-
-function useDeviceImageSize(fallback: ImageSize): ImageSize {
-  return useSyncExternalStore(
-    subscribe,
-    () => deviceSize ?? fallback,
-    () => fallback,
-  );
-}
+import { preload as preloadResource } from 'react-dom';
 
 export interface ResponsiveImageProps
   extends Omit<ImageProps, 'src' | 'placeholder' | 'blurDataURL'> {
   src: string;
   blurDataUrl?: string | null;
   maxSize?: ImageSize;
-  fallbackSize?: ImageSize;
 }
 
 export default function ResponsiveImage({
   src,
+  alt,
   blurDataUrl,
   maxSize = 'lg',
-  fallbackSize = 'md',
+  sizes,
+  priority,
+  preload,
+  loading,
+  fetchPriority,
   ...rest
 }: ResponsiveImageProps) {
-  const size = capImageSize(useDeviceImageSize(fallbackSize), maxSize);
+  const blurProps = blurDataUrl
+    ? { placeholder: 'blur' as const, blurDataURL: blurDataUrl }
+    : {};
+
+  // Non-proxy images (static assets, external URLs) have no presets.
+  if (!isProxyImage(src)) {
+    return (
+      <Image
+        {...rest}
+        {...blurProps}
+        src={src}
+        alt={alt}
+        sizes={sizes}
+        preload={preload ?? priority}
+        loading={loading}
+        fetchPriority={fetchPriority}
+      />
+    );
+  }
+
+  const srcSet = imageSrcSet(src, maxSize);
+  const fallbackSrc =
+    withImageSize(src, capImageSize(DEFAULT_IMAGE_SIZE, maxSize)) ?? src;
+  const eager = preload ?? priority ?? false;
+
+  // next/image would preload only the fallback `src`; preload the srcset instead.
+  if (eager) {
+    preloadResource(fallbackSrc, {
+      as: 'image',
+      imageSrcSet: srcSet,
+      imageSizes: sizes,
+      fetchPriority: 'high',
+    });
+  }
 
   return (
-    <Image
-      {...rest}
-      src={withImageSize(src, size) ?? src}
-      {...(blurDataUrl ? { placeholder: 'blur' as const, blurDataURL: blurDataUrl } : {})}
-    />
+    <picture>
+      <source srcSet={srcSet} sizes={sizes} />
+      <Image
+        {...rest}
+        {...blurProps}
+        src={fallbackSrc}
+        alt={alt}
+        sizes={sizes}
+        loading={eager ? 'eager' : loading}
+        fetchPriority={eager ? 'high' : fetchPriority}
+      />
+    </picture>
   );
 }

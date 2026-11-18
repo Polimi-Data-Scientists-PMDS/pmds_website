@@ -11,6 +11,9 @@ const QUALITY: Record<ImageSize, number> = {
   lg: 80,
 };
 
+/** Images taller than width × this get limited by height instead. */
+const MAX_ASPECT_RATIO = 3;
+
 const CACHE_HEADERS = {
   'Cache-Control': 'public, max-age=31536000, s-maxage=31536000, immutable',
 } as const;
@@ -79,14 +82,27 @@ export async function GET(
     try {
       const optimized = await sharp(rawBuffer)
         .rotate() // apply EXIF orientation
+        // Presets are widths (the srcset uses `w` descriptors), so cap width
+        // only; the height cap just guards against extremely tall images.
         .resize({
           width,
-          height: width,
+          height: width * MAX_ASPECT_RATIO,
           fit: 'inside',
           withoutEnlargement: true, // never upscale a small original
         })
         .webp({ quality, effort: 4 })
         .toBuffer();
+
+      // Re-encoding can make small or already-compressed files bigger
+      // (logos, flat PNGs): keep the original in that case.
+      if (optimized.length >= rawBuffer.length) {
+        return new Response(new Uint8Array(rawBuffer), {
+          headers: {
+            'Content-Type': upstreamType,
+            ...CACHE_HEADERS,
+          },
+        });
+      }
 
       return new Response(new Uint8Array(optimized), {
         headers: {

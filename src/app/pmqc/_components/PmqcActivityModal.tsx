@@ -73,7 +73,6 @@ export default function PmqcActivityModal({
                   fill
                   sizes="(max-width: 640px) 100vw, 576px"
                   maxSize="sm"
-                  fallbackSize="sm"
                   className="object-cover"
                 />
               </div>
@@ -134,7 +133,6 @@ export default function PmqcActivityModal({
                   fill
                   sizes="(max-width: 640px) 100vw, 576px"
                   maxSize="sm"
-                  fallbackSize="sm"
                   className="object-cover"
                 />
               </div>

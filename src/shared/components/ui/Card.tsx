@@ -49,7 +49,6 @@ function Card({
             fill
             sizes={compact ? '350px' : '(max-width: 1024px) 100vw, 50vw'}
             maxSize={compact ? 'sm' : 'md'}
-            fallbackSize={compact ? 'sm' : 'md'}
             className="object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
             priority={priority}
           />

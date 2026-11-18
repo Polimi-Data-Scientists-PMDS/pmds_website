@@ -20,12 +20,8 @@ export function capImageSize(size: ImageSize, max: ImageSize): ImageSize {
     : max;
 }
 
-// Get preset for device type
-export function imageSizeForDevice(viewportWidth: number, pixelRatio = 1): ImageSize {
-  const needed = viewportWidth * Math.min(Math.max(pixelRatio, 1), 2);
-  if (needed <= IMAGE_SIZES.sm) return 'sm';
-  if (needed <= IMAGE_SIZES.md) return 'md';
-  return 'lg';
+export function isProxyImage(url: string | undefined | null): url is string {
+  return !!url && url.startsWith(PROXY_IMAGE_PREFIX);
 }
 
 export function withImageSize(
@@ -33,9 +29,21 @@ export function withImageSize(
   size: ImageSize,
 ): string | undefined {
   if (!url) return undefined;
-  if (!url.startsWith(PROXY_IMAGE_PREFIX)) return url;
+  if (!isProxyImage(url)) return url;
 
   const [path, hash] = url.split('#');
   const separator = path.includes('?') ? '&' : '?';
   return `${path}${separator}size=${size}${hash ? `#${hash}` : ''}`;
+}
+
+/**
+ * Builds a `srcset` with one entry per preset up to `maxSize`
+ * (e.g. `…?size=sm 640w, …?size=md 1080w`), so the browser picks
+ * the right variant from `sizes` and the device pixel ratio.
+ */
+export function imageSrcSet(url: string, maxSize: ImageSize = 'lg'): string {
+  const last = IMAGE_SIZE_ORDER.indexOf(maxSize);
+  return IMAGE_SIZE_ORDER.slice(0, last + 1)
+    .map((size) => `${withImageSize(url, size)} ${IMAGE_SIZES[size]}w`)
+    .join(', ');
 }
