@@ -1,10 +1,11 @@
 import { cn } from '@/shared/lib/utils';
-import Image from 'next/image';
+import ResponsiveImage from '@/shared/components/ui/ResponsiveImage';
 import { ReactNode } from 'react';
 
 interface CardProps {
   title: string;
   imageUrl?: string;
+  blurDataUrl?: string;
   chips?: ReactNode[];
   priority?: boolean;
   /** Shorter image, for carousels and dense layouts. */
@@ -16,6 +17,7 @@ interface CardProps {
 function Card({
   title,
   imageUrl,
+  blurDataUrl,
   chips = [],
   priority = false,
   compact = false,
@@ -40,11 +42,13 @@ function Card({
             compact ? 'h-32' : 'aspect-video',
           )}
         >
-          <Image
+          <ResponsiveImage
             src={imageUrl}
+            blurDataUrl={blurDataUrl}
             alt={title}
             fill
             sizes={compact ? '350px' : '(max-width: 1024px) 100vw, 50vw'}
+            maxSize={compact ? 'sm' : 'md'}
             className="object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
             priority={priority}
           />

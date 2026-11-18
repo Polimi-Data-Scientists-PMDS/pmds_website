@@ -1,6 +1,7 @@
 import Button from '@/shared/components/ui/Button';
 import Chip from '@/shared/components/ui/Chip';
 import PeopleGroup from '@/shared/components/ui/PeopleGroup';
+import ResponsiveImage from '@/shared/components/ui/ResponsiveImage';
 import { getPost, getPosts } from '@/shared/lib/notion';
 import 'katex/dist/katex.min.css'; // CSS for math
 import { Metadata } from 'next';
@@ -106,11 +107,13 @@ export default async function BlogPostPage({
       {post.imageUrl && post.imageUrl !== '/placeholder.jpg' && (
         <div className="mx-auto mb-16 w-full max-w-[900px] px-6 md:px-8">
           <div className="relative aspect-[21/9] w-full overflow-hidden rounded-3xl border shadow-2xl">
-            <Image
+            <ResponsiveImage
               src={post.imageUrl}
+              blurDataUrl={post.blurDataUrl}
               alt={post.title}
               fill
               sizes="(max-width: 900px) 100vw, 900px"
+              maxSize="lg"
               className="object-cover"
               priority
             />

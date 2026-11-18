@@ -1,8 +1,8 @@
 'use client';
 
 import { cn } from '@/shared/lib/utils';
+import ResponsiveImage from '@/shared/components/ui/ResponsiveImage';
 import { Person } from '@/shared/types';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { FaChevronDown, FaEnvelope, FaLinkedinIn } from 'react-icons/fa';
 
@@ -60,13 +60,14 @@ export default function PeopleGroup({
               )}
             >
               {person.avatar ? (
-                <Image
+                <ResponsiveImage
                   src={person.avatar}
+                  blurDataUrl={person.blurDataUrl}
                   alt={person.name}
                   fill
                   sizes="48px"
+                  maxSize="sm"
                   className="object-cover"
-                  unoptimized
                 />
               ) : (
                 <div className="inset-0 flex items-center justify-center">
@@ -114,13 +115,14 @@ export default function PeopleGroup({
                 <div className="flex items-center gap-3">
                   <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full border border-white/10 bg-white/5">
                     {person.avatar ? (
-                      <Image
+                      <ResponsiveImage
                         src={person.avatar}
+                        blurDataUrl={person.blurDataUrl}
                         alt={person.name}
                         fill
                         sizes="48px"
+                        maxSize="sm"
                         className="object-cover"
-                        unoptimized
                       />
                     ) : (
                       <span className="flex h-full w-full items-center justify-center text-xs text-muted">

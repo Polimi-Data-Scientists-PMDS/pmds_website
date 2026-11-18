@@ -30,6 +30,7 @@ export interface BlogPost {
   content?: string;
   externalUrl?: string;
   imageUrl: string;
+  blurDataUrl?: string;
   date: string;
   authors: Person[];
   tags: string[];
