@@ -1,6 +1,6 @@
 import SocialLink from '@/shared/components/ui/SocialLink';
 import { Member } from '@/shared/types';
-import Image from 'next/image';
+import ResponsiveImage from '@/shared/components/ui/ResponsiveImage';
 import { FaEnvelope, FaLinkedinIn } from 'react-icons/fa';
 
 export default function MemberCard({
@@ -12,16 +12,18 @@ export default function MemberCard({
 }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-3xl border border-white/5 bg-surface/80 backdrop-blur-sm transition-colors duration-300 hover:border-white/10">
-      <div className="relative aspect-[4/3] w-full shrink-0 bg-[#151a2d]">
+      <div className="relative aspect-square w-full shrink-0 bg-[#151a2d]">
         {member.imageUrl ? (
-          <Image
-            src={member.imageUrl}
-            alt={member.name}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-            className="object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
-            priority={priority}
-          />
+          <ResponsiveImage
+              src={member.imageUrl}
+              blurDataUrl={member.blurDataUrl}
+              alt={member.name}
+              fill
+              sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 15vw"
+              maxSize="sm"
+              className="object-cover transition-transform duration-700 will-change-transform group-hover:scale-105"
+              priority={priority}
+            />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-muted uppercase">
             {member.name.charAt(0)}

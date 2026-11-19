@@ -1,12 +1,22 @@
 import { NextRequest } from 'next/server';
 import { Client } from '@notionhq/client';
 import sharp from 'sharp';
+import { IMAGE_SIZES, resolveImageSize, type ImageSize } from '@/shared/lib/image';
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
-// Threshold above which we optimize raster images (250 KB)
-const COMPRESSION_THRESHOLD = 250 * 1024;
-const MAX_DIMENSION = 1600;
+const QUALITY: Record<ImageSize, number> = {
+  sm: 70,
+  md: 75,
+  lg: 80,
+};
+
+/** Images taller than width × this get limited by height instead. */
+const MAX_ASPECT_RATIO = 3;
+
+const CACHE_HEADERS = {
+  'Cache-Control': 'public, max-age=31536000, s-maxage=31536000, immutable',
+} as const;
 
 export async function GET(
   request: NextRequest,
@@ -18,23 +28,25 @@ export async function GET(
     return new Response('Missing token', { status: 400 });
   }
 
+  // Only sm | md | lg are accepted; anything else is md.
+  const size = resolveImageSize(request.nextUrl.searchParams.get('size'));
+  const width = IMAGE_SIZES[size];
+  const quality = QUALITY[size];
+
   let id: string;
   let prop: string;
 
   try {
-    const decoded = JSON.parse(
-      Buffer.from(token, 'base64url').toString('utf8'),
-    );
+    const decoded = JSON.parse(Buffer.from(token, 'base64url').toString('utf8'));
     id = decoded.id;
     prop = decoded.prop;
-  } catch (err) {
+  } catch {
     return new Response('Invalid token', { status: 400 });
   }
 
   try {
     const page: any = await notion.pages.retrieve({ page_id: id });
-    const fileProp = page.properties[prop];
-    const files = fileProp?.files || [];
+    const files = page.properties[prop]?.files || [];
     if (files.length === 0) {
       return new Response('Image not found in page properties', {
         status: 404,
@@ -51,47 +63,62 @@ export async function GET(
       });
     }
 
-    let contentType = res.headers.get('content-type') || 'image/jpeg';
+    const upstreamType = res.headers.get('content-type') || 'image/jpeg';
     const rawBuffer = Buffer.from(await res.arrayBuffer());
-    let finalBuffer: Buffer = rawBuffer;
 
-    // Lightweight optimization for raster images exceeding the size threshold
-    const isRasterImage =
-      contentType.startsWith('image/') && !contentType.includes('svg');
+    // ignore svgs and other vector images
+    const isRaster =
+      upstreamType.startsWith('image/') && !upstreamType.includes('svg');
 
-    if (isRasterImage && rawBuffer.length > COMPRESSION_THRESHOLD) {
-      try {
-        const optimized = await sharp(rawBuffer)
-          .rotate() // Automatically orient based on EXIF metadata
-          .resize({
-            width: MAX_DIMENSION,
-            height: MAX_DIMENSION,
-            fit: 'inside',
-            withoutEnlargement: true,
-          })
-          .webp({ quality: 82, effort: 4 })
-          .toBuffer();
-
-        // Only adopt optimized version if it actually reduced the payload
-        if (optimized.length < rawBuffer.length) {
-          finalBuffer = optimized;
-          contentType = 'image/webp';
-        }
-      } catch (sharpError) {
-        console.warn(
-          'Sharp optimization failed, serving original:',
-          sharpError,
-        );
-      }
+    if (!isRaster) {
+      return new Response(new Uint8Array(rawBuffer), {
+        headers: {
+          'Content-Type': upstreamType,
+          ...CACHE_HEADERS,
+        },
+      });
     }
 
-    return new Response(new Uint8Array(finalBuffer), {
-      headers: {
-        'Content-Type': contentType,
-        'Cache-Control':
-          'public, max-age=31536000, s-maxage=31536000, immutable',
-      },
-    });
+    try {
+      const optimized = await sharp(rawBuffer)
+        .rotate() // apply EXIF orientation
+        // Presets are widths (the srcset uses `w` descriptors), so cap width
+        // only; the height cap just guards against extremely tall images.
+        .resize({
+          width,
+          height: width * MAX_ASPECT_RATIO,
+          fit: 'inside',
+          withoutEnlargement: true, // never upscale a small original
+        })
+        .webp({ quality, effort: 4 })
+        .toBuffer();
+
+      // Re-encoding can make small or already-compressed files bigger
+      // (logos, flat PNGs): keep the original in that case.
+      if (optimized.length >= rawBuffer.length) {
+        return new Response(new Uint8Array(rawBuffer), {
+          headers: {
+            'Content-Type': upstreamType,
+            ...CACHE_HEADERS,
+          },
+        });
+      }
+
+      return new Response(new Uint8Array(optimized), {
+        headers: {
+          'Content-Type': 'image/webp',
+          ...CACHE_HEADERS,
+        },
+      });
+    } catch (sharpError) {
+      console.warn('Sharp optimization failed, serving original:', sharpError);
+      return new Response(new Uint8Array(rawBuffer), {
+        headers: {
+          'Content-Type': upstreamType,
+          ...CACHE_HEADERS,
+        },
+      });
+    }
   } catch (error: any) {
     console.error('Image proxy error:', error);
     return new Response(error.message || 'Internal Server Error', {

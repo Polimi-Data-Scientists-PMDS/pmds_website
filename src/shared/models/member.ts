@@ -34,6 +34,7 @@ export interface Member {
   role?: string;
   team?: string;
   imageUrl?: string;
+  blurDataUrl?: string;
   linkedinUrl?: string;
   email?: string;
   order?: number;
@@ -75,6 +76,7 @@ export function parseWebsiteMember(
     role: getText(props[WEBSITE_MEMBER_KEYS.displayedRole]) || undefined,
     team: getSelect(props[WEBSITE_MEMBER_KEYS.section]) || 'Other',
     imageUrl: baseMember?.imageUrl,
+    blurDataUrl: baseMember?.blurDataUrl,
     linkedinUrl: baseMember?.linkedinUrl,
     email:
       getEmail(props[WEBSITE_MEMBER_KEYS.email]) ||

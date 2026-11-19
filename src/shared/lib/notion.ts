@@ -1,5 +1,7 @@
 'use server';
 
+import { attachBlurDataUrls } from '@/shared/lib/image-blur';
+import { imageSourceMap } from '@/shared/lib/notion-properties';
 import type { NotionPage } from '@/shared/lib/notion-properties';
 import {
   Announcement,
@@ -9,6 +11,7 @@ import {
   Event,
   EVENT_KEYS,
   Member,
+  MEMBER_KEYS,
   parseAnnouncement,
   parseBlogPost,
   parseEvent,
@@ -77,7 +80,12 @@ export async function getMembers(): Promise<Member[]> {
   if (!MEMBERS_DB) return [];
 
   const pages = await queryDatabase(MEMBERS_DB);
-  return pages.map(parseMember);
+  const sources = imageSourceMap(pages, MEMBER_KEYS.photo);
+
+  return attachBlurDataUrls(
+    pages.map(parseMember),
+    (member) => sources.get(member.id),
+  );
 }
 
 export async function getProjects(): Promise<Project[]> {
@@ -87,17 +95,17 @@ export async function getProjects(): Promise<Project[]> {
 
   if (!PROJECTS_DB) return [];
 
-  // Fetch all active members first so we can map relations
   const membersMap = toMembersMap(await getMembers());
 
   const pages = await queryDatabase(PROJECTS_DB, {
-    filter: {
-      property: PROJECT_KEYS.published,
-      checkbox: {
-        equals: true,
-      },
-    },
+    filter: { property: PROJECT_KEYS.published, checkbox: { equals: true } },
   });
+
+  const sources = imageSourceMap(pages, PROJECT_KEYS.image);
+  const projects = await attachBlurDataUrls(
+    pages.map((page) => parseProject(page, membersMap)),
+    (project) => sources.get(project.id),
+  );
 
   const statusOrder: Record<string, number> = {
     Recruiting: 1,
@@ -105,12 +113,11 @@ export async function getProjects(): Promise<Project[]> {
     Completed: 3,
   };
 
-  return pages
-    .map((page) => parseProject(page, membersMap))
-    .sort(
-      (a, b) => (statusOrder[a.status] || 99) - (statusOrder[b.status] || 99),
-    );
+  return projects.sort(
+    (a, b) => (statusOrder[a.status] || 99) - (statusOrder[b.status] || 99),
+  );
 }
+
 
 // Predefined Team Display Order
 const TEAM_ORDER = [
@@ -207,22 +214,18 @@ export async function getPosts(): Promise<BlogPost[]> {
   const membersMap = toMembersMap(await getMembers());
 
   const pages = await queryDatabase(POSTS_DB, {
-    filter: {
-      property: BLOG_POST_KEYS.published,
-      checkbox: {
-        equals: true,
-      },
-    },
-    sorts: [
-      {
-        property: BLOG_POST_KEYS.date,
-        direction: 'descending',
-      },
-    ],
+    filter: { property: BLOG_POST_KEYS.published, checkbox: { equals: true } },
+    sorts: [{ property: BLOG_POST_KEYS.date, direction: 'descending' }],
   });
 
-  return pages.map((page) => parseBlogPost(page, membersMap));
+  const sources = imageSourceMap(pages, BLOG_POST_KEYS.coverImage);
+
+  return attachBlurDataUrls(
+    pages.map((page) => parseBlogPost(page, membersMap)),
+    (post) => sources.get(post.id),
+  );
 }
+
 
 export async function getPost(slug: string): Promise<BlogPost | null> {
   'use cache';
@@ -255,29 +258,20 @@ export async function getEvents(): Promise<Event[]> {
   if (!EVENTS_DB) return [];
 
   const pages = await queryDatabase(EVENTS_DB, {
-    filter: {
-      property: EVENT_KEYS.published,
-      checkbox: {
-        equals: true,
-      },
-    },
-    sorts: [
-      {
-        property: EVENT_KEYS.date,
-        direction: 'descending',
-      },
-    ],
+    filter: { property: EVENT_KEYS.published, checkbox: { equals: true } },
+    sorts: [{ property: EVENT_KEYS.date, direction: 'descending' }],
   });
 
   const now = new Date();
-  const events = pages.map((page) => parseEvent(page, now));
-  const byStart = (a: Event, b: Event) =>
-    a.dateStart.getTime() - b.dateStart.getTime();
+  const sources = imageSourceMap(pages, EVENT_KEYS.image);
+  const events = await attachBlurDataUrls(
+    pages.map((page) => parseEvent(page, now)),
+    (event) => sources.get(event.id),
+  );
 
+  const byStart = (a: Event, b: Event) => a.dateStart.getTime() - b.dateStart.getTime();
   const upcomingEvents = events.filter((e) => e.upcoming).sort(byStart);
-  const pastEvents = events
-    .filter((e) => !e.upcoming)
-    .sort((a, b) => byStart(b, a));
+  const pastEvents = events.filter((e) => !e.upcoming).sort((a, b) => byStart(b, a));
 
   return [...upcomingEvents, ...pastEvents];
 }

@@ -30,6 +30,7 @@ export default function EventCard({
       title={event.title}
       priority={priority}
       imageUrl={event.imageUrl}
+      blurDataUrl={event.blurDataUrl}
       compact={compact}
       chips={[
         <Chip key={2} color={event.upcoming ? 'highlight' : 'muted'}>
