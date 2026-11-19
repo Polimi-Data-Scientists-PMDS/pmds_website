@@ -3,18 +3,51 @@
 import { cn } from '@/shared/lib/utils';
 import { motion } from 'motion/react';
 import { FaRocket } from 'react-icons/fa';
+import { startTransition, useEffect, useState } from 'react';
+import { getAnnouncements } from '@/shared/lib/notion';
+import type { Announcement } from '@/shared/models/announcement';
 
 export default function AnnouncementBar({
-  title,
-  linkText,
-  link,
   docked = false,
+  onVisibilityChange,
 }: {
-  title: string;
-  linkText?: string;
-  link?: string;
   docked?: boolean;
+  onVisibilityChange: (visible: boolean) => void;
 }) {
+  const [announcement, setAnnouncement] = useState<Announcement | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadAnnouncement() {
+      try {
+        const announcements = await getAnnouncements();
+
+        if (cancelled) return;
+
+        const firstAnnouncement = announcements[0] ?? null;
+
+        setAnnouncement(firstAnnouncement);
+        onVisibilityChange(firstAnnouncement !== null);
+      } catch (error) {
+        if (cancelled) return;
+
+        console.error('Failed to load announcements:', error);
+        onVisibilityChange(false);
+      }
+    }
+
+    startTransition(loadAnnouncement);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [onVisibilityChange]);
+
+  if (!announcement) return null;
+
+  const { title, linkText, link } = announcement;
+
   return (
     <motion.div
       layout

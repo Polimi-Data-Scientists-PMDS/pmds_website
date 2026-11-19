@@ -13,7 +13,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLayoutEffect, useRef, useState } from 'react';
 import HeaderLink from './HeaderLink';
-import type { Announcement } from '@/shared/models/announcement';
 import AnnouncementBar from './AnnouncementBar';
 
 const NAV_LINKS = [
@@ -29,11 +28,8 @@ const DONATE_URL = 'https://donate.stripe.com/aFadR1fD69lpdRV9F64sE00';
 
 const BAR_CLASS = 'w-6 h-0.5 bg-foreground transition duration-300';
 
-export default function Header({
-  announcement,
-}: {
-  announcement?: Announcement;
-}) {
+export default function Header() {
+  const [hasAnnouncement, setHasAnnouncement] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState<number>();
@@ -68,7 +64,7 @@ export default function Header({
     observer.observe(content);
 
     return () => observer.disconnect();
-  }, [isBioPage, isScrolled, isOpen, pathname, announcement]);
+  }, [isBioPage, isScrolled, isOpen, pathname, hasAnnouncement]);
 
   if (isBioPage) return null;
 
@@ -101,33 +97,28 @@ export default function Header({
           <motion.div
             layout
             className={cn(
-              'mx-auto flex w-full flex-col gap-0 md:max-w-[420px]',
-              announcement && !isScrolled && 'md:gap-3',
-              isOpen && 'md:max-w-[560px]',
+              'mx-auto flex w-full flex-col gap-0 md:max-w-[560px]',
+              hasAnnouncement && !isScrolled && 'md:gap-3',
               !isScrolled && 'md:max-w-[1000px]',
             )}
           >
-            {announcement && (
-              <AnnouncementBar
-                title={announcement.title}
-                linkText={announcement.linkText}
-                link={announcement.link}
-                docked={isScrolled}
-              />
-            )}
+            <AnnouncementBar
+              docked={isScrolled}
+              onVisibilityChange={setHasAnnouncement}
+            />
             <motion.div
               layout
               className={cn(
                 'w-full rounded-3xl border border-white/10 bg-background/70 p-4 shadow-2xl backdrop-blur-xl',
-                announcement && 'rounded-t-none',
-                announcement && !isScrolled && 'md:rounded-t-3xl',
+                hasAnnouncement && 'rounded-t-none',
+                hasAnnouncement && !isScrolled && 'md:rounded-t-3xl',
                 !isScrolled &&
                   'md:border-transparent md:bg-transparent md:shadow-none',
               )}
             >
               <motion.div
                 layout="position"
-                className="flex items-center justify-between gap-6"
+                className="relative flex items-center justify-between gap-6"
               >
                 <motion.div
                   layout
