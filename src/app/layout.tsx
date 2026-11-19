@@ -7,10 +7,8 @@ const inter = Inter({
   subsets: ['latin'],
 });
 
-import AnnouncementBar from '@/shared/components/layout/AnnouncementBar';
 import Footer from '@/shared/components/layout/Footer';
 import Header from '@/shared/components/layout/Header';
-import { getAnnouncements } from '@/shared/lib/notion';
 import { cn } from '@/shared/lib/utils';
 
 export const metadata: Metadata = {
@@ -47,14 +45,6 @@ export const metadata: Metadata = {
   },
 };
 
-async function Announcements() {
-  const announcements = await getAnnouncements();
-
-  const firstAnnouncement = announcements[0];
-
-  return firstAnnouncement && <AnnouncementBar {...firstAnnouncement} />;
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -68,7 +58,6 @@ export default function RootLayout({
           inter.className,
         )}
       >
-        <Announcements />
         <Header />
         {children}
         <Footer />
